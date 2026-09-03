@@ -77,3 +77,9 @@ run_clean_state_verification.py
 run_full_forensic_audit.py
 user_request_full.txt
 
+# Archive and temporary datasets
+Dataset/Raw_Data/raw_archive_*.csv
+Dataset/Raw_Data/temp_*.csv
+Dataset/Cleaned_Data/temp_*.csv
+
+

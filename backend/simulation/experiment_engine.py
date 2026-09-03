@@ -29,18 +29,17 @@ def run_experiment_comparison(
     decisions = selection_res["decisions"]
     summary = selection_res["summary"]
 
-    # 2. Fetch ground truth from SQLite
-    conn = get_db_connection()
-    ground_truth = {}
-    try:
-        # We look up CHG001 as the baseline reference change
-        rows = conn.execute("SELECT test_id, affected FROM experiment_ground_truth WHERE change_id = 'CHG001'").fetchall()
-        for r in rows:
-            ground_truth[r["test_id"]] = bool(r["affected"])
-    except Exception:
-        pass
-    finally:
-        conn.close()
+    # 2. Fetch ground truth from SQLite based on module/change
+    from Engine.data_access import get_ground_truth
+    change_id_map = {
+        "Payment": "CHG001",
+        "Authentication": "CHG003",
+        "Transaction": "CHG008",
+        "Notification": "CHG011",
+    }
+    target_change_id = change_id_map.get(module, "CHG001") if module else "CHG001"
+    gt_rows = get_ground_truth(target_change_id)
+    ground_truth = {r["test_id"]: bool(r["actually_affected"]) for r in gt_rows}
 
     # 3. Calculate Confusion Matrix
     tp, fp, tn, fn = 0, 0, 0, 0

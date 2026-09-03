@@ -184,11 +184,20 @@ def get_changes_by_file(file_path: str) -> list[dict]:
 # ─── Ground Truth ──────────────────────────────────────────────────────────────
 
 def get_ground_truth(change_id: str = "CHG001") -> list[dict]:
+    alias_map = {
+        "CHG002": "CHG003",
+        "CHG005": "CHG008",
+    }
+    target_id = alias_map.get(change_id, change_id)
     conn = _conn()
     try:
         rows = conn.execute(
-            "SELECT * FROM experiment_ground_truth WHERE change_id = ?", (change_id,)
+            "SELECT * FROM experiment_ground_truth WHERE change_id = ?", (target_id,)
         ).fetchall()
+        if not rows and target_id != change_id:
+            rows = conn.execute(
+                "SELECT * FROM experiment_ground_truth WHERE change_id = ?", (change_id,)
+            ).fetchall()
         return [dict(r) for r in rows]
     finally:
         conn.close()

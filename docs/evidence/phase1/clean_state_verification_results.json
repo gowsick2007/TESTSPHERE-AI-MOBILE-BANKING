@@ -18,26 +18,26 @@
       "message": "Successfully switched to LEGACY_FULL_SUITE strategy."
     },
     "strategy_after_rollback1": "SMART_SELECTOR",
-    "rows_before": 10,
-    "rows_after_rollback1": 11,
+    "rows_before": 20,
+    "rows_after_rollback1": 21,
     "latest_history_entry_1": {
-      "id": 11,
+      "id": 21,
       "from_strategy": "SMART_SELECTOR",
       "to_strategy": "LEGACY_FULL_SUITE",
       "version": "v1.0.0",
-      "changed_at": "2026-09-03T13:36:12.729858",
+      "changed_at": "2026-09-03T15:19:53.666591",
       "reason": "Final clean-state verification test 1",
       "changed_by": "admin"
     },
     "rollback2_response_status": 200,
     "strategy_after_rollback2": "SMART_SELECTOR",
-    "rows_after_rollback2": 12,
+    "rows_after_rollback2": 22,
     "latest_history_entry_2": {
-      "id": 12,
+      "id": 22,
       "from_strategy": "LEGACY_FULL_SUITE",
       "to_strategy": "SMART_SELECTOR",
       "version": "v1.0.0",
-      "changed_at": "2026-09-03T13:36:12.783439",
+      "changed_at": "2026-09-03T15:19:53.722109",
       "reason": "Final clean-state verification test 2",
       "changed_by": "admin"
     },
@@ -164,8 +164,8 @@
     "experiment_ground_truth": 1000,
     "selection_results": 0,
     "strategy_config": 3,
-    "rollback_history": 12,
+    "rollback_history": 22,
     "feedback": 0,
-    "audit_log": 44
+    "audit_log": 68
   }
 }

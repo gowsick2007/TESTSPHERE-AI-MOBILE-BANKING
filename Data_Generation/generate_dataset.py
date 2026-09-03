@@ -251,28 +251,37 @@ def generate_code_changes() -> list[dict]:
 
 def generate_ground_truth(tests: list[dict], changes: list[dict], deps: list[dict]) -> list[dict]:
     rng = random.Random(SEED + 4)
-    changed_file = "payment/payment.py"
-    changed_module = "Payment"
-    affected_files = {changed_file}
-
-    for row in deps:
-        if row["source_file"] == changed_file or row["depends_on"] == changed_file:
-            affected_files.add(row["source_file"])
-            affected_files.add(row["depends_on"])
-
+    
+    scenario_configs = [
+        ("CHG001", ["payment/payment.py"], "Payment"),
+        ("CHG003", ["auth/login.py"], "Authentication"),
+        ("CHG008", ["transaction/txn_limit.py"], "Transaction"),
+        ("CHG011", ["notification/push.py"], "Notification"),
+        ("CHG_MULTI", ["payment/payment.py", "auth/login.py"], "Payment"),
+    ]
+    
     records = []
-    for t in tests:
-        directly = t["file_path"] in affected_files
-        same_module = t["module"] == changed_module
-        indirect = same_module and rng.random() < 0.10
-        affected = directly or indirect or (same_module and rng.random() < 0.05)
-
-        records.append({
-            "test_id": t["test_id"],
-            "change_id": "CHG001",
-            "actually_affected": 1 if affected else 0,
-            "reason": "Direct or transitive file dependency"
-        })
+    for change_id, changed_files, changed_module in scenario_configs:
+        affected_files = set(changed_files)
+        for row in deps:
+            for cf in changed_files:
+                if row["source_file"] == cf or row["depends_on"] == cf:
+                    affected_files.add(row["source_file"])
+                    affected_files.add(row["depends_on"])
+                    
+        for t in tests:
+            directly = t["file_path"] in affected_files
+            same_module = t["module"] == changed_module or (change_id == "CHG_MULTI" and t["module"] in ["Payment", "Authentication"])
+            indirect = same_module and rng.random() < 0.10
+            affected = directly or indirect or (same_module and rng.random() < 0.05)
+            
+            records.append({
+                "test_id": t["test_id"],
+                "change_id": change_id,
+                "actually_affected": 1 if affected else 0,
+                "reason": f"Scenario {change_id}: Direct, dependency or module association"
+            })
+            
     return records
 
 
