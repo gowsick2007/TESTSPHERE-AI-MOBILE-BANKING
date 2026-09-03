@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Rollback Strategy</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <link rel="stylesheet" href="/frontend/css/tables.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        
+        <!-- Emergency toggle -->
+        <div class="card" style="border-color: rgba(239, 68, 68, 0.3); background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(7, 11, 20, 1) 100%);">
+          <h3 class="card-title" style="color:var(--color-danger); margin-bottom: 12px;"><i class="fas fa-exclamation-triangle"></i> Emergency Strategy Fallback Control</h3>
+          <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">
+            In case of emergency selector discrepancy or network out-of-sync states, system administrators can bypass impact filtering and force the application strategy to <code>LEGACY_FULL_SUITE</code> (runs 100% of tests).
+          </p>
+
+          <form id="rollback-form" onsubmit="handleRollbackSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="rollback-strategy">Target System Strategy</label>
+                <select id="rollback-strategy" class="form-control" style="background-color:#070b14;">
+                  <option value="SMART_SELECTOR">SMART_SELECTOR (Optimize Coverage)</option>
+                  <option value="LEGACY_FULL_SUITE">LEGACY_FULL_SUITE (Emergency Run All)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="rollback-reason">Justification Reason</label>
+                <input type="text" id="rollback-reason" class="form-control" placeholder="Specify rollback trigger rationale" required style="background-color:#070b14;">
+              </div>
+            </div>
+
+            <button type="submit" id="rollback-btn" class="btn btn-danger">
+              Toggle Core Strategy <i class="fas fa-toggle-on"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- History of Strategy switches -->
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom:15px;"><i class="fas fa-history"></i> Rollback Strategy Audit Trail</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>From Strategy</th>
+                  <th>To Strategy</th>
+                  <th>Rationale / Reason</th>
+                  <th>Initiated By</th>
+                  <th>Version Checked</th>
+                </tr>
+              </thead>
+              <tbody id="rollback-table-body">
+                <tr>
+                  <td colspan="6" style="text-align:center;"><span class="spinner"></span> Loading audit trail...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadRollbackPage, 300);
+    });
+
+    async function loadRollbackPage() {
+      const tbody = document.getElementById('rollback-table-body');
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;"><span class="spinner"></span> Loading audit trail...</td></tr>`;
+
+      try {
+        // Current Strategy Setting
+        const res = await window.API.fetchStrategy();
+        document.getElementById('rollback-strategy').value = res.current_strategy;
+
+        // Load logs
+        const historyRes = await window.API.fetchStrategyHistory();
+
+        if (!historyRes.history || historyRes.history.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;"><i class="fas fa-info-circle"></i> No strategy switch audits recorded.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = historyRes.history.map(h => {
+          let toBadge = 'badge-run';
+          if (h.to_strategy === 'LEGACY_FULL_SUITE') toBadge = 'badge-high';
+
+          return `
+            <tr>
+              <td>${new Date(h.changed_at).toLocaleString()}</td>
+              <td style="font-family:var(--font-mono); font-size:12px;">${h.from_strategy}</td>
+              <td><span class="badge ${toBadge}">${h.to_strategy}</span></td>
+              <td>${h.reason}</td>
+              <td style="font-weight:600;">${h.changed_by}</td>
+              <td style="font-family:var(--font-mono); font-size:11px;">${h.version || 'v1.0.0'}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 20px; color: var(--color-danger);">
+              <div style="font-size: 20px; margin-bottom: 8px;"><i class="fas fa-exclamation-triangle"></i></div>
+              <div style="font-weight: 600; margin-bottom: 4px;">Unable to load audit trail</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">${e.message || 'Please check your connection and retry.'}</div>
+              <button onclick="loadRollbackPage()" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Retry</button>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    async function handleRollbackSubmit(event) {
+      event.preventDefault();
+      const strategy = document.getElementById('rollback-strategy').value;
+      const reason = document.getElementById('rollback-reason').value;
+      const btn = document.getElementById('rollback-btn');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Switching strategy...`;
+
+      try {
+        const res = await window.API.switchStrategy(strategy, reason);
+        if (res.success) {
+          window.API.showToast(res.message, 'success');
+          document.getElementById('rollback-reason').value = '';
+          loadRollbackPage();
+          window.updateStrategyBadge();
+        }
+      } catch (e) {
+        // api.js automatically toasts error message (e.g. 403 Forbidden role check)
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `Toggle Core Strategy <i class="fas fa-toggle-on"></i>`;
+      }
+    }
+  </script>
+</body>
+</html>

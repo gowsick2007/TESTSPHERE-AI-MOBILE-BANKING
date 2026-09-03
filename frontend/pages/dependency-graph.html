@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Dependency Graph</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Cytoscape.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <style>
+    #cy-container {
+      width: 100%;
+      height: 500px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: #050505;
+      position: relative;
+    }
+    .graph-legend {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-project-diagram"></i> Interactive Dependency Network</h3>
+            <div style="display:flex; gap:10px;">
+              <button onclick="resetLayout()" class="btn btn-secondary btn-sm"><i class="fas fa-expand"></i> Reset View</button>
+              <button onclick="refreshGraphData()" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Reload Data</button>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 15px; display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
+            <div class="form-group" style="margin-bottom:0; flex:1; max-width:300px;">
+              <input type="text" id="node-search" class="form-control" placeholder="Search file node..." style="padding:6px 10px; font-size:12px;" oninput="searchNode()">
+            </div>
+            <div style="font-size:12px; color:var(--text-muted);">
+              Double-click any node to focus on its dependents.
+            </div>
+          </div>
+
+          <div id="cy-container">
+            <div class="spinner" style="position:absolute; top:45%; left:45%; z-index:10;"></div>
+          </div>
+
+          <div class="graph-legend">
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: var(--accent-primary);"></div>
+              <span>Changed Target Node</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: var(--accent-secondary);"></div>
+              <span>Direct Impact Node (1-hop)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #FFB000;"></div>
+              <span>Transitive Impact Node (2+ hops)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #374151;"></div>
+              <span>Unaffected Node</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Node detail card -->
+        <div id="node-detail-card" class="card" style="display:none;">
+          <h4 id="detail-node-id" style="color:var(--accent-primary); margin-bottom:8px; font-family:var(--font-mono); font-size:14px;">file_path.py</h4>
+          <div style="display:grid; grid-template-columns: 1fr 1.5fr; gap:20px; font-size:12px;">
+            <div>
+              <div style="margin-bottom:6px;">Module: <strong id="detail-node-module">Payment</strong></div>
+              <div>Selection State: <strong id="detail-node-state" class="badge badge-medium">MEDIUM</strong></div>
+            </div>
+            <div>
+              <div style="color:var(--text-muted); margin-bottom:4px;">Incoming Dependencies:</div>
+              <div id="detail-node-in" style="font-family:var(--font-mono); font-size:11px;">None</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+
+  <script>
+    let cy = null;
+    let graphData = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if sessionStorage contains a target payload
+      setTimeout(refreshGraphData, 300);
+    });
+
+    async function refreshGraphData() {
+      const container = document.getElementById('cy-container');
+
+      // ── LOADING STATE ──────────────────────────────────────────────────────
+      container.innerHTML = `
+        <div style="position:absolute; top:45%; left:30%; right:30%; text-align:center; z-index:10;">
+          <div class="spinner"></div>
+          <div style="font-size:13px; color:var(--text-muted); margin-top:10px;">Building dependency network…</div>
+        </div>
+      `;
+
+      let changedFiles = ['payment/payment.py'];
+      const sessionData = sessionStorage.getItem('last_change_payload');
+      if (sessionData) {
+        try {
+          const payload = JSON.parse(sessionData);
+          changedFiles = payload.changed_files || changedFiles;
+        } catch (_) {}
+      }
+
+      try {
+        // ── REQUEST 1: Change impact analysis (own controller / 30s) ─────────
+        const res = await window.API.fetchLong('/change/analyze', {
+          method: 'POST',
+          body: JSON.stringify({
+            changed_files: changedFiles,
+            change_type: 'MODIFIED',
+            module: 'Payment',
+            is_security_sensitive: false,
+            risk_level: 'HIGH'
+          })
+        });
+
+        const depMap = res.dependency_impact || {};
+        const direct   = depMap.direct   || [];
+        const indirect = depMap.indirect || [];
+
+        // ── REQUEST 2: Raw dependency rows (own controller / 30s) ────────────
+        const database = await window.API.fetchLong(
+          '/data/dependency_map/preview?limit=1000'
+        );
+
+        const filesSet = new Set();
+        const edges    = [];
+
+        database.forEach(row => {
+          filesSet.add(row.source_file);
+          filesSet.add(row.depends_on);
+          edges.push({
+            data: {
+              id: `${row.source_file}-${row.depends_on}`,
+              source: row.source_file,
+              target: row.depends_on
+            }
+          });
+        });
+
+        // If no rows at all, seed the changed file so graph isn't completely empty
+        if (filesSet.size === 0) {
+          changedFiles.forEach(f => filesSet.add(f));
+        }
+
+        const nodes = Array.from(filesSet).map(file => {
+          let status = 'unaffected';
+          if (changedFiles.includes(file)) status = 'changed';
+          else if (direct.includes(file))   status = 'direct';
+          else if (indirect.includes(file))  status = 'indirect';
+          return { data: { id: file, label: file.split('/').pop(), status, full_path: file } };
+        });
+
+        // ── EMPTY STATE ────────────────────────────────────────────────────
+        if (edges.length === 0 && database.length === 0) {
+          container.innerHTML = `
+            <div style="position:absolute; top:40%; left:20%; right:20%; text-align:center; z-index:10;">
+              <div style="font-size:28px; color:var(--text-muted); margin-bottom:10px;"><i class="fas fa-info-circle"></i></div>
+              <div style="font-weight:600; color:var(--text-muted); margin-bottom:4px;">No dependency data available</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">Load a dataset to view the dependency network graph.</div>
+              <button onclick="triggerDemoLoad()" class="btn btn-primary btn-sm"><i class="fas fa-database"></i> Load Demo Dataset</button>
+            </div>
+          `;
+          return;
+        }
+
+        graphData = { nodes, edges };
+        renderCyGraph();
+
+      } catch (e) {
+        // ── ERROR STATE (always reached, never silently swallowed) ──────────
+        const isTimeout = e.message.includes('timed out');
+        container.innerHTML = `
+          <div style="position:absolute; top:35%; left:15%; right:15%; text-align:center; z-index:10;">
+            <div style="font-size:28px; color:var(--color-danger); margin-bottom:10px;"><i class="fas fa-exclamation-triangle"></i></div>
+            <div style="font-weight:700; color:var(--color-danger); margin-bottom:8px; font-size:15px;">
+              ${isTimeout ? 'Dependency graph request timed out' : 'Unable to load dependency graph'}
+            </div>
+            <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Reason:</div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:20px; font-family:var(--font-mono); background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); padding:10px; border-radius:6px; max-width:420px; margin-left:auto; margin-right:auto;">
+              ${e.message || 'Unknown error — please check the backend is running.'}
+            </div>
+            <button onclick="refreshGraphData()" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Retry</button>
+          </div>
+        `;
+      }
+      // ── FINALLY: spinner always clears (already replaced by success/error HTML above)
+    }
+
+    function renderCyGraph() {
+      if (!graphData) return;
+
+      // Clear spinner/loading elements
+      document.getElementById('cy-container').innerHTML = '';
+
+      cy = cytoscape({
+        container: document.getElementById('cy-container'),
+        elements: {
+          nodes: graphData.nodes,
+          edges: graphData.edges
+        },
+        style: [
+          {
+            selector: 'node',
+            style: {
+              'label': 'data(label)',
+              'background-color': '#475569',
+              'color': '#F8FAFC',
+              'font-size': '10px',
+              'font-family': 'Inter, sans-serif',
+              'text-valign': 'center',
+              'text-halign': 'center',
+              'width': '65px',
+              'height': '30px',
+              'shape': 'round-rectangle',
+              'text-wrap': 'wrap',
+              'border-width': '1px',
+              'border-color': 'rgba(255,255,255,0.1)'
+            }
+          },
+          {
+            selector: 'node[status="changed"]',
+            style: {
+              'background-color': 'var(--accent-primary)',
+              'color': '#050505',
+              'font-weight': 'bold',
+              'width': '75px',
+              'height': '35px',
+              'border-color': 'var(--accent-primary)',
+              'shadow-blur': '10px',
+              'shadow-color': 'var(--accent-primary)',
+              'shadow-opacity': 0.8
+            }
+          },
+          {
+            selector: 'node[status="direct"]',
+            style: {
+              'background-color': '#FF9D00',
+              'color': '#F8FAFC',
+              'border-color': '#FF9D00',
+              'shadow-blur': '6px',
+              'shadow-color': '#FF9D00',
+              'shadow-opacity': 0.5
+            }
+          },
+          {
+            selector: 'node[status="indirect"]',
+            style: {
+              'background-color': '#FFB000',
+              'color': '#F8FAFC',
+              'border-color': '#FFB000',
+              'shadow-blur': '6px',
+              'shadow-color': '#FFB000',
+              'shadow-opacity': 0.5
+            }
+          },
+          {
+            selector: 'edge',
+            style: {
+              'width': 1.5,
+              'line-color': 'rgba(255, 122, 0, 0.20)',
+              'target-arrow-color': 'rgba(255, 122, 0, 0.20)',
+              'target-arrow-shape': 'triangle',
+              'curve-style': 'bezier'
+            }
+          },
+          {
+            selector: 'node:selected',
+            style: {
+              'border-width': '2px',
+              'border-color': '#F8FAFC',
+              'background-color': '#FF9D00'
+            }
+          }
+        ],
+        layout: {
+          name: 'cose',
+          animate: false,
+          padding: 30
+        }
+      });
+
+      cy.on('tap', 'node', function(evt){
+        const node = evt.target;
+        showNodeDetails(node.data());
+      });
+    }
+
+    function resetLayout() {
+      if (cy) {
+        cy.layout({ name: 'cose', animate: true }).run();
+        cy.fit();
+      }
+    }
+
+    function searchNode() {
+      const q = document.getElementById('node-search').value.toLowerCase();
+      if (!cy || !q) return;
+
+      cy.nodes().forEach(node => {
+        if (node.data('id').toLowerCase().includes(q)) {
+          node.select();
+          cy.zoom(1.2);
+          cy.center(node);
+        } else {
+          node.unselect();
+        }
+      });
+    }
+
+    function showNodeDetails(data) {
+      document.getElementById('detail-node-id').innerText = data.full_path;
+      
+      // Guess module based on name
+      const mod = data.full_path.split('/')[0].toUpperCase();
+      document.getElementById('detail-node-module').innerText = mod || 'Core';
+
+      let stateText = 'Unaffected';
+      let stateBadge = 'badge-skip';
+      if (data.status === 'changed') { stateText = 'Changed Target'; stateBadge = 'badge-high'; }
+      else if (data.status === 'direct') { stateText = 'Direct Dependent'; stateBadge = 'badge-medium'; }
+      else if (data.status === 'indirect') { stateText = 'Transitive Impact'; stateBadge = 'badge-low'; }
+
+      document.getElementById('detail-node-state').innerText = stateText;
+      document.getElementById('detail-node-state').className = `badge ${stateBadge}`;
+
+      // Show neighbors
+      const el = cy.getElementById(data.id);
+      const incoming = el.incomers('edge').map(edge => edge.source().id());
+      document.getElementById('detail-node-in').innerText = incoming.join(', ') || 'None';
+
+      document.getElementById('node-detail-card').style.display = 'block';
+    }
+
+    async function triggerDemoLoad() {
+      const container = document.getElementById('cy-container');
+      container.innerHTML = `
+        <div style="position:absolute; top:45%; left:30%; right:30%; text-align:center; z-index:10;">
+          <div class="spinner"></div>
+          <div style="font-size:13px; color:var(--text-muted); margin-top:10px;">Loading demo dataset...</div>
+        </div>
+      `;
+      try {
+        await window.API.loadDemoDataset();
+        window.API.showToast('Demo dataset loaded successfully.', 'success');
+        refreshGraphData();
+      } catch (e) {
+        window.API.showToast('Failed to load demo dataset.', 'danger');
+        refreshGraphData();
+      }
+    }
+  </script>
+</body>
+</html>

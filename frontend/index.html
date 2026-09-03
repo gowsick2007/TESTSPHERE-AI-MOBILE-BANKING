@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Login</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --bg-color: #050505;
+      --card-bg: rgba(17, 17, 17, 0.82);
+      --input-bg: #151515;
+      --orange-primary: #FF7A00;
+      --orange-light: #FF9D00;
+      --orange-warm: #FFB347;
+      --border-color: rgba(255, 122, 0, 0.25);
+      --text-white: #FFFFFF;
+      --text-muted: #8A8A8A;
+      
+      --font-sans: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-color);
+      font-family: var(--font-sans);
+      color: var(--text-white);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .login-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    /* Ambient Glow Layers BEHIND the card */
+    .glow-layer {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(120px);
+      -webkit-filter: blur(120px);
+      z-index: 1;
+    }
+
+    .glow-orange {
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, var(--orange-primary) 0%, rgba(255, 122, 0, 0.08) 60%, transparent 100%);
+      top: 50%;
+      left: 50%;
+      margin-top: -225px;
+      margin-left: -225px;
+      animation: breathe-orange 8s infinite ease-in-out;
+    }
+
+    .glow-amber {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, var(--orange-light) 0%, rgba(255, 157, 0, 0.08) 60%, transparent 100%);
+      top: 50%;
+      left: 50%;
+      margin-top: -275px;
+      margin-left: -275px;
+      animation: breathe-amber 11s infinite ease-in-out;
+    }
+
+    .glow-warm {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, var(--orange-warm) 0%, rgba(255, 179, 71, 0.08) 60%, transparent 100%);
+      top: 50%;
+      left: 50%;
+      margin-top: -190px;
+      margin-left: -190px;
+      animation: breathe-warm 6s infinite ease-in-out;
+    }
+
+    @keyframes breathe-orange {
+      0% {
+        transform: translate(-30px, -20px) scale(0.95);
+        opacity: 0.12;
+      }
+      50% {
+        transform: translate(20px, 30px) scale(1.08);
+        opacity: 0.25;
+      }
+      100% {
+        transform: translate(-30px, -20px) scale(0.95);
+        opacity: 0.12;
+      }
+    }
+
+    @keyframes breathe-amber {
+      0% {
+        transform: translate(30px, 30px) scale(1.05);
+        opacity: 0.15;
+      }
+      50% {
+        transform: translate(-20px, -30px) scale(0.92);
+        opacity: 0.22;
+      }
+      100% {
+        transform: translate(30px, 30px) scale(1.05);
+        opacity: 0.15;
+      }
+    }
+
+    @keyframes breathe-warm {
+      0% {
+        transform: translate(-10px, 40px) scale(0.90);
+        opacity: 0.10;
+      }
+      50% {
+        transform: translate(40px, -10px) scale(1.05);
+        opacity: 0.20;
+      }
+      100% {
+        transform: translate(-10px, 40px) scale(0.90);
+        opacity: 0.10;
+      }
+    }
+
+    /* Login Card Styling */
+    .login-card {
+      position: relative;
+      overflow: hidden;
+      background: transparent; /* background handled by ::after cover */
+      border-radius: 22px;
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 0 25px rgba(255, 122, 0, 0.08);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: box-shadow 0.4s ease;
+    }
+
+    /* Rotating background conic-gradient that acts as the orbiting light */
+    .login-card::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 45%,
+        var(--orange-primary) 70%,
+        var(--orange-light) 85%,
+        var(--orange-warm) 95%,
+        transparent 100%
+      );
+      animation: rotate-border 5s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Solid dark covering background inside the borders */
+    .login-card::after {
+      content: '';
+      position: absolute;
+      inset: 1.5px; /* Border thickness */
+      background: #111111;
+      border-radius: 21px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes rotate-border {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .login-card:hover, .login-card:focus-within {
+      box-shadow: 0 0 35px rgba(255, 122, 0, 0.15);
+    }
+
+    .login-brand, .login-card-header, #login-form {
+      position: relative;
+      z-index: 2;
+    }
+
+    .login-brand {
+      text-align: center;
+    }
+
+    .login-brand h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-white);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .login-brand h1 span {
+      color: var(--orange-primary);
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .login-card-header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .login-card-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 6px;
+    }
+
+    .login-card-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-wrapper label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-align: left;
+    }
+
+    .input-icon-container {
+      position: relative;
+    }
+
+    .input-icon-container i.input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 14px;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .form-control {
+      width: 100%;
+      height: 48px;
+      padding-left: 42px;
+      padding-right: 42px;
+      background-color: var(--input-bg);
+      border: 1px solid rgba(255, 122, 0, 0.25);
+      border-radius: 11px;
+      font-size: 14px;
+      color: var(--text-white);
+      font-family: var(--font-sans);
+      transition: all 0.25s ease;
+      outline: none;
+    }
+
+    .form-control::placeholder {
+      color: #777777;
+    }
+
+    .form-control:focus {
+      border-color: var(--orange-primary);
+      box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.10), 0 0 18px rgba(255, 122, 0, 0.12);
+      background-color: #1a1a1a;
+    }
+
+    .form-control:focus ~ i.input-icon {
+      color: var(--orange-primary);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      transition: color 0.2s;
+      z-index: 5;
+    }
+
+    .toggle-password:hover {
+      color: var(--orange-primary);
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--orange-primary);
+      color: #050505;
+      border: none;
+      border-radius: 11px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.15);
+    }
+
+    .login-btn:hover {
+      background: var(--orange-light);
+      box-shadow: 0 4px 20px rgba(255, 122, 0, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .login-btn:active {
+      transform: translateY(1px);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Spinner */
+    .spinner {
+      border: 2px solid rgba(5, 5, 5, 0.3);
+      border-top: 2px solid #050505;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Toast Notification Positioning & Layout Correction */
+    .toast-container {
+      position: absolute;
+      bottom: 8px;
+      left: 40px;
+      right: 40px;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.2;
+      background: rgba(17, 17, 17, 0.95);
+      border: 1px solid rgba(255, 122, 0, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      animation: toast-fade-in 0.25s ease forwards;
+    }
+
+    .toast.success {
+      border-color: #00E676;
+      background: rgba(0, 40, 15, 0.95);
+      color: #00E676;
+    }
+
+    .toast.danger {
+      border-color: #FF5252;
+      background: rgba(40, 8, 8, 0.95);
+      color: #FF5252;
+    }
+
+    .toast.primary {
+      border-color: var(--orange-primary);
+      background: rgba(20, 10, 0, 0.95);
+      color: var(--orange-light);
+    }
+
+    @keyframes toast-fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESPONSIVENESS */
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 30px 20px;
+        max-width: calc(100% - 32px);
+      }
+      .toast-container {
+        left: 20px;
+        right: 20px;
+        bottom: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <!-- Ambient glow layers behind the card -->
+    <div class="glow-layer glow-orange"></div>
+    <div class="glow-layer glow-amber"></div>
+    <div class="glow-layer glow-warm"></div>
+
+    <div class="login-card">
+      <div class="login-brand">
+        <h1>TestSphere<span>.AI</span></h1>
+        <div class="brand-subtitle">CHANGE IMPACT SELECTOR</div>
+      </div>
+
+      <div class="login-card-header">
+        <h3>Welcome Back</h3>
+        <p>Sign in to continue</p>
+      </div>
+
+      <form id="login-form" onsubmit="handleLoginSubmit(event)">
+        <div class="input-wrapper">
+          <label for="username">Username</label>
+          <div class="input-icon-container">
+            <input type="text" id="username" class="form-control" placeholder="Enter username" required autocomplete="username">
+            <i class="fas fa-user input-icon"></i>
+          </div>
+        </div>
+
+        <div class="input-wrapper">
+          <label for="password">Password</label>
+          <div class="input-icon-container">
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+            <i class="fas fa-lock input-icon"></i>
+            <i class="fas fa-eye-slash toggle-password" id="toggle-password-btn" onclick="togglePasswordVisibility()"></i>
+          </div>
+        </div>
+
+        <button type="submit" id="login-btn" class="login-btn">
+          LOGIN <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+        </button>
+      </form>
+      <div id="toast-container" class="toast-container"></div>
+    </div>
+  </div>
+
+  <!-- API script references -->
+  <script src="/frontend/js/api.js"></script>
+  <script>
+    // Initial Session Sync
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await window.API.checkSession();
+      } catch (e) {}
+    });
+
+    function togglePasswordVisibility() {
+      const passField = document.getElementById('password');
+      const toggleBtn = document.getElementById('toggle-password-btn');
+      if (passField.type === 'password') {
+        passField.type = 'text';
+        toggleBtn.className = 'fas fa-eye toggle-password';
+      } else {
+        passField.type = 'password';
+        toggleBtn.className = 'fas fa-eye-slash toggle-password';
+      }
+    }
+
+    async function handleLoginSubmit(event) {
+      event.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      const btn = document.getElementById('login-btn');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Authenticating...`;
+
+      try {
+        const success = await window.API.login(user, pass);
+        if (success) {
+          // Success transition animation
+          document.querySelector('.login-card').style.transform = 'scale(1.03)';
+          document.querySelector('.login-card').style.opacity = '0';
+          document.querySelector('.login-card').style.transition = 'all 0.3s ease';
+          
+          setTimeout(() => {
+            window.location.href = '/frontend/pages/dashboard.html';
+          }, 300);
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = `LOGIN <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>`;
+        }
+      } catch (e) {
+        btn.disabled = false;
+        btn.innerHTML = `LOGIN <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>`;
+      }
+    }
+  </script>
+</body>
+</html>

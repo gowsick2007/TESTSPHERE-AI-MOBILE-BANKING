@@ -1,0 +1,76 @@
+{
+  "application": {
+    "name": "TestSphere AI",
+    "version": "v1.0.0",
+    "tagline": "Change Impact Intelligence for Safer, Faster Testing",
+    "environment": "development"
+  },
+  "strategy": {
+    "current": "SMART_SELECTOR",
+    "previous": "LEGACY_FULL_SUITE",
+    "version": "SMART_SELECTOR_V1",
+    "available": ["SMART_SELECTOR", "LEGACY_FULL_SUITE"]
+  },
+  "risk_scoring": {
+    "direct_coverage": 40,
+    "dependency_relationship": 30,
+    "historical_failure": 20,
+    "high_risk_device": 10,
+    "security_sensitive_module": 30,
+    "critical_banking_module": 25,
+    "recent_failure": 15,
+    "run_threshold": 50
+  },
+  "safety_overrides": {
+    "force_run_on_unknown_dependency": true,
+    "force_run_on_unknown_coverage": true,
+    "force_run_security_critical": true,
+    "force_run_high_risk_modules": ["Authentication", "Authorization", "OTP", "Payment", "UPI", "Transaction", "FraudDetection", "AccountSecurity"],
+    "never_skip_without_explanation": true
+  },
+  "simulation": {
+    "seed": 42,
+    "default_test_execution_seconds": 0.5,
+    "baseline_overhead_seconds": 5.0
+  },
+  "data": {
+    "db_path": "Data/testsphere.db",
+    "templates_path": "Templates"
+  },
+  "api": {
+    "host": "127.0.0.1",
+    "port": 8001,
+    "base_url": "http://127.0.0.1:8001"
+  },
+  "auth": {
+    "bcrypt_rounds": 12,
+    "session_timeout_minutes": 120,
+    "default_users": [
+      {"username": "admin", "password": "CHANGE_ME_LOCAL_ONLY", "role": "ADMIN"},
+      {"username": "qa", "password": "CHANGE_ME_LOCAL_ONLY", "role": "QA_ENGINEER"},
+      {"username": "viewer", "password": "CHANGE_ME_LOCAL_ONLY", "role": "VIEWER"}
+    ]
+  },
+  "modules": {
+    "critical_banking": ["Authentication", "Authorization", "OTP", "Payment", "UPI", "Transaction", "FraudDetection", "AccountSecurity"],
+    "all_modules": [
+      "Authentication", "Authorization", "OTP", "Payment", "UPI",
+      "Transaction", "Account", "Profile", "Notification",
+      "FraudDetection", "Dashboard", "DeviceSecurity",
+      "AccountSecurity", "Biometrics", "CustomerSupport"
+    ]
+  },
+  "devices": {
+    "high_risk": ["Pixel 8", "Samsung S24", "iPhone 15"],
+    "all_devices": [
+      {"name": "Pixel 8", "os": "Android", "version": "Android 15"},
+      {"name": "Pixel 7", "os": "Android", "version": "Android 14"},
+      {"name": "Samsung S24", "os": "Android", "version": "Android 15"},
+      {"name": "Samsung A54", "os": "Android", "version": "Android 14"},
+      {"name": "Samsung A34", "os": "Android", "version": "Android 13"},
+      {"name": "iPhone 15", "os": "iOS", "version": "iOS 18"},
+      {"name": "iPhone 14", "os": "iOS", "version": "iOS 17"},
+      {"name": "iPhone 12", "os": "iOS", "version": "iOS 17"}
+    ]
+  }
+}

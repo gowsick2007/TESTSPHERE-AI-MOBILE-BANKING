@@ -1,0 +1,216 @@
+{
+  "db_counts": {
+    "test_coverage": 1000,
+    "dependency_map": 84,
+    "failure_history": 2400,
+    "device_matrix": 8,
+    "code_changes": 15,
+    "experiment_ground_truth": 1000,
+    "test_coverage_unique_ids": 1000,
+    "unique_modules": [
+      "Dashboard",
+      "Payment",
+      "CustomerSupport",
+      "Authentication",
+      "Account",
+      "AccountSecurity",
+      "OTP",
+      "Transaction",
+      "Notification",
+      "UPI",
+      "Biometrics",
+      "Profile",
+      "Authorization",
+      "FraudDetection",
+      "DeviceSecurity"
+    ],
+    "unique_devices": [
+      "Pixel 8",
+      "Samsung S24",
+      "Pixel 7",
+      "Samsung A54",
+      "iPhone 12",
+      "iPhone 15",
+      "Samsung A34",
+      "iPhone 14"
+    ],
+    "null_test_ids": 0,
+    "null_dep_source": 0
+  },
+  "auth": {
+    "demo_no_token_status": 401,
+    "demo_invalid_token_status": 401,
+    "login_status": 200,
+    "login_ok": false,
+    "demo_valid_token_status": "NO_TOKEN_TO_TEST"
+  },
+  "selection": [
+    {
+      "file": "payment/payment.py",
+      "total": 1000,
+      "run": 921,
+      "skip": 79,
+      "time_reduction_pct": 5.7,
+      "false_negatives": 0,
+      "true_positives": 125,
+      "false_positives": 796,
+      "true_negatives": 79,
+      "ground_truth_available": true,
+      "sample_rationales": [
+        [
+          "T0001",
+          "SKIP",
+          "Skipped because the available evidence (score=10) did not meet the run threshold"
+        ],
+        [
+          "T0002",
+          "RUN",
+          "Safety override triggered: This test is marked security-critical. Security-criti"
+        ],
+        [
+          "T0003",
+          "RUN",
+          "Safety override triggered: The system has insufficient evidence to justify a SKI"
+        ]
+      ]
+    },
+    {
+      "file": "auth/login.py",
+      "total": 1000,
+      "run": 875,
+      "skip": 125,
+      "time_reduction_pct": 9.1,
+      "false_negatives": 0,
+      "true_positives": 125,
+      "false_positives": 750,
+      "true_negatives": 125,
+      "ground_truth_available": true,
+      "sample_rationales": [
+        [
+          "T0001",
+          "SKIP",
+          "Skipped because the available evidence (score=10) did not meet the run threshold"
+        ],
+        [
+          "T0002",
+          "RUN",
+          "Safety override triggered: This test is marked security-critical. Security-criti"
+        ],
+        [
+          "T0003",
+          "RUN",
+          "Safety override triggered: The system has insufficient evidence to justify a SKI"
+        ]
+      ]
+    },
+    {
+      "file": "notification/push.py",
+      "total": 1000,
+      "run": 927,
+      "skip": 73,
+      "time_reduction_pct": 5.1,
+      "false_negatives": 0,
+      "true_positives": 125,
+      "false_positives": 802,
+      "true_negatives": 73,
+      "ground_truth_available": true,
+      "sample_rationales": [
+        [
+          "T0001",
+          "RUN",
+          "Evidence: Direct coverage of changed file (+40); Dependency path to changed file"
+        ],
+        [
+          "T0002",
+          "RUN",
+          "Safety override triggered: This test is marked security-critical. Security-criti"
+        ],
+        [
+          "T0003",
+          "RUN",
+          "Safety override triggered: The system has insufficient evidence to justify a SKI"
+        ]
+      ]
+    }
+  ],
+  "unknown_file_fallback": {
+    "total": 1000,
+    "run": 1000,
+    "skip": 0,
+    "dep_available": false
+  },
+  "dependency": {
+    "direct_count": 6,
+    "indirect_count": 25,
+    "all_impacted_count": 32,
+    "graph_available": true,
+    "sample_direct": [
+      "device/cert_pinning.py",
+      "payment/payment_api.py",
+      "payment/payment_controller.py",
+      "payment/payment_screen.py",
+      "upi/upi_api.py"
+    ]
+  },
+  "failure_stats": {
+    "total_failures": 2400,
+    "top_modules": [
+      [
+        "AccountSecurity",
+        250
+      ],
+      [
+        "UPI",
+        249
+      ],
+      [
+        "FraudDetection",
+        238
+      ],
+      [
+        "Transaction",
+        208
+      ],
+      [
+        "Authentication",
+        191
+      ]
+    ],
+    "most_failed_test": "T0728"
+  },
+  "baseline_vs_smart": {
+    "baseline_total": 1000,
+    "baseline_executed": 1000,
+    "smart_executed": 921,
+    "smart_skipped": 79,
+    "baseline_runtime_seconds": 2238.33,
+    "baseline_runtime_minutes": 37.31,
+    "reduction_claim_pct": 5.7
+  },
+  "api_checks": [
+    {
+      "endpoint": "/api/health",
+      "method": "GET",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "endpoint": "/api/data/status",
+      "method": "GET",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "endpoint": "/api/audit/logs",
+      "method": "GET",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "endpoint": "/api/strategy",
+      "method": "GET",
+      "status": 200,
+      "ok": true
+    }
+  ]
+}

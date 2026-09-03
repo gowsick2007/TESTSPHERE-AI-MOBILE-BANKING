@@ -1,0 +1,79 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+credentials.json
+secrets.json
+config.json
+!config.example.json
+
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating System
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Database & SQLite files
+*.db
+*.sqlite
+*.sqlite3
+Data/*.db
+
+# Logs & Temporary Files
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+
+# Test & Coverage caches
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Node / Build artifacts
+node_modules/
+dist/
+build/
+
+# Temporary Audit & Scratch Scripts
+AppData/
+scratch_*.py
+*scratch*
+audit_collect.py
+audit_rollback.py
+check_server.py
+find_*.py
+inspect_*.py
+list_*.py
+phase1_audit*.py
+query_db.py
+read_*.py
+search_*.py
+run_clean_state_verification.py
+run_full_forensic_audit.py
+user_request_full.txt
+

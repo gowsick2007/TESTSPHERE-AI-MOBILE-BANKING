@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Failure Intelligence</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <link rel="stylesheet" href="/frontend/css/tables.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        
+        <!-- Summary analytics -->
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom: 15px;"><i class="fas fa-bug"></i> Defect Analysis & Intelligence</h3>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; text-align:center; margin-bottom: 15px;">
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="fail-total" style="font-size:24px; font-weight:700; color:var(--color-danger);">0</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Total Recorded Failures</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="fail-rate" style="font-size:24px; font-weight:700; color:var(--color-warning);">0%</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Defect Density Ratio</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="fail-highest-module" style="font-size:18px; font-weight:700; color:var(--accent-primary); margin-top:6px;">None</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:12px;">Highest Hazard Module</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="fail-most-failed" style="font-size:18px; font-weight:700; color:var(--accent-secondary); margin-top:6px;">None</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:12px;">Most Unstable Test Case</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detail fail log -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-history"></i> Failure Audit logs</h3>
+            <input type="text" id="fail-search" class="form-control" placeholder="Search failure logs..." style="width:200px; padding:4px 8px; font-size:12px;" oninput="filterFailureTable()">
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Test ID</th>
+                  <th>Module</th>
+                  <th>Device / OS</th>
+                  <th>Severity</th>
+                  <th>Error Description</th>
+                  <th>Failure Date</th>
+                  <th>Resolved</th>
+                </tr>
+              </thead>
+              <tbody id="fail-table-body">
+                <tr>
+                  <td colspan="7" style="text-align: center;"><span class="spinner"></span> Loading failures history...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+
+  <script>
+    let rawFailureLogs = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadFailureIntelligence, 300);
+    });
+
+    async function loadFailureIntelligence() {
+      const tbody = document.getElementById('fail-table-body');
+      
+      // LOADING State with Skeleton Rows
+      tbody.innerHTML = Array(4).fill(0).map(() => `
+        <tr class="skeleton-row">
+          <td><div class="skeleton-bar" style="width: 70px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 90px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 110px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 60px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 150px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 80px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 60px;"></div></td>
+        </tr>
+      `).join('');
+
+      try {
+        const stats = await window.API.fetchFailureStats();
+        
+        document.getElementById('fail-total').innerText = stats.total_failures || 0;
+        document.getElementById('fail-rate').innerText = `${(stats.failure_rate || 0).toFixed(1)}%`;
+        document.getElementById('fail-highest-module').innerText = stats.highest_risk_module || 'None';
+        document.getElementById('fail-most-failed').innerText = stats.most_failed_test || 'None';
+
+        // Load details via raw fetch
+        const rawRes = await fetch('/api/data/failure_history/preview?limit=150').then(r => {
+          if (!r.ok) throw new Error('Failed to retrieve defect logs');
+          return r.json();
+        });
+        rawFailureLogs = rawRes || [];
+        
+        renderFailureTable(rawFailureLogs);
+      } catch (e) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 25px; color: var(--color-danger);">
+              <div style="font-size: 20px; margin-bottom: 8px;"><i class="fas fa-exclamation-triangle"></i></div>
+              <div style="font-weight: 600; margin-bottom: 4px;">Unable to load failure intelligence</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">${e.message || 'Please check your connection and retry.'}</div>
+              <button onclick="loadFailureIntelligence()" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Retry</button>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderFailureTable(failures) {
+      const tbody = document.getElementById('fail-table-body');
+      if (failures.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No historical test defects recorded.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = failures.map(f => {
+        let badgeClass = 'badge-low';
+        if (f.severity === 'CRITICAL' || f.severity === 'HIGH') badgeClass = 'badge-high';
+        else if (f.severity === 'MEDIUM') badgeClass = 'badge-medium';
+
+        return `
+          <tr>
+            <td style="font-family:var(--font-mono); font-weight:600; color:var(--accent-primary);">${f.test_id}</td>
+            <td>${f.module}</td>
+            <td><span style="font-size:11px; color:var(--text-muted);">${f.device}</span><br><span style="font-size:10px; color:var(--text-muted); opacity:0.8;">${f.os_version}</span></td>
+            <td><span class="badge ${badgeClass}">${f.severity}</span></td>
+            <td style="font-family:var(--font-mono); font-size:11px; color:var(--color-danger); max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${f.error_type || 'AssertionError'}">${f.error_type || 'AssertionError: Timeout'}</td>
+            <td>${f.failure_date}</td>
+            <td>
+              ${f.resolved ? '<span class="badge badge-run">Resolved</span>' : '<span class="badge badge-high">Unresolved</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterFailureTable() {
+      const q = document.getElementById('fail-search').value.toLowerCase();
+      const filtered = rawFailureLogs.filter(f => {
+        return f.test_id.toLowerCase().includes(q) || 
+               f.module.toLowerCase().includes(q) || 
+               f.device.toLowerCase().includes(q) || 
+               (f.error_type && f.error_type.toLowerCase().includes(q));
+      });
+      renderFailureTable(filtered);
+    }
+  </script>
+</body>
+</html>

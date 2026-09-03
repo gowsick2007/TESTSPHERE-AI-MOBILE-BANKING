@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Dashboard</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Styles -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <link rel="stylesheet" href="/frontend/css/dashboard.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navigation Placeholder -->
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <!-- Header Placeholder -->
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        <!-- Alert Warning if Database is Empty -->
+        <div id="health-warning" class="alert-banner" style="display: none;">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>
+            <h4>Database is Empty!</h4>
+            <p>TestSphere has no uploaded test suites or dependency mapping databases. Head to the <a href="/frontend/pages/data-management.html" style="color: var(--accent-primary); font-weight:600;">Data Center</a> to import databases or generate the demo dataset.</p>
+          </div>
+        </div>
+
+        <!-- KPI Score Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Total Regression Suite</span>
+              <div class="kpi-icon primary"><i class="fas fa-cubes"></i></div>
+            </div>
+            <div id="kpi-total-tests" class="kpi-value">0</div>
+            <div class="kpi-trend neutral"><span>Standard suite volume</span></div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Verified Code Coverage</span>
+              <div class="kpi-icon success"><i class="fas fa-shield-alt"></i></div>
+            </div>
+            <div id="kpi-coverage" class="kpi-value">0%</div>
+            <div class="kpi-trend up"><i class="fas fa-arrow-up"></i> <span>Module code mapped</span></div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Historical Test Failures</span>
+              <div class="kpi-icon danger"><i class="fas fa-bug"></i></div>
+            </div>
+            <div id="kpi-failures" class="kpi-value">0</div>
+            <div class="kpi-trend down"><span>Recorded test defects</span></div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Active Selection Strategy</span>
+              <div class="kpi-icon warning"><i class="fas fa-toggle-on"></i></div>
+            </div>
+            <div id="kpi-strategy" class="kpi-value" style="font-size: 18px; margin-top: 10px;">SMART_SELECTOR</div>
+            <div class="kpi-trend neutral"><span>Fallback switch enabled</span></div>
+          </div>
+        </div>
+
+        <!-- Hero Insight Panel and What-If Simulation -->
+        <div class="hero-insight">
+          <div class="card insight-panel">
+            <h3 class="card-title" style="margin-bottom: 12px; color: var(--accent-primary);"><i class="fas fa-lightbulb"></i> TestSphere Intelligent Optimization</h3>
+            <p class="insight-text">
+              By mapping test coverage profiles, multi-hop file dependencies, and historical failure distributions, TestSphere selects only the tests affected by incoming code commits. This drastically cuts build times while preserving safety overrides.
+            </p>
+            <div style="display: flex; gap: 12px;">
+              <a href="/frontend/pages/test-selector.html" class="btn btn-primary">Run Selection Engine <i class="fas fa-chevron-right"></i></a>
+              <a href="/frontend/pages/experiment-lab.html" class="btn btn-secondary">Open Experiment Lab <i class="fas fa-flask"></i></a>
+            </div>
+          </div>
+
+          <!-- What-If Simulator Card -->
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 15px;"><i class="fas fa-question-circle"></i> What-If Change Simulator</h3>
+            <form id="what-if-form" onsubmit="runWhatIf(event)">
+              <div class="form-group">
+                <label for="what-if-module">Simulate Module Change</label>
+                <select id="what-if-module" class="form-control">
+                  <option value="Payment">Payment</option>
+                  <option value="Authentication">Authentication</option>
+                  <option value="OTP">OTP</option>
+                  <option value="UPI">UPI</option>
+                  <option value="Transaction">Transaction</option>
+                  <option value="Account">Account</option>
+                  <option value="Dashboard">Dashboard</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="what-if-device">Target Device Profile</label>
+                <select id="what-if-device" class="form-control">
+                  <option value="Pixel 8">Pixel 8 (High Risk)</option>
+                  <option value="Samsung S24">Samsung S24 (High Risk)</option>
+                  <option value="iPhone 15">iPhone 15 (High Risk)</option>
+                  <option value="Samsung A54">Samsung A54 (Medium Risk)</option>
+                  <option value="Pixel 7">Pixel 7 (Medium Risk)</option>
+                  <option value="Samsung A34">Samsung A34 (Low Risk)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="what-if-sec" value="true"> Security-sensitive change
+                </label>
+              </div>
+              <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center;">Estimate Selection Impact</button>
+            </form>
+
+            <div id="what-if-results" style="margin-top: 15px; display: none; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 6px; border: 1px dashed var(--border-color);">
+              <div style="display: flex; justify-content: space-between; font-size:11px; margin-bottom: 6px;">
+                <span>Estimated Impacted Tests:</span>
+                <strong id="what-if-affected">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size:11px; margin-bottom: 6px;">
+                <span>Mock Runtime Needed:</span>
+                <strong id="what-if-runtime">0m</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size:11px;">
+                <span>Override Risk Category:</span>
+                <strong id="what-if-risk" style="color: var(--color-warning);">MEDIUM</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-grid">
+          <div class="card">
+            <h3 class="card-title">Test Coverage by Module</h3>
+            <div class="chart-container">
+              <canvas id="coverageChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Regression Defect Frequency</h3>
+            <div class="chart-container">
+              <canvas id="failuresChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+  
+  <script>
+    let coverageChart = null;
+    let failuresChart = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Small timeout to allow api.js state initialization
+      setTimeout(loadDashboardData, 300);
+    });
+
+    async function loadDashboardData() {
+      try {
+        const healthRes = await window.API.fetchHealthStatus();
+        const counts = healthRes.health.counts;
+        const totalTests = counts.test_coverage;
+
+        if (totalTests === 0) {
+          document.getElementById('health-warning').style.display = 'flex';
+          return;
+        }
+
+        // Set KPI values
+        document.getElementById('kpi-total-tests').innerText = totalTests;
+        
+        // Fetch coverage stats
+        const covStats = await window.API.fetchCoverageStats();
+        document.getElementById('kpi-coverage').innerText = `${covStats.stats.coverage_pct}%`;
+
+        // Fetch failures stats
+        const failStats = await window.API.fetchFailureStats();
+        document.getElementById('kpi-failures').innerText = failStats.total_failures;
+
+        // Fetch current strategy
+        const strategyRes = await window.API.fetchStrategy();
+        document.getElementById('kpi-strategy').innerText = strategyRes.current_strategy;
+
+        // Load charts
+        renderCoverageChart(covStats.stats.module_coverage);
+        renderFailuresChart(failStats.by_module);
+      } catch (e) {
+        console.error('Failed to load dashboard metrics:', e);
+      }
+    }
+
+    function renderCoverageChart(moduleCoverage) {
+      const ctx = document.getElementById('coverageChart').getContext('2d');
+      const labels = Object.keys(moduleCoverage);
+      const data = Object.values(moduleCoverage);
+
+      if (coverageChart) coverageChart.destroy();
+
+      coverageChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Covered Tests',
+            data: data,
+            backgroundColor: 'rgba(255, 122, 0, 0.4)',
+            borderColor: 'rgba(255, 122, 0, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { grid: { color: 'rgba(255, 122, 0, 0.15)' }, ticks: { color: '#929292' } },
+            x: { grid: { color: 'rgba(255, 122, 0, 0.15)' }, ticks: { color: '#929292' } }
+          }
+        }
+      });
+    }
+
+    function renderFailuresChart(byModule) {
+      const ctx = document.getElementById('failuresChart').getContext('2d');
+      const labels = Object.keys(byModule);
+      const data = Object.values(byModule);
+
+      if (failuresChart) failuresChart.destroy();
+
+      failuresChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: [
+              'rgba(255, 59, 48, 0.6)',
+              'rgba(255, 176, 0, 0.6)',
+              'rgba(255, 157, 0, 0.6)',
+              'rgba(0, 230, 118, 0.6)',
+              'rgba(255, 140, 0, 0.6)',
+              'rgba(255, 122, 0, 0.6)'
+            ],
+            borderColor: '#111111',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: '#929292', boxWidth: 12 }
+            }
+          }
+        }
+      });
+    }
+
+    async function runWhatIf(event) {
+      event.preventDefault();
+      const mod = document.getElementById('what-if-module').value;
+      const dev = document.getElementById('what-if-device').value;
+      const isSec = document.getElementById('what-if-sec').checked;
+
+      try {
+        const res = await window.API.runWhatIfSimulation({
+          module: mod,
+          device: dev,
+          change_type: 'MODIFIED',
+          is_security_sensitive: isSec,
+          risk_level: 'HIGH'
+        });
+
+        document.getElementById('what-if-affected').innerText = res.potentially_affected_tests;
+        document.getElementById('what-if-runtime').innerText = `${res.estimated_runtime_minutes}m`;
+        document.getElementById('what-if-risk').innerText = res.overall_risk;
+        document.getElementById('what-if-risk').style.color = res.overall_risk === 'HIGH' ? 'var(--color-danger)' : 'var(--color-warning)';
+        
+        document.getElementById('what-if-results').style.display = 'block';
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  </script>
+</body>
+</html>

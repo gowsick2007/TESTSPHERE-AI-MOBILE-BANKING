@@ -1,0 +1,229 @@
+/*
+TestSphere AI — Dashboard Specific Styles
+*/
+
+:root {
+  --bg-color: #050505;
+  --card-bg: #111111;
+  --card-secondary-bg: #151515;
+  --border-subtle: rgba(255, 122, 0, 0.15);
+  --color-primary: #FF7A00;
+  --color-secondary: #FF9D00;
+  --text-color: #FFFFFF;
+  --text-muted: #8A8A8A;
+  --color-success: #00E676;
+  --color-danger: #FF3B30;
+}
+
+/* KPI Cards Layout */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 122, 0, 0.35);
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.08);
+}
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.kpi-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.kpi-icon.primary {
+  background-color: rgba(255, 122, 0, 0.08);
+  border: 1px solid rgba(255, 122, 0, 0.20);
+  color: var(--color-primary);
+}
+
+.kpi-icon.success {
+  background-color: rgba(0, 230, 118, 0.08);
+  border: 1px solid rgba(0, 230, 118, 0.2);
+  color: var(--color-success);
+}
+
+.kpi-icon.warning {
+  background-color: rgba(255, 157, 0, 0.08);
+  border: 1px solid rgba(255, 157, 0, 0.2);
+  color: var(--color-secondary);
+}
+
+.kpi-icon.danger {
+  background-color: rgba(255, 59, 48, 0.08);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+  color: var(--color-danger);
+}
+
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.kpi-trend {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.kpi-trend.up {
+  color: var(--color-success);
+}
+
+.kpi-trend.down {
+  color: var(--color-danger);
+}
+
+.kpi-trend.neutral {
+  color: var(--text-muted);
+}
+
+/* Hero Insight / What-If Grid */
+.hero-insight {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .hero-insight {
+    grid-template-columns: 1fr;
+  }
+}
+
+.insight-panel {
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.04) 0%, rgba(255, 157, 0, 0.02) 100%);
+  border: 1px solid rgba(255, 122, 0, 0.22);
+}
+
+.insight-text {
+  font-size: 15px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: #D6D6D6;
+}
+
+/* Cards customization */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(255, 122, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.05);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-color);
+}
+
+.card-title i {
+  color: var(--color-primary);
+}
+
+/* Forms layout inside cards */
+#what-if-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#what-if-form .form-group {
+  margin-bottom: 0;
+}
+
+/* Charts Layout Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 480px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-container {
+  position: relative;
+  height: 280px;
+  width: 100%;
+  margin-top: 15px;
+  background-color: rgba(5, 5, 5, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* What-If results block styling */
+#what-if-results {
+  background-color: var(--card-secondary-bg) !important;
+  border: 1px solid rgba(255, 122, 0, 0.2) !important;
+  padding: 14px !important;
+  border-radius: 8px !important;
+}
+
+.btn-secondary {
+  background-color: rgba(17, 17, 17, 0.6) !important;
+  border: 1px solid rgba(255, 122, 0, 0.35) !important;
+  color: var(--color-primary) !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 122, 0, 0.1) !important;
+  border-color: var(--color-primary) !important;
+}

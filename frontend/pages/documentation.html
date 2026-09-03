@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Documentation</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <style>
+    .doc-section {
+      margin-bottom: 30px;
+    }
+    .doc-section h3 {
+      color: var(--accent-primary);
+      margin-bottom: 12px;
+      font-size: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+    .doc-section p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .formula-box {
+      background-color: rgba(0,0,0,0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 15px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      margin: 15px 0;
+      color: var(--accent-primary);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        
+        <div class="card">
+          <div class="doc-section">
+            <h3><i class="fas fa-info-circle"></i> What is TestSphere AI?</h3>
+            <p>
+              TestSphere AI is a custom QA DevOps engineering intelligence platform designed for mobile banking regression suites. It maps test cases, file dependency graphs, failure frequencies, and target device profiles to decide which tests to execute or safely skip during a code change commit.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3><i class="fas fa-calculator"></i> Rule-Based Additive Scorer Engine</h3>
+            <p>
+              The engine calculates a deterministic risk score (0 to 100) for each test using weights defined in <code>config.json</code>:
+            </p>
+            <div class="formula-box">
+              Risk Score = DirectCoverage (+40)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ DependencyRelationship (+30)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ HistoricalFailureAssociation (+20)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ RecentFailureRecord (+15)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ HighRiskDeviceOS (+10)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ SecuritySensitiveChange (+40)<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ CriticalBankingModule (+35)
+            </div>
+            <p>
+              If a test's final cumulative score meets or exceeds the selection threshold (<strong>50</strong>), the test is selected to <strong>RUN</strong>. Otherwise, it is safely marked as <strong>SKIP</strong>, unless a Safety Override triggers.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3><i class="fas fa-shield-alt"></i> Safety Overrides (Mandates RUN)</h3>
+            <p>
+              Under uncertain or high-impact conditions, TestSphere enforces safety over optimization. The 7 strict rules are:
+            </p>
+            <ol style="font-size: 13px; line-height: 1.8; padding-left: 20px; color: var(--text-primary);">
+              <li><strong>RULE 1: Unknown Dependency:</strong> Triggers if dependency map is empty or changed files are missing from graph. Enforces RUN.</li>
+              <li><strong>RULE 2: Unknown Coverage:</strong> Triggers if test coverage data is missing or empty. Enforces RUN.</li>
+              <li><strong>RULE 3: Security-Critical Classification:</strong> Triggers if a test is marked security-critical in test coverage suite. Enforces RUN.</li>
+              <li><strong>RULE 4: Critical Module Altered:</strong> Triggers if changed module is Authentication, OTP, Payment, UPI, UPI, etc. Enforces RUN.</li>
+              <li><strong>RULE 5: Empty Failure Archives:</strong> Triggers if failure history registry is empty. Enforces RUN.</li>
+              <li><strong>RULE 6: Low Decision Confidence:</strong> Triggers if selection confidence level is computed as LOW. Enforces RUN.</li>
+              <li><strong>RULE 7: Rollback Override Mode:</strong> Triggers if administrators toggle the active system strategy to <code>LEGACY_FULL_SUITE</code>. Enforces RUN for all tests.</li>
+            </ol>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+</body>
+</html>

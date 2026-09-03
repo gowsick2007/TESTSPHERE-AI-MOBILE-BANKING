@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Compliance Audit</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <link rel="stylesheet" href="/frontend/css/tables.css">
+  <style>
+    .audit-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .fb-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .fb-stat-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        
+        <div class="audit-grid">
+          
+          <!-- Compliance log -->
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom: 15px;"><i class="fas fa-list-alt"></i> Compliance Security Audit Log</h3>
+            <div class="table-responsive" style="max-height: 520px;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Strategy Mode</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-table-body">
+                  <tr>
+                    <td colspan="5" style="text-align: center;"><span class="spinner"></span> Loading audit logs...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Stakeholder Survey Feedback -->
+          <div>
+            <div class="card">
+              <h3 class="card-title" style="margin-bottom: 12px;"><i class="fas fa-poll-h"></i> Stakeholder Satisfaction Survey</h3>
+              <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Gather feedback from QA Engineers, Developers, and Product Owners on the transparency of selections.</p>
+              
+              <form id="feedback-form" onsubmit="handleFeedbackSubmit(event)">
+                <div class="form-group">
+                  <label for="fb-rating">System Rating (1 to 5 Stars)</label>
+                  <select id="fb-rating" class="form-control" style="background:#070b14;">
+                    <option value="5" selected>★★★★★ (5/5)</option>
+                    <option value="4">★★★★☆ (4/5)</option>
+                    <option value="3">★★★☆☆ (3/5)</option>
+                    <option value="2">★★☆☆☆ (2/5)</option>
+                    <option value="1">★☆☆☆☆ (1/5)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="checkbox-label" style="font-size:12px; margin-bottom:6px;">
+                    <input type="checkbox" id="fb-understand" value="1" checked> Decisions are easy to understand
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox-label" style="font-size:12px; margin-bottom:6px;">
+                    <input type="checkbox" id="fb-reasons" value="1" checked> Rationale explanations are clear
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox-label" style="font-size:12px; margin-bottom:6px;">
+                    <input type="checkbox" id="fb-trust" value="1" checked> I trust the system selection safety
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox-label" style="font-size:12px; margin-bottom:12px;">
+                    <input type="checkbox" id="fb-rollback" value="1" checked> Emergency rollback control is useful
+                  </label>
+                </div>
+
+                <div class="form-group">
+                  <label for="fb-comments">Additional Feedback Comments</label>
+                  <textarea id="fb-comments" class="form-control" rows="3" placeholder="Enter comments..." style="background:#070b14;"></textarea>
+                </div>
+
+                <button type="submit" id="feedback-btn" class="btn btn-primary" style="width:100%; justify-content:center;">
+                  Submit Survey <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+
+            <!-- Feedback Stats -->
+            <div class="card">
+              <h3 class="card-title"><i class="fas fa-chart-pie"></i> Survey Aggregates</h3>
+              <div class="fb-stats-grid">
+                <div class="fb-stat-box">
+                  <div id="fb-count" style="font-size:20px; font-weight:700; color:var(--accent-primary);">0</div>
+                  <span style="font-size:10px; color:var(--text-muted);">Responses</span>
+                </div>
+                <div class="fb-stat-box">
+                  <div id="fb-avg" style="font-size:20px; font-weight:700; color:var(--color-success);">0.0</div>
+                  <span style="font-size:10px; color:var(--text-muted);">Avg Star Rating</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadAuditPage, 300);
+    });
+
+    async function loadAuditPage() {
+      const tbody = document.getElementById('audit-table-body');
+      
+      // LOADING State with Skeleton Rows
+      tbody.innerHTML = Array(4).fill(0).map(() => `
+        <tr class="skeleton-row">
+          <td><div class="skeleton-bar" style="width: 120px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 80px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 100px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 90px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 140px;"></div></td>
+        </tr>
+      `).join('');
+
+      try {
+        // Load logs
+        const auditRes = await window.API.fetchAuditLogs();
+
+        if (!auditRes.logs || auditRes.logs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;"><i class="fas fa-info-circle"></i> No compliance actions logged.</td></tr>`;
+        } else {
+          tbody.innerHTML = auditRes.logs.map(l => `
+            <tr>
+              <td style="font-size:11px; white-space:nowrap;">${new Date(l.timestamp).toLocaleString()}</td>
+              <td style="font-weight:600; color:var(--accent-primary);">${l.username}</td>
+              <td style="font-family:var(--font-mono); font-size:11px;">${l.action}</td>
+              <td><span style="font-size:10px; font-weight:700; color:var(--text-muted);">${l.system_mode || 'SMART_SELECTOR'}</span></td>
+              <td style="font-size:12px;" title="${l.input_summary}">${l.input_summary}</td>
+            </tr>
+          `).join('');
+        }
+
+        // Load feedback aggregates
+        const fbStats = await window.API.fetchFeedbackStats();
+        document.getElementById('fb-count').innerText = fbStats.response_count || 0;
+        document.getElementById('fb-avg').innerText = (fbStats.average_rating || 0).toFixed(1);
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 25px; color: var(--color-danger);">
+              <div style="font-size: 20px; margin-bottom: 8px;"><i class="fas fa-exclamation-triangle"></i></div>
+              <div style="font-weight: 600; margin-bottom: 4px;">Unable to load compliance logs</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">${e.message || 'Please check your connection and retry.'}</div>
+              <button onclick="loadAuditPage()" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Retry</button>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    async function handleFeedbackSubmit(event) {
+      event.preventDefault();
+      
+      const rating = parseInt(document.getElementById('fb-rating').value);
+      const understand = document.getElementById('fb-understand').checked ? 1 : 0;
+      const reasons = document.getElementById('fb-reasons').checked ? 1 : 0;
+      const trust = document.getElementById('fb-trust').checked ? 1 : 0;
+      const rollback = document.getElementById('fb-rollback').checked ? 1 : 0;
+      const comments = document.getElementById('fb-comments').value;
+
+      const payload = {
+        understandable: understand,
+        clear_reasons: reasons,
+        trust_system: trust,
+        rollback_useful: rollback,
+        dashboard_clear: 1, // Default
+        additional_comments: comments,
+        rating: rating
+      };
+
+      const btn = document.getElementById('feedback-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Submitting...`;
+
+      try {
+        const res = await window.API.submitFeedback(payload);
+        if (res.success) {
+          window.API.showToast(res.message, 'success');
+          document.getElementById('fb-comments').value = '';
+          loadAuditPage();
+        }
+      } catch (e) {
+        // api.js handles toasts
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `Submit Survey <i class="fas fa-paper-plane"></i>`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+{
+  "clean_restart": {
+    "health_status": 200,
+    "health_json": {
+      "status": "ok",
+      "service": "TestSphere AI Engine"
+    },
+    "root_status": 200,
+    "startup_exceptions": false
+  },
+  "rollback_verification": {
+    "initial_strategy": "SMART_SELECTOR",
+    "rollback1_response_status": 200,
+    "rollback1_response_json": {
+      "success": true,
+      "from_strategy": "SMART_SELECTOR",
+      "to_strategy": "LEGACY_FULL_SUITE",
+      "message": "Successfully switched to LEGACY_FULL_SUITE strategy."
+    },
+    "strategy_after_rollback1": "SMART_SELECTOR",
+    "rows_before": 10,
+    "rows_after_rollback1": 11,
+    "latest_history_entry_1": {
+      "id": 11,
+      "from_strategy": "SMART_SELECTOR",
+      "to_strategy": "LEGACY_FULL_SUITE",
+      "version": "v1.0.0",
+      "changed_at": "2026-09-03T13:36:12.729858",
+      "reason": "Final clean-state verification test 1",
+      "changed_by": "admin"
+    },
+    "rollback2_response_status": 200,
+    "strategy_after_rollback2": "SMART_SELECTOR",
+    "rows_after_rollback2": 12,
+    "latest_history_entry_2": {
+      "id": 12,
+      "from_strategy": "LEGACY_FULL_SUITE",
+      "to_strategy": "SMART_SELECTOR",
+      "version": "v1.0.0",
+      "changed_at": "2026-09-03T13:36:12.783439",
+      "reason": "Final clean-state verification test 2",
+      "changed_by": "admin"
+    },
+    "changed_at_not_null": true,
+    "integrity_error_occurred": false
+  },
+  "notebook_execution": {
+    "file": "experiments/testsphere_experiment.ipynb",
+    "executed_cleanly": true,
+    "error": null,
+    "uses_baseline_total_tests": true
+  },
+  "false_negatives_verification": {
+    "scenarios": [
+      {
+        "change_id": "CHG001",
+        "files": [
+          "payment/payment.py"
+        ],
+        "module": "Payment",
+        "ground_truth_affected_tests": 0,
+        "smart_run_tests": 921,
+        "smart_skip_tests": 79,
+        "true_positives": 125,
+        "false_positives": 796,
+        "true_negatives": 79,
+        "false_negatives": 0
+      },
+      {
+        "change_id": "CHG002",
+        "files": [
+          "auth/login.py"
+        ],
+        "module": "Authentication",
+        "ground_truth_affected_tests": 0,
+        "smart_run_tests": 875,
+        "smart_skip_tests": 125,
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 0,
+        "false_negatives": 0
+      },
+      {
+        "change_id": "CHG005",
+        "files": [
+          "transaction/transfer.py"
+        ],
+        "module": "Transaction",
+        "ground_truth_affected_tests": 0,
+        "smart_run_tests": 1000,
+        "smart_skip_tests": 0,
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 0,
+        "false_negatives": 0
+      },
+      {
+        "change_id": "CHG011",
+        "files": [
+          "notification/push.py"
+        ],
+        "module": "Notification",
+        "ground_truth_affected_tests": 0,
+        "smart_run_tests": 927,
+        "smart_skip_tests": 73,
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 0,
+        "false_negatives": 0
+      }
+    ],
+    "total_false_negatives": 0,
+    "zero_false_negatives_confirmed": true
+  },
+  "baseline_vs_smart": {
+    "baseline": {
+      "total_tests": 1000,
+      "executed": 1000,
+      "skipped": 0,
+      "runtime_seconds": 2238.33,
+      "runtime_minutes": 37.31
+    },
+    "smart_payment": {
+      "changed_file": "payment/payment.py",
+      "total_tests": 1000,
+      "executed": 921,
+      "skipped": 79,
+      "runtime_seconds": 2110.67,
+      "runtime_minutes": 35.18,
+      "runtime_reduction_pct": 5.7
+    },
+    "smart_auth": {
+      "changed_file": "auth/login.py",
+      "total_tests": 1000,
+      "executed": 875,
+      "skipped": 125,
+      "runtime_seconds": 2034.62,
+      "runtime_minutes": 33.91,
+      "runtime_reduction_pct": 9.1
+    },
+    "smart_push": {
+      "changed_file": "notification/push.py",
+      "total_tests": 1000,
+      "executed": 927,
+      "skipped": 73,
+      "runtime_seconds": 2124.25,
+      "runtime_minutes": 35.4,
+      "runtime_reduction_pct": 5.1
+    }
+  },
+  "security_verification": {
+    "unauth_demo_status": 401,
+    "unauth_upload_status": 401,
+    "unauth_change_status": 401,
+    "viewer_rollback_status": 403,
+    "all_security_checks_passed": true
+  },
+  "database_integrity": {
+    "test_coverage": 1000,
+    "dependency_map": 84,
+    "failure_history": 2400,
+    "device_matrix": 8,
+    "code_changes": 15,
+    "experiment_ground_truth": 1000,
+    "selection_results": 0,
+    "strategy_config": 3,
+    "rollback_history": 12,
+    "feedback": 0,
+    "audit_log": 44
+  }
+}

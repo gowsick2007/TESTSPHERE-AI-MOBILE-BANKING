@@ -1,0 +1,88 @@
+/*
+TestSphere AI — Tables Stylesheet
+*/
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(255,122,0,0.15);
+  background-color: #0E0E0E;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table.data-table th {
+  background-color: #151515;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #FFB000;
+  border-bottom: 1px solid rgba(255,122,0,0.15);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+table.data-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,122,0,0.15);
+  color: #FFFFFF;
+  font-size: 13px;
+}
+
+table.data-table tbody tr {
+  background-color: #0E0E0E;
+  transition: background-color 0.15s ease;
+}
+
+table.data-table tbody tr:hover {
+  background-color: #181818;
+  cursor: pointer;
+}
+
+table.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Pagination / Controls row below table */
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid rgba(255,122,0,0.15);
+  background-color: #0E0E0E;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.table-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-link {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  background: none;
+  color: var(--text-muted);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-link:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.page-link.active {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--bg-primary);
+  font-weight: 600;
+}

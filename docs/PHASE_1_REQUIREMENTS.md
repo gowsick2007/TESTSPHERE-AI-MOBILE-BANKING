@@ -1,0 +1,17 @@
+# PHASE 1 (35%) REQUIREMENTS MAP
+
+| Requirement ID | Requirement | Why it belongs to Phase 1 | Implementation Location | Verification Method | Expected Evidence | Current Status |
+|---|---|---|---|---|---|---|
+| REQ-1-01 | **Functional Application Structure** | Foundational requirement. Backend and frontend must start and serve pages. | `backend/main.py` | API health check, direct HTTP access to static UI. | Returns 200, Web UI loads. | PASS |
+| REQ-1-02 | **Realistic Dataset Generation** | Need actual relational data spanning test coverage, dependencies, failures. | `Data_Generation/generate_dataset.py` | Run generator script and query DB for row counts. | `test_coverage` has 1000+ realistic rows. | PASS |
+| REQ-1-03 | **Universal Data Ingestion** | System must handle CSVs, schema mapping, and validation securely. | `backend/security/csv_validator.py` | Execute `parse_and_validate_csv` on datasets. | Detailed import reports rejecting malformed rows. | PASS |
+| REQ-1-04 | **Code Change Input** | System must accept and parse incoming code modifications to trigger the workflow. | `backend/api/change_routes.py` | Submit a realistic modification (e.g., `payment.py`). | Change identified and logged successfully. | PASS |
+| REQ-1-05 | **Dependency Analysis Graph** | Trace direct and transitive relationships (impact radius). | `Engine/dependency_analyzer.py` | Call `get_impacted_files()` on a modified file. | Array of indirect & direct dependent files. | PASS |
+| REQ-1-06 | **Test Coverage Matrix** | Connect files to corresponding test IDs correctly. | `Engine/coverage_analyzer.py` | Run query against DB to map tests to `payment.py`. | Matched `T####` tests mapping directly to module. | PASS |
+| REQ-1-07 | **Failure History / Risk Assessment** | Use historical records and severity to flag tests. | `Engine/failure_analyzer.py`, `Engine/risk_scorer.py` | Check outputs from `get_failure_stats`. | Aggregated risks by module/device. | PASS |
+| REQ-1-08 | **Test Selector Logic (RUN/SKIP)** | Core AI/Rule engine outputting decision matrices. | `Engine/test_selector.py` | Run `run_selection(["payment/payment.py"])`. | List of test decisions with deterministic `RUN`/`SKIP`. | PASS |
+| REQ-1-09 | **Transparent Rationale** | Output clear human-readable string for every decision. | `Engine/rationale_generator.py` | Check `reason` fields in `run_selection` response. | Explainable output string attached to each test. | PASS |
+| REQ-1-10 | **Zero False Negatives Verification** | Critical safety requirement: No affected tests can be skipped. | `Engine/metrics_calculator.py` | Use `calculate_experiment_metrics` to compare with Ground Truth. | `false_negatives` = 0 explicitly logged. | PASS |
+| REQ-1-11 | **Baseline Metric Engine** | Execute Legacy mode to generate time-reduction benchmarks. | `Simulation/baseline_runner.py` | Compare baseline vs smart runner outputs. | % time reduction mathematically proven. | PASS |
+| REQ-1-12 | **Security & Unauthorized Access** | Endpoint must protect against bypasses and enforce valid tokens. | `backend/api/auth_routes.py`, `data_routes.py` | Call `/api/data/demo` without session token. | Server returns HTTP 401 Unauthorized. | PASS |
+| REQ-1-13 | **Failure/Edge Cases Handled** | System must not crash on missing fields, empty databases, etc. | `docs/failure-mode-analysis.md` | Programmatic verification of empty DB state & missing dependencies. | Clean fallbacks to default empty behaviors without 500 crashes. | PASS |

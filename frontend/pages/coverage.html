@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Coverage Analyzer</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <link rel="stylesheet" href="/frontend/css/tables.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        
+        <!-- Coverage summary -->
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom: 15px;"><i class="fas fa-shield-alt"></i> Coverage Intelligence Summary</h3>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; text-align:center; margin-bottom: 15px;">
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="cov-pct" style="font-size:24px; font-weight:700; color:var(--color-success);">0%</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Covered Files Ratio</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="cov-total" style="font-size:24px; font-weight:700; color:var(--accent-primary);">0</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Total Files Covered</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="cov-uncovered" style="font-size:24px; font-weight:700; color:var(--color-warning);">0</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Tests Without Code Association</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+              <div id="cov-tests" style="font-size:24px; font-weight:700; color:var(--accent-secondary);">0</div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Total Test Suite Count</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coverage list -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list-ul"></i> Test Coverage Map</h3>
+            <div style="display:flex; gap:10px;">
+              <input type="text" id="cov-search" class="form-control" placeholder="Search file or test..." style="width:200px; padding:4px 8px; font-size:12px;" oninput="filterCoverageTable()">
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Test ID</th>
+                  <th>Test Name</th>
+                  <th>Covered File</th>
+                  <th>Module</th>
+                  <th>Device profile</th>
+                  <th>Execution time</th>
+                </tr>
+              </thead>
+              <tbody id="cov-table-body">
+                <tr>
+                  <td colspan="6" style="text-align: center;"><span class="spinner"></span> Loading coverage map...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+
+  <script>
+    let rawCoverageTests = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadCoverageData, 300);
+    });
+
+    async function loadCoverageData() {
+      const tbody = document.getElementById('cov-table-body');
+      
+      // LOADING State with Skeleton Rows
+      tbody.innerHTML = Array(4).fill(0).map(() => `
+        <tr class="skeleton-row">
+          <td><div class="skeleton-bar" style="width: 70px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 140px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 160px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 80px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 100px;"></div></td>
+          <td><div class="skeleton-bar" style="width: 50px;"></div></td>
+        </tr>
+      `).join('');
+
+      try {
+        const res = await window.API.fetchCoverageStats();
+        const stats = res.stats || {};
+        rawCoverageTests = res.tests || [];
+
+        document.getElementById('cov-pct').innerText = `${stats.coverage_pct || 0}%`;
+        document.getElementById('cov-total').innerText = stats.covered_files || 0;
+        document.getElementById('cov-uncovered').innerText = stats.uncovered || 0;
+        document.getElementById('cov-tests').innerText = stats.total_tests || 0;
+
+        renderCoverageTable(rawCoverageTests);
+      } catch (e) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 25px; color: var(--color-danger);">
+              <div style="font-size: 20px; margin-bottom: 8px;"><i class="fas fa-exclamation-triangle"></i></div>
+              <div style="font-weight: 600; margin-bottom: 4px;">Unable to load coverage mapping</div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">${e.message || 'Please check your connection and retry.'}</div>
+              <button onclick="loadCoverageData()" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Retry</button>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderCoverageTable(tests) {
+      const tbody = document.getElementById('cov-table-body');
+      if (tests.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No coverage mapping found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = tests.map(t => `
+        <tr>
+          <td style="font-family:var(--font-mono); font-weight:600; color:var(--accent-primary);">${t.test_id}</td>
+          <td>${t.test_name}</td>
+          <td style="font-family:var(--font-mono); font-size:12px;">${t.file_path || '<span style="color:var(--color-warning);">No File Mapping</span>'}</td>
+          <td>${t.module}</td>
+          <td><span style="font-size:11px; color:var(--text-muted);">${t.device} (${t.os_version})</span></td>
+          <td>${t.execution_time}s</td>
+        </tr>
+      `).join('');
+    }
+
+    function filterCoverageTable() {
+      const q = document.getElementById('cov-search').value.toLowerCase();
+      const filtered = rawCoverageTests.filter(t => {
+        return t.test_id.toLowerCase().includes(q) || 
+               t.test_name.toLowerCase().includes(q) || 
+               (t.file_path && t.file_path.toLowerCase().includes(q)) || 
+               t.module.toLowerCase().includes(q);
+      });
+      renderCoverageTable(filtered);
+    }
+  </script>
+</body>
+</html>

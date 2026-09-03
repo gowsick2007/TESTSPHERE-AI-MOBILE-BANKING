@@ -1,0 +1,2 @@
+device_id,device_name,os_type,os_version,risk_level,failure_rate
+D01,iPhone,iOS,15.2,LOW,0.02

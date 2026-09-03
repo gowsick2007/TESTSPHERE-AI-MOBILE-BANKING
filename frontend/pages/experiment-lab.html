@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TestSphere AI — Experiment Lab</title>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/frontend/css/main.css">
+  <link rel="stylesheet" href="/frontend/css/components.css">
+  <link rel="stylesheet" href="/frontend/css/tables.css">
+  <style>
+    .benchmark-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .metric-panel-mini {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 15px;
+    }
+    .metric-item-mini {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .metric-item-mini strong {
+      font-size: 18px;
+      color: var(--accent-primary);
+      display: block;
+    }
+    .metric-item-mini span {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .matrix-box {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: rgba(0,0,0,0.2);
+      padding: 15px;
+      margin-top: 15px;
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .matrix-table th {
+      padding: 6px;
+      color: var(--text-muted);
+    }
+    .matrix-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      font-weight: 700;
+    }
+    .assertion-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
+    }
+    .assertion-item {
+      background-color: rgba(255,255,255,0.01);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+    .assertion-item:hover {
+      border-color: rgba(255, 122, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div id="shared-sidebar"></div>
+
+    <div class="main-wrapper">
+      <div id="shared-header"></div>
+
+      <div class="content-body">
+        
+        <!-- Benchmark row -->
+        <div class="benchmark-grid">
+          <!-- Parameter selector -->
+          <div class="card">
+            <h3 class="card-title"><i class="fas fa-flask"></i> Setup Benchmark Simulation</h3>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Compare Smart Selection efficiency against 100% full legacy regression suite side-by-side.</p>
+            
+            <form id="benchmark-form" onsubmit="runBenchmark(event)">
+              <div class="form-group">
+                <label for="bench-files">Commit Changed Files</label>
+                <textarea id="bench-files" class="form-control" rows="3" required>payment/payment.py</textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bench-module">Primary Module</label>
+                  <select id="bench-module" class="form-control">
+                    <option value="Payment">Payment</option>
+                    <option value="Authentication">Authentication</option>
+                    <option value="OTP">OTP</option>
+                    <option value="UPI">UPI</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="bench-risk">Risk Level</label>
+                  <select id="bench-risk" class="form-control">
+                    <option value="MEDIUM" selected>MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="bench-sec" value="true"> Security Critical Patch
+                </label>
+              </div>
+
+              <button type="submit" id="bench-btn" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                Execute Benchmark Comparison <i class="fas fa-play"></i>
+              </button>
+            </form>
+          </div>
+
+          <!-- Comparison output -->
+          <div id="benchmark-results-panel" class="card" style="display: none;">
+            <h3 class="card-title" style="color:var(--accent-primary);"><i class="fas fa-poll"></i> Benchmark Metrics Report</h3>
+            
+            <div class="metric-panel-mini">
+              <div class="metric-item-mini">
+                <strong id="bench-precision">0%</strong>
+                <span>Selector Precision</span>
+              </div>
+              <div class="metric-item-mini">
+                <strong id="bench-recall">0%</strong>
+                <span>Selector Recall</span>
+              </div>
+              <div class="metric-item-mini">
+                <strong id="bench-f1">0%</strong>
+                <span>F1-Score Quality</span>
+              </div>
+              <div class="metric-item-mini" style="border-color: rgba(239, 68, 68, 0.3);">
+                <strong id="bench-miss" style="color: var(--color-danger);">0%</strong>
+                <span>Missed Tests Rate</span>
+              </div>
+            </div>
+
+            <!-- Confusion Matrix -->
+            <div class="matrix-box">
+              <h4 style="font-size:12px; font-weight:600;"><i class="fas fa-th-large"></i> Selection Confusion Matrix</h4>
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th style="color: var(--color-success);">Actually Affected</th>
+                    <th style="color: var(--accent-secondary);">Actually Unaffected</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight: 500; color:var(--text-muted);">Selected (RUN)</td>
+                    <td id="matrix-tp" style="background-color: rgba(34,197,94,0.08); color:var(--color-success);" title="True Positive">0 (TP)</td>
+                    <td id="matrix-fp" style="background-color: rgba(239,68,68,0.08); color:var(--color-danger);" title="False Positive">0 (FP)</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: 500; color:var(--text-muted);">Skipped (SKIP)</td>
+                    <td id="matrix-fn" style="background-color: rgba(239,68,68,0.15); color:var(--color-danger);" title="False Negative">0 (FN)</td>
+                    <td id="matrix-tn" style="background-color: rgba(255,157,0,0.08); color:var(--accent-secondary);" title="True Negative">0 (TN)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="font-size:11px; color:var(--text-muted); margin-top:12px; text-align:center;">
+              Comparison verified against experiment ground truth records (CHG001 baseline).
+            </div>
+          </div>
+        </div>
+
+        <!-- Safety assertion suite -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-user-shield"></i> Safety & Overrides Assertion Suite</h3>
+            <button id="run-assertions-btn" onclick="triggerSafetyAssertions()" class="btn btn-secondary btn-sm">
+              Run Safety Assertions Suite <i class="fas fa-shield-alt"></i>
+            </button>
+          </div>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:5px; margin-bottom:15px;">
+            Executes 5 automated check cases simulating failed/uncertain data conditions to confirm the engine defaults to a safe <code>RUN</code> decision.
+          </p>
+
+          <div class="assertion-card-list" id="assertions-container">
+            <!-- Scenario items -->
+            <div class="assertion-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div>
+                  <strong style="font-size:13px;">1. Unknown Dependency Graph</strong>
+                  <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Simulates empty/corrupted dependency matrix files. Expected override: <code>RULE_1_UNKNOWN_DEPENDENCY</code> ➔ RUN.</p>
+                </div>
+                <div id="status-sc-1" style="font-size:12px; font-weight:600; color:var(--text-muted);">Awaiting Run...</div>
+              </div>
+              <div id="details-sc-1" style="font-size:11px; color:var(--text-muted); display:none; width: 100%; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); line-height: 1.4;">
+              </div>
+            </div>
+
+            <div class="assertion-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div>
+                  <strong style="font-size:13px;">2. Missing Coverage Map</strong>
+                  <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Simulates missing test coverage records. Expected override: <code>RULE_2_UNKNOWN_COVERAGE</code> or <code>RULE_4_CRITICAL_MODULE</code> ➔ RUN.</p>
+                </div>
+                <div id="status-sc-2" style="font-size:12px; font-weight:600; color:var(--text-muted);">Awaiting Run...</div>
+              </div>
+              <div id="details-sc-2" style="font-size:11px; color:var(--text-muted); display:none; width: 100%; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); line-height: 1.4;">
+              </div>
+            </div>
+
+            <div class="assertion-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div>
+                  <strong style="font-size:13px;">3. High-Risk Authentication Change</strong>
+                  <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Simulates modified login logic code. Expected override: <code>RULE_3_SECURITY_CRITICAL</code> or <code>RULE_4_CRITICAL_MODULE</code> ➔ RUN.</p>
+                </div>
+                <div id="status-sc-3" style="font-size:12px; font-weight:600; color:var(--text-muted);">Awaiting Run...</div>
+              </div>
+              <div id="details-sc-3" style="font-size:11px; color:var(--text-muted); display:none; width: 100%; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); line-height: 1.4;">
+              </div>
+            </div>
+
+            <div class="assertion-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div>
+                  <strong style="font-size:13px;">4. Historical Failure Module</strong>
+                  <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Simulates changed files in Payment module with previous defects. Expected override: <code>RULE_4_CRITICAL_MODULE</code> ➔ RUN.</p>
+                </div>
+                <div id="status-sc-4" style="font-size:12px; font-weight:600; color:var(--text-muted);">Awaiting Run...</div>
+              </div>
+              <div id="details-sc-4" style="font-size:11px; color:var(--text-muted); display:none; width: 100%; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); line-height: 1.4;">
+              </div>
+            </div>
+
+            <div class="assertion-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div>
+                  <strong style="font-size:13px;">5. Incorrect Configuration</strong>
+                  <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Simulates empty changed files input list. Expected override: <code>RULE_1_UNKNOWN_DEPENDENCY</code> ➔ RUN.</p>
+                </div>
+                <div id="status-sc-5" style="font-size:12px; font-weight:600; color:var(--text-muted);">Awaiting Run...</div>
+              </div>
+              <div id="details-sc-5" style="font-size:11px; color:var(--text-muted); display:none; width: 100%; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); line-height: 1.4;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/navigation.js"></script>
+
+  <script>
+    async function runBenchmark(event) {
+      event.preventDefault();
+      const filesText = document.getElementById('bench-files').value;
+      const mod = document.getElementById('bench-module').value;
+      const risk = document.getElementById('bench-risk').value;
+      const sec = document.getElementById('bench-sec').checked;
+
+      const changed_files = filesText.split('\n').map(f => f.trim()).filter(f => f.length > 0);
+      if (changed_files.length === 0) {
+        window.API.showToast('Please specify at least one file.', 'warning');
+        return;
+      }
+
+      const btn = document.getElementById('bench-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Running benchmark...`;
+
+      try {
+        const res = await window.API.runExperimentBenchmark({
+          changed_files,
+          change_type: 'MODIFIED',
+          module: mod,
+          is_security_sensitive: sec,
+          risk_level: risk
+        });
+
+        const q = res.quality;
+        document.getElementById('bench-precision').innerText = `${q.precision}%`;
+        document.getElementById('bench-recall').innerText = `${q.recall}%`;
+        document.getElementById('bench-f1').innerText = `${q.f1_score}%`;
+        document.getElementById('bench-miss').innerText = `${q.miss_rate}%`;
+
+        document.getElementById('matrix-tp').innerText = `${q.true_positives} (TP)`;
+        document.getElementById('matrix-fp').innerText = `${q.false_positives} (FP)`;
+        document.getElementById('matrix-fn').innerText = `${q.false_negatives} (FN)`;
+        document.getElementById('matrix-tn').innerText = `${q.true_negatives} (TN)`;
+
+        document.getElementById('benchmark-results-panel').style.display = 'block';
+        window.API.showToast('Benchmark metrics successfully computed!', 'success');
+      } catch (e) {
+        console.error(e);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `Execute Benchmark Comparison <i class="fas fa-play"></i>`;
+      }
+    }
+
+    async function triggerSafetyAssertions() {
+      const btn = document.getElementById('run-assertions-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Running safety suite...`;
+
+      // Set items status to running
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`status-sc-${i}`).innerHTML = `<span class="spinner" style="width:12px; height:12px; margin-right:0;"></span>`;
+      }
+
+      try {
+        const res = await window.API.runFailureScenarios();
+        const results = res.results;
+
+        results.forEach((r, idx) => {
+          const num = idx + 1;
+          const statusEl = document.getElementById(`status-sc-${num}`);
+          const detailsEl = document.getElementById(`details-sc-${num}`);
+          
+          if (r.verdict === 'PASS') {
+            statusEl.innerHTML = `<span style="color:var(--color-success); font-weight:700;"><i class="fas fa-check-circle"></i> PASS</span>`;
+          } else {
+            statusEl.innerHTML = `<span style="color:var(--color-danger); font-weight:700;"><i class="fas fa-times-circle"></i> FAIL</span>`;
+          }
+
+          const rulesText = r.triggered_rules && r.triggered_rules.length > 0 
+            ? r.triggered_rules.map(rule => `<code>${rule}</code>`).join(', ') 
+            : 'None';
+
+          detailsEl.innerHTML = `
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+              <span><strong>Expected Decision:</strong> <code>${r.expected_decision}</code></span>
+              <span><strong>Actual Decision:</strong> <code>${r.actual_decision}</code></span>
+              <span><strong>Rules Triggered:</strong> ${rulesText}</span>
+            </div>
+          `;
+          detailsEl.style.display = 'block';
+        });
+
+        window.API.showToast('Safety assertion test suite complete!', 'success');
+      } catch (e) {
+        // Error already handled
+        for (let i = 1; i <= 5; i++) {
+          document.getElementById(`status-sc-${i}`).innerHTML = `<span style="color:var(--color-danger); font-weight:700;"><i class="fas fa-exclamation-triangle"></i> ERROR</span>`;
+          const detailsEl = document.getElementById(`details-sc-${i}`);
+          if (detailsEl) {
+            detailsEl.innerHTML = `<span style="color:var(--color-danger); font-weight:600;">Backend Error: ${e.message || 'Unknown server error'}</span>`;
+            detailsEl.style.display = 'block';
+          }
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `Run Safety Assertions Suite <i class="fas fa-shield-alt"></i>`;
+      }
+    }
+  </script>
+</body>
+</html>
