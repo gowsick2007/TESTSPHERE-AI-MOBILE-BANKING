@@ -1,2 +1,2 @@
 device_id,device_name,os_type,os_version,risk_level,failure_rate
-D01,iPhone,iOS,15.2,LOW,0.02
+D001,Pixel 8,Android,Android 15,LOW,0.02

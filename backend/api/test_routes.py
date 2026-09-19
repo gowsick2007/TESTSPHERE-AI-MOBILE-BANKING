@@ -4,7 +4,7 @@ Endpoints to query test metadata, fetch selections, and run simulations.
 """
 from fastapi import APIRouter, HTTPException, Depends
 from typing import Optional, List
-from backend.schemas import ChangeAnalysisRequest
+from backend.schemas import ChangeAnalysisRequest, SelectionResponse
 from backend.engine.test_selector import run_selection
 from backend.simulation.smart_runner import run_smart_regression
 from backend.simulation.baseline_runner import run_baseline_regression
@@ -14,11 +14,13 @@ from backend.engine.failure_analyzer import get_failure_stats
 from backend.api.auth_routes import get_user_from_token
 from backend.engine.audit_logger import log_event
 
+from backend.security.input_validator import detect_bypass_attempt
+
 router = APIRouter(prefix="/tests", tags=["Test Selection"])
 
 
-@router.post("/selection")
-def get_selection(payload: ChangeAnalysisRequest):
+@router.post("/selection", response_model=SelectionResponse)
+def get_selection(payload: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
     """Computes selector decisions (RUN/SKIP) for all tests."""
     try:
         res = run_selection(
@@ -34,9 +36,12 @@ def get_selection(payload: ChangeAnalysisRequest):
 
 
 @router.post("/run-smart")
-def run_smart(payload: ChangeAnalysisRequest, token: Optional[str] = None):
+def run_smart(payload: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
     """Executes selector and simulates selected test runs."""
-    user = get_user_from_token(token)
+    role = user["role"]
+    blocked, msg = detect_bypass_attempt("RUN_TESTS", f"Run smart tests for {payload.changed_files}", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     try:
         res = run_smart_regression(
             changed_files=payload.changed_files,
@@ -59,9 +64,12 @@ def run_smart(payload: ChangeAnalysisRequest, token: Optional[str] = None):
 
 
 @router.post("/run-baseline")
-def run_baseline(token: Optional[str] = None):
+def run_baseline(user: dict = Depends(get_user_from_token)):
     """Executes simulated baseline regression (runs all tests)."""
-    user = get_user_from_token(token)
+    role = user["role"]
+    blocked, msg = detect_bypass_attempt("RUN_TESTS", "Run baseline tests", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     try:
         res = run_baseline_regression()
         log_event(

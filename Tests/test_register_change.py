@@ -1,28 +1,38 @@
-import urllib.request
-import json
+"""
+TestSphere AI — Register Change API Test
+Verifies the /api/change/register endpoint via TestClient.
+"""
+import sys
+from pathlib import Path
+import pytest
 
-payload = {
-    "changed_files": ["payment/payment_service.py"],
-    "change_type": "MODIFIED",
-    "module": "payment",
-    "is_security_sensitive": True,
-    "risk_level": "HIGH"
-}
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-data = json.dumps(payload).encode('utf-8')
-req = urllib.request.Request(
-    'http://127.0.0.1:8001/api/change/register',
-    data=data,
-    headers={'Content-Type': 'application/json'},
-    method='POST'
-)
+from fastapi.testclient import TestClient
+from backend.main import app
+from backend.database import initialize_database
 
-try:
-    with urllib.request.urlopen(req) as response:
-        print("Status Code:", response.status)
-        print("Response:", json.loads(response.read().decode()))
-except urllib.error.HTTPError as e:
-    print("HTTP Error Code:", e.code)
-    print("Error Detail:", e.read().decode())
-except Exception as e:
-    print("Error:", e)
+client = TestClient(app)
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_db():
+    initialize_database()
+
+
+def test_register_change_endpoint():
+    login_res = client.post("/api/auth/login", json={"username": "qa", "password": "QA@123"})
+    assert login_res.status_code == 200
+    token = login_res.json()["token"]
+
+    payload = {
+        "changed_files": ["payment/payment_service.py"],
+        "change_type": "MODIFIED",
+        "module": "payment",
+        "is_security_sensitive": True,
+        "risk_level": "HIGH"
+    }
+    res = client.post(f"/api/change/register?token={token}", json=payload)
+    assert res.status_code == 200
+    assert res.json().get("success") is True
+

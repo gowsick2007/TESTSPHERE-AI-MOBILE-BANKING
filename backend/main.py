@@ -16,7 +16,7 @@ from backend.engine.risk_scorer import compute_risk_score, RUN_THRESHOLD
 from backend.engine.safety_overrides import determine_confidence
 
 # Import routers
-from backend.api.auth_routes import router as auth_router
+from backend.api.auth_routes import router as auth_router, get_user_from_token
 from backend.api.data_routes import router as data_router
 from backend.api.change_routes import router as change_router
 from backend.api.test_routes import router as test_router
@@ -57,7 +57,7 @@ api_router.include_router(audit_router)
 
 
 @api_router.post("/what-if")
-def what_if(payload: WhatIfRequest):
+def what_if(payload: WhatIfRequest, user: dict = Depends(get_user_from_token)):
     """
     Simulates selector decisions for a custom changed module and device combination.
     """
@@ -134,9 +134,26 @@ def what_if(payload: WhatIfRequest):
     }
 
 
+from backend.engine.data_access import get_data_health
+from backend.engine.audit_logger import get_audit_log
+
+
+@app.get("/health")
 @api_router.get("/health")
 def health():
     return {"status": "ok", "service": "TestSphere AI Engine"}
+
+
+@app.get("/data-health")
+@api_router.get("/data-health")
+def data_health():
+    return get_data_health()
+
+
+@app.get("/audit-log")
+@api_router.get("/audit-log")
+def api_audit_log(limit: int = 100):
+    return {"logs": get_audit_log(limit=limit)}
 
 
 app.include_router(api_router)

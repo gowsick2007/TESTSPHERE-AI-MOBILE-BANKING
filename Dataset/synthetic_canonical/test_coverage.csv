@@ -1,0 +1,1001 @@
+test_id,test_name,file_path,module,device,os_version,execution_time,is_security_critical,tags
+T0001,Statement Download Test 1,account/statement.py,Account,Pixel 8,Android 15,2.5,0,account
+T0002,Biometric Link Test 1,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,1.72,1,accountsecurity
+T0003,Account Summary Test 2,account/account.py,Account,iPhone 15,iOS 18,0.55,0,account
+T0004,Balance Fetch Test 3,account/balance.py,Account,Samsung S24,Android 15,1.91,0,account
+T0005,OTP Validation Test 1,otp/otp_validator.py,OTP,Pixel 7,Android 14,3.81,1,otp
+T0006,Anomaly Detection Test 1,fraud/rules.py,FraudDetection,Samsung S24,Android 15,3.74,1,frauddetection
+T0007,Payment Failure Test 1,payment/payment_api.py,Payment,iPhone 15,iOS 18,2.03,1,payment
+T0008,SMS Notification Test 1,notification/email_notif.py,Notification,iPhone 14,iOS 17,0.21,0,notification
+T0009,Widget Load Test 1,dashboard/home.py,Dashboard,Samsung S24,Android 15,1.0,0,dashboard
+T0010,Analytics Test 2,dashboard/widgets.py,Dashboard,Pixel 7,Android 14,2.68,0,dashboard
+T0011,High-Value Alert Test 2,fraud/fraud_engine.py,FraudDetection,iPhone 14,iOS 17,2.86,1,frauddetection
+T0012,Certificate Pinning Test 1,device/device_trust.py,DeviceSecurity,Pixel 8,Android 15,0.85,0,devicesecurity
+T0013,Fingerprint Test 1,biometrics/fingerprint.py,Biometrics,Samsung A54,Android 14,2.26,0,biometrics
+T0014,Security Question Test 2,account/biometric_link.py,AccountSecurity,Samsung S24,Android 15,2.45,1,accountsecurity
+T0015,Chat Test 1,support/ticket.py,CustomerSupport,Pixel 8,Android 15,2.94,0,customersupport
+T0016,UPI Collect Test 1,upi/upi_handler.py,UPI,Samsung S24,Android 15,2.07,1,upi
+T0017,Transaction Limit Test 1,transaction/txn.py,Transaction,iPhone 14,iOS 17,0.72,1,transaction
+T0018,Root Detection Test 2,device/device_trust.py,DeviceSecurity,Pixel 7,Android 14,1.29,0,devicesecurity
+T0019,MPIN Change Test 3,account/security.py,AccountSecurity,Pixel 8,Android 15,2.15,1,accountsecurity
+T0020,Home Screen Test 3,dashboard/analytics.py,Dashboard,Pixel 7,Android 14,1.55,0,dashboard
+T0021,Session Expiry Test 1,auth/login.py,Authentication,iPhone 12,iOS 17,3.25,1,authentication
+T0022,Statement Download Test 4,account/statement.py,Account,Samsung A54,Android 14,1.22,0,account
+T0023,Widget Load Test 4,dashboard/analytics.py,Dashboard,Pixel 7,Android 14,1.76,0,dashboard
+T0024,Policy Enforcement Test 1,auth/role_check.py,Authorization,Samsung S24,Android 15,2.01,1,authorization
+T0025,Refund Test 2,payment/payment_controller.py,Payment,Samsung S24,Android 15,2.92,1,payment
+T0026,Email Alert Test 2,notification/email_notif.py,Notification,Pixel 8,Android 15,0.61,0,notification
+T0027,Analytics Test 5,dashboard/widgets.py,Dashboard,Samsung S24,Android 15,2.54,0,dashboard
+T0028,FAQ Search Test 2,support/ticket.py,CustomerSupport,Samsung A34,Android 13,1.61,0,customersupport
+T0029,Account Summary Test 5,account/account.py,Account,iPhone 12,iOS 17,1.37,0,account
+T0030,Payment Limit Test 3,payment/payment_controller.py,Payment,Pixel 8,Android 15,1.29,1,payment
+T0031,OTP Expiry Test 2,otp/otp_generator.py,OTP,Samsung A54,Android 14,2.81,1,otp
+T0032,Balance Fetch Test 6,account/balance.py,Account,Pixel 7,Android 14,0.39,0,account
+T0033,KYC Verification Test 1,profile/kyc.py,Profile,Samsung A54,Android 14,1.96,0,profile
+T0034,Fraud Rule Test 3,fraud/fraud_engine.py,FraudDetection,Samsung S24,Android 15,1.55,1,frauddetection
+T0035,Anomaly Detection Test 4,fraud/anomaly.py,FraudDetection,Samsung S24,Android 15,3.62,1,frauddetection
+T0036,Home Screen Test 6,dashboard/home.py,Dashboard,Samsung A34,Android 13,2.38,0,dashboard
+T0037,Token Refresh Test 2,auth/session.py,Authentication,Pixel 7,Android 14,0.81,1,authentication
+T0038,Concurrent Transaction Test 2,transaction/txn_limit.py,Transaction,Pixel 8,Android 15,2.5,1,transaction
+T0039,Transaction History Test 3,transaction/txn_history.py,Transaction,Samsung A34,Android 13,1.69,1,transaction
+T0040,Device Binding Test 3,device/device_trust.py,DeviceSecurity,iPhone 12,iOS 17,0.34,0,devicesecurity
+T0041,Profile Photo Test 2,profile/profile.py,Profile,Samsung A54,Android 14,1.17,0,profile
+T0042,Ticket Creation Test 3,support/ticket.py,CustomerSupport,Pixel 7,Android 14,0.29,0,customersupport
+T0043,High-Value Alert Test 5,fraud/fraud_engine.py,FraudDetection,iPhone 14,iOS 17,1.73,1,frauddetection
+T0044,UPI Payment Test 4,payment/payment_api.py,Payment,iPhone 15,iOS 18,0.84,1,payment
+T0045,UPI QR Test 2,upi/upi_validator.py,UPI,Pixel 8,Android 15,1.22,1,upi
+T0046,OTP Resend Test 3,otp/otp_validator.py,OTP,Samsung A54,Android 14,1.4,1,otp
+T0047,OTP Generation Test 4,otp/otp_generator.py,OTP,Pixel 8,Android 15,2.03,1,otp
+T0048,Transaction Limit Test 4,transaction/txn.py,Transaction,Samsung A54,Android 14,1.17,1,transaction
+T0049,Payment Flow Test 5,payment/payment_api.py,Payment,iPhone 15,iOS 18,3.84,1,payment
+T0050,Logout Test 3,auth/login.py,Authentication,Pixel 7,Android 14,2.97,1,authentication
+T0051,Widget Load Test 7,dashboard/widgets.py,Dashboard,Pixel 8,Android 15,2.38,0,dashboard
+T0052,OTP Validation Test 5,otp/otp_delivery.py,OTP,iPhone 15,iOS 18,4.02,1,otp
+T0053,OTP Expiry Test 6,otp/otp_validator.py,OTP,iPhone 14,iOS 17,2.17,1,otp
+T0054,Multi-device Login Test 4,auth/session.py,Authentication,iPhone 15,iOS 18,2.93,1,authentication
+T0055,Fraud Rule Test 6,fraud/fraud_engine.py,FraudDetection,iPhone 15,iOS 18,0.71,1,frauddetection
+T0056,Concurrent Transaction Test 5,transaction/txn_history.py,Transaction,Samsung A34,Android 13,3.04,1,transaction
+T0057,Login Test 5,auth/token_manager.py,Authentication,Pixel 7,Android 14,1.03,1,authentication
+T0058,Anomaly Detection Test 7,fraud/fraud_engine.py,FraudDetection,Pixel 8,Android 15,1.89,1,frauddetection
+T0059,Payment Failure Test 6,payment/payment.py,Payment,iPhone 12,iOS 17,0.77,1,payment
+T0060,Refund Test 7,payment/payment_controller.py,Payment,iPhone 15,iOS 18,1.23,1,payment
+T0061,High-Value Alert Test 8,fraud/rules.py,FraudDetection,Samsung A54,Android 14,3.59,1,frauddetection
+T0062,Profile Update Test 3,profile/profile.py,Profile,Samsung A54,Android 14,1.75,0,profile
+T0063,Chat Test 4,support/faq.py,CustomerSupport,Samsung A54,Android 14,0.65,0,customersupport
+T0064,Certificate Pinning Test 4,device/device_trust.py,DeviceSecurity,Pixel 8,Android 15,2.02,0,devicesecurity
+T0065,Unauthorized Access Test 2,auth/permissions.py,Authorization,Pixel 7,Android 14,3.05,1,authorization
+T0066,Payment Limit Test 8,payment/payment_api.py,Payment,Samsung A54,Android 14,3.8,1,payment
+T0067,KYC Verification Test 4,profile/kyc.py,Profile,iPhone 14,iOS 17,1.77,0,profile
+T0068,Analytics Test 8,dashboard/widgets.py,Dashboard,Pixel 7,Android 14,1.65,0,dashboard
+T0069,Push Notification Test 3,notification/email_notif.py,Notification,iPhone 15,iOS 18,0.87,0,notification
+T0070,Profile Photo Test 5,profile/kyc.py,Profile,Pixel 7,Android 14,1.38,0,profile
+T0071,RBAC Test 3,auth/role_check.py,Authorization,Samsung A54,Android 14,2.41,1,authorization
+T0072,Role Permission Test 4,auth/permissions.py,Authorization,Samsung A54,Android 14,4.86,1,authorization
+T0073,Statement Download Test 7,account/balance.py,Account,Samsung S24,Android 15,1.96,0,account
+T0074,SMS Notification Test 4,notification/email_notif.py,Notification,Samsung A34,Android 13,0.27,0,notification
+T0075,Profile Update Test 6,profile/profile_update.py,Profile,Samsung A54,Android 14,2.41,0,profile
+T0076,VPA Validation Test 3,upi/upi_handler.py,UPI,iPhone 14,iOS 17,4.71,1,upi
+T0077,UPI Transfer Test 4,upi/upi_handler.py,UPI,Pixel 7,Android 14,1.42,1,upi
+T0078,FAQ Search Test 5,support/faq.py,CustomerSupport,Pixel 8,Android 15,0.25,0,customersupport
+T0079,Fraud Rule Test 9,fraud/rules.py,FraudDetection,Samsung S24,Android 15,1.08,1,frauddetection
+T0080,Anomaly Detection Test 10,fraud/rules.py,FraudDetection,Samsung A34,Android 13,0.63,1,frauddetection
+T0081,Account Summary Test 8,account/balance.py,Account,iPhone 14,iOS 17,2.41,0,account
+T0082,Home Screen Test 9,dashboard/analytics.py,Dashboard,iPhone 12,iOS 17,1.8,0,dashboard
+T0083,UPI Collect Test 5,upi/upi_api.py,UPI,Samsung A34,Android 13,3.46,1,upi
+T0084,Liveness Detection Test 2,biometrics/liveness.py,Biometrics,iPhone 12,iOS 17,2.77,0,biometrics
+T0085,OTP Resend Test 7,otp/otp_validator.py,OTP,Pixel 8,Android 15,3.8,1,otp
+T0086,Face ID Test 3,biometrics/face_id.py,Biometrics,Samsung A34,Android 13,2.06,0,biometrics
+T0087,Ticket Creation Test 6,support/chat.py,CustomerSupport,iPhone 14,iOS 17,1.54,0,customersupport
+T0088,Balance Fetch Test 9,account/statement.py,Account,Pixel 7,Android 14,2.27,0,account
+T0089,UPI Payment Test 9,payment/payment.py,Payment,iPhone 12,iOS 17,0.56,1,payment
+T0090,OTP Generation Test 8,otp/otp_delivery.py,OTP,Samsung A34,Android 13,2.24,1,otp
+T0091,UPI QR Test 6,upi/upi_validator.py,UPI,iPhone 15,iOS 18,2.09,1,upi
+T0092,Root Detection Test 5,device/cert_pinning.py,DeviceSecurity,iPhone 12,iOS 17,0.27,0,devicesecurity
+T0093,Widget Load Test 10,dashboard/widgets.py,Dashboard,iPhone 12,iOS 17,0.58,0,dashboard
+T0094,Biometric Link Test 4,account/mpin.py,AccountSecurity,Samsung A34,Android 13,1.1,1,accountsecurity
+T0095,KYC Verification Test 7,profile/kyc.py,Profile,Pixel 8,Android 15,1.51,0,profile
+T0096,Transaction History Test 6,transaction/txn.py,Transaction,iPhone 14,iOS 17,1.51,1,transaction
+T0097,Email Alert Test 5,notification/sms.py,Notification,iPhone 12,iOS 17,1.03,0,notification
+T0098,High-Value Alert Test 11,fraud/fraud_engine.py,FraudDetection,iPhone 14,iOS 17,0.94,1,frauddetection
+T0099,OTP Validation Test 9,otp/otp_delivery.py,OTP,Pixel 8,Android 15,4.93,1,otp
+T0100,Security Question Test 5,account/security.py,AccountSecurity,iPhone 14,iOS 17,0.79,1,accountsecurity
+T0101,Analytics Test 11,dashboard/home.py,Dashboard,Pixel 8,Android 15,0.47,0,dashboard
+T0102,VPA Validation Test 7,upi/upi_api.py,UPI,Samsung A54,Android 14,3.27,1,upi
+T0103,Fraud Rule Test 12,fraud/rules.py,FraudDetection,Samsung A34,Android 13,2.26,1,frauddetection
+T0104,Anomaly Detection Test 13,fraud/fraud_engine.py,FraudDetection,iPhone 12,iOS 17,1.92,1,frauddetection
+T0105,UPI Transfer Test 8,upi/upi_handler.py,UPI,Samsung S24,Android 15,3.52,1,upi
+T0106,Push Notification Test 6,notification/push.py,Notification,Samsung S24,Android 15,1.68,0,notification
+T0107,Device Binding Test 6,device/device_trust.py,DeviceSecurity,Samsung A54,Android 14,2.59,0,devicesecurity
+T0108,Chat Test 7,support/chat.py,CustomerSupport,Pixel 8,Android 15,0.42,0,customersupport
+T0109,Certificate Pinning Test 7,device/device_bind.py,DeviceSecurity,Samsung A54,Android 14,2.19,0,devicesecurity
+T0110,Session Expiry Test 6,auth/login.py,Authentication,Pixel 8,Android 15,2.2,1,authentication
+T0111,High-Value Alert Test 14,fraud/anomaly.py,FraudDetection,Pixel 8,Android 15,1.19,1,frauddetection
+T0112,SMS Notification Test 7,notification/email_notif.py,Notification,Samsung S24,Android 15,1.58,0,notification
+T0113,Policy Enforcement Test 5,auth/role_check.py,Authorization,Pixel 7,Android 14,0.6,1,authorization
+T0114,MPIN Change Test 6,account/mpin.py,AccountSecurity,Samsung S24,Android 15,2.04,1,accountsecurity
+T0115,Payment Flow Test 10,payment/payment_api.py,Payment,Samsung A54,Android 14,2.33,1,payment
+T0116,Transaction Limit Test 7,transaction/txn.py,Transaction,Samsung A34,Android 13,2.98,1,transaction
+T0117,Email Alert Test 8,notification/email_notif.py,Notification,Samsung S24,Android 15,1.28,0,notification
+T0118,Profile Photo Test 8,profile/profile.py,Profile,Samsung A34,Android 13,0.58,0,profile
+T0119,Home Screen Test 12,dashboard/home.py,Dashboard,Samsung A34,Android 13,2.82,0,dashboard
+T0120,UPI Collect Test 9,upi/upi_validator.py,UPI,Pixel 8,Android 15,2.16,1,upi
+T0121,Statement Download Test 10,account/statement.py,Account,Samsung A54,Android 14,1.25,0,account
+T0122,FAQ Search Test 8,support/ticket.py,CustomerSupport,Samsung S24,Android 15,1.5,0,customersupport
+T0123,Push Notification Test 9,notification/push.py,Notification,Pixel 7,Android 14,2.05,0,notification
+T0124,Fraud Rule Test 15,fraud/fraud_engine.py,FraudDetection,Pixel 7,Android 14,4.8,1,frauddetection
+T0125,Root Detection Test 8,device/device_bind.py,DeviceSecurity,iPhone 12,iOS 17,1.98,0,devicesecurity
+T0126,Account Summary Test 11,account/balance.py,Account,Samsung A34,Android 13,0.57,0,account
+T0127,SMS Notification Test 10,notification/push.py,Notification,Samsung S24,Android 15,1.98,0,notification
+T0128,Balance Fetch Test 12,account/account.py,Account,Samsung A34,Android 13,0.88,0,account
+T0129,Unauthorized Access Test 6,auth/policy.py,Authorization,iPhone 15,iOS 18,3.01,1,authorization
+T0130,Biometric Link Test 7,account/biometric_link.py,AccountSecurity,Samsung A34,Android 13,2.26,1,accountsecurity
+T0131,Token Refresh Test 7,auth/session.py,Authentication,iPhone 14,iOS 17,2.68,1,authentication
+T0132,RBAC Test 7,auth/role_check.py,Authorization,iPhone 12,iOS 17,0.71,1,authorization
+T0133,OTP Expiry Test 10,otp/otp_delivery.py,OTP,Samsung A54,Android 14,4.61,1,otp
+T0134,Role Permission Test 8,auth/policy.py,Authorization,Samsung A54,Android 14,1.29,1,authorization
+T0135,Logout Test 8,auth/login.py,Authentication,Samsung S24,Android 15,4.76,1,authentication
+T0136,Ticket Creation Test 9,support/ticket.py,CustomerSupport,Samsung A34,Android 13,0.54,0,customersupport
+T0137,Email Alert Test 11,notification/sms.py,Notification,Pixel 8,Android 15,1.55,0,notification
+T0138,Anomaly Detection Test 16,fraud/fraud_engine.py,FraudDetection,iPhone 15,iOS 18,0.61,1,frauddetection
+T0139,Widget Load Test 13,dashboard/widgets.py,Dashboard,Pixel 7,Android 14,1.07,0,dashboard
+T0140,Policy Enforcement Test 9,auth/permissions.py,Authorization,iPhone 14,iOS 17,2.53,1,authorization
+T0141,Profile Update Test 9,profile/kyc.py,Profile,Samsung S24,Android 15,1.97,0,profile
+T0142,Push Notification Test 12,notification/sms.py,Notification,Samsung A54,Android 14,1.35,0,notification
+T0143,OTP Resend Test 11,otp/otp_validator.py,OTP,iPhone 15,iOS 18,1.51,1,otp
+T0144,Multi-device Login Test 9,auth/session.py,Authentication,iPhone 15,iOS 18,3.64,1,authentication
+T0145,Chat Test 10,support/chat.py,CustomerSupport,Pixel 7,Android 14,1.9,0,customersupport
+T0146,Unauthorized Access Test 10,auth/policy.py,Authorization,Samsung A54,Android 14,4.95,1,authorization
+T0147,Analytics Test 14,dashboard/widgets.py,Dashboard,iPhone 12,iOS 17,2.02,0,dashboard
+T0148,Payment Failure Test 11,payment/payment_api.py,Payment,iPhone 14,iOS 17,1.05,1,payment
+T0149,Statement Download Test 13,account/account.py,Account,Pixel 7,Android 14,0.73,0,account
+T0150,Account Summary Test 14,account/statement.py,Account,Pixel 8,Android 15,0.73,0,account
+T0151,KYC Verification Test 10,profile/profile_update.py,Profile,iPhone 15,iOS 18,1.78,0,profile
+T0152,Balance Fetch Test 15,account/balance.py,Account,iPhone 14,iOS 17,0.35,0,account
+T0153,Home Screen Test 15,dashboard/analytics.py,Dashboard,Pixel 7,Android 14,1.23,0,dashboard
+T0154,Login Test 10,auth/session.py,Authentication,Pixel 8,Android 15,2.95,1,authentication
+T0155,Widget Load Test 16,dashboard/home.py,Dashboard,iPhone 12,iOS 17,1.42,0,dashboard
+T0156,OTP Generation Test 12,otp/otp_generator.py,OTP,Pixel 7,Android 14,1.2,1,otp
+T0157,High-Value Alert Test 17,fraud/anomaly.py,FraudDetection,Pixel 8,Android 15,4.36,1,frauddetection
+T0158,Concurrent Transaction Test 8,transaction/txn_history.py,Transaction,iPhone 14,iOS 17,2.7,1,transaction
+T0159,Analytics Test 17,dashboard/widgets.py,Dashboard,iPhone 14,iOS 17,0.42,0,dashboard
+T0160,Security Question Test 8,account/security.py,AccountSecurity,iPhone 12,iOS 17,3.93,1,accountsecurity
+T0161,SMS Notification Test 13,notification/push.py,Notification,iPhone 15,iOS 18,0.95,0,notification
+T0162,Transaction History Test 9,transaction/txn_history.py,Transaction,iPhone 15,iOS 18,2.98,1,transaction
+T0163,UPI QR Test 10,upi/upi_api.py,UPI,iPhone 15,iOS 18,2.02,1,upi
+T0164,RBAC Test 11,auth/role_check.py,Authorization,iPhone 14,iOS 17,4.81,1,authorization
+T0165,Device Binding Test 9,device/cert_pinning.py,DeviceSecurity,Samsung A54,Android 14,1.4,0,devicesecurity
+T0166,Home Screen Test 18,dashboard/home.py,Dashboard,iPhone 15,iOS 18,1.49,0,dashboard
+T0167,Statement Download Test 16,account/balance.py,Account,Pixel 7,Android 14,2.4,0,account
+T0168,Certificate Pinning Test 10,device/device_trust.py,DeviceSecurity,iPhone 12,iOS 17,2.57,0,devicesecurity
+T0169,Session Expiry Test 11,auth/token_manager.py,Authentication,Samsung A54,Android 14,1.14,1,authentication
+T0170,Fraud Rule Test 18,fraud/rules.py,FraudDetection,Pixel 8,Android 15,0.62,1,frauddetection
+T0171,Widget Load Test 19,dashboard/widgets.py,Dashboard,Samsung S24,Android 15,0.76,0,dashboard
+T0172,Fingerprint Test 4,biometrics/fingerprint.py,Biometrics,iPhone 15,iOS 18,2.53,0,biometrics
+T0173,Account Summary Test 17,account/account.py,Account,Samsung A54,Android 14,2.81,0,account
+T0174,FAQ Search Test 11,support/ticket.py,CustomerSupport,Samsung A54,Android 14,0.84,0,customersupport
+T0175,Anomaly Detection Test 19,fraud/fraud_engine.py,FraudDetection,iPhone 12,iOS 17,3.9,1,frauddetection
+T0176,Root Detection Test 11,device/device_trust.py,DeviceSecurity,Samsung S24,Android 15,0.58,0,devicesecurity
+T0177,Email Alert Test 14,notification/email_notif.py,Notification,iPhone 15,iOS 18,1.92,0,notification
+T0178,Transaction Limit Test 10,transaction/txn.py,Transaction,Pixel 7,Android 14,4.42,1,transaction
+T0179,MPIN Change Test 9,account/biometric_link.py,AccountSecurity,Pixel 7,Android 14,2.46,1,accountsecurity
+T0180,Ticket Creation Test 12,support/chat.py,CustomerSupport,iPhone 15,iOS 18,0.79,0,customersupport
+T0181,Role Permission Test 12,auth/role_check.py,Authorization,Samsung A54,Android 14,1.03,1,authorization
+T0182,Analytics Test 20,dashboard/home.py,Dashboard,iPhone 15,iOS 18,0.51,0,dashboard
+T0183,Policy Enforcement Test 13,auth/policy.py,Authorization,Samsung A34,Android 13,4.68,1,authorization
+T0184,Refund Test 12,payment/payment_screen.py,Payment,Pixel 8,Android 15,2.69,1,payment
+T0185,Biometric Link Test 10,account/security.py,AccountSecurity,iPhone 15,iOS 18,4.1,1,accountsecurity
+T0186,Home Screen Test 21,dashboard/analytics.py,Dashboard,Pixel 8,Android 15,2.3,0,dashboard
+T0187,High-Value Alert Test 20,fraud/rules.py,FraudDetection,Samsung A54,Android 14,3.7,1,frauddetection
+T0188,OTP Validation Test 13,otp/otp_generator.py,OTP,iPhone 15,iOS 18,2.52,1,otp
+T0189,Token Refresh Test 12,auth/login.py,Authentication,Pixel 7,Android 14,0.91,1,authentication
+T0190,Concurrent Transaction Test 11,transaction/txn.py,Transaction,iPhone 14,iOS 17,1.96,1,transaction
+T0191,Liveness Detection Test 5,biometrics/face_id.py,Biometrics,Pixel 7,Android 14,1.75,0,biometrics
+T0192,Payment Limit Test 13,payment/payment_api.py,Payment,Samsung S24,Android 15,3.14,1,payment
+T0193,Face ID Test 6,biometrics/liveness.py,Biometrics,Samsung A54,Android 14,2.3,0,biometrics
+T0194,Fingerprint Test 7,biometrics/fingerprint.py,Biometrics,iPhone 15,iOS 18,0.66,0,biometrics
+T0195,Chat Test 13,support/chat.py,CustomerSupport,Samsung S24,Android 15,1.2,0,customersupport
+T0196,UPI Payment Test 14,payment/payment_screen.py,Payment,iPhone 14,iOS 17,4.93,1,payment
+T0197,Device Binding Test 12,device/cert_pinning.py,DeviceSecurity,Samsung A34,Android 13,2.78,0,devicesecurity
+T0198,Balance Fetch Test 18,account/account.py,Account,Samsung A54,Android 14,1.36,0,account
+T0199,OTP Expiry Test 14,otp/otp_delivery.py,OTP,Pixel 8,Android 15,3.77,1,otp
+T0200,Profile Photo Test 11,profile/profile.py,Profile,iPhone 15,iOS 18,1.4,0,profile
+T0201,Profile Update Test 12,profile/profile.py,Profile,Samsung A34,Android 13,1.14,0,profile
+T0202,Security Question Test 11,account/security.py,AccountSecurity,Pixel 8,Android 15,0.54,1,accountsecurity
+T0203,Certificate Pinning Test 13,device/device_trust.py,DeviceSecurity,Samsung S24,Android 15,0.65,0,devicesecurity
+T0204,Widget Load Test 22,dashboard/widgets.py,Dashboard,iPhone 14,iOS 17,2.77,0,dashboard
+T0205,FAQ Search Test 14,support/faq.py,CustomerSupport,Pixel 7,Android 14,1.47,0,customersupport
+T0206,Fraud Rule Test 21,fraud/fraud_engine.py,FraudDetection,iPhone 15,iOS 18,4.6,1,frauddetection
+T0207,Root Detection Test 14,device/device_bind.py,DeviceSecurity,iPhone 14,iOS 17,0.41,0,devicesecurity
+T0208,Unauthorized Access Test 14,auth/policy.py,Authorization,Samsung S24,Android 15,4.53,1,authorization
+T0209,OTP Resend Test 15,otp/otp_validator.py,OTP,Pixel 8,Android 15,1.62,1,otp
+T0210,Liveness Detection Test 8,biometrics/liveness.py,Biometrics,Samsung A54,Android 14,2.03,0,biometrics
+T0211,Anomaly Detection Test 22,fraud/fraud_engine.py,FraudDetection,iPhone 14,iOS 17,2.16,1,frauddetection
+T0212,Device Binding Test 15,device/device_trust.py,DeviceSecurity,Samsung A34,Android 13,2.09,0,devicesecurity
+T0213,RBAC Test 15,auth/permissions.py,Authorization,iPhone 15,iOS 18,0.95,1,authorization
+T0214,Logout Test 13,auth/login.py,Authentication,Samsung A34,Android 13,4.25,1,authentication
+T0215,VPA Validation Test 11,upi/upi_validator.py,UPI,Pixel 8,Android 15,4.71,1,upi
+T0216,Push Notification Test 15,notification/sms.py,Notification,Pixel 8,Android 15,1.63,0,notification
+T0217,Role Permission Test 16,auth/policy.py,Authorization,Pixel 7,Android 14,3.9,1,authorization
+T0218,Face ID Test 9,biometrics/face_id.py,Biometrics,iPhone 15,iOS 18,2.26,0,biometrics
+T0219,Policy Enforcement Test 17,auth/policy.py,Authorization,iPhone 15,iOS 18,4.71,1,authorization
+T0220,SMS Notification Test 16,notification/email_notif.py,Notification,Pixel 8,Android 15,1.91,0,notification
+T0221,Transaction History Test 12,transaction/txn.py,Transaction,Samsung A54,Android 14,3.47,1,transaction
+T0222,Transaction Limit Test 13,transaction/txn_limit.py,Transaction,Samsung A34,Android 13,4.62,1,transaction
+T0223,MPIN Change Test 12,account/biometric_link.py,AccountSecurity,Samsung A34,Android 13,4.13,1,accountsecurity
+T0224,Multi-device Login Test 14,auth/session.py,Authentication,Samsung A34,Android 13,3.73,1,authentication
+T0225,High-Value Alert Test 23,fraud/rules.py,FraudDetection,Pixel 7,Android 14,4.95,1,frauddetection
+T0226,Certificate Pinning Test 16,device/device_bind.py,DeviceSecurity,Samsung A34,Android 13,2.56,0,devicesecurity
+T0227,Statement Download Test 19,account/account.py,Account,iPhone 14,iOS 17,2.47,0,account
+T0228,Ticket Creation Test 15,support/chat.py,CustomerSupport,Samsung A34,Android 13,0.41,0,customersupport
+T0229,Chat Test 16,support/ticket.py,CustomerSupport,Pixel 7,Android 14,1.99,0,customersupport
+T0230,Fingerprint Test 10,biometrics/face_id.py,Biometrics,Samsung A54,Android 14,2.32,0,biometrics
+T0231,Login Test 15,auth/token_manager.py,Authentication,Samsung A54,Android 14,1.33,1,authentication
+T0232,Concurrent Transaction Test 14,transaction/txn_limit.py,Transaction,iPhone 15,iOS 18,0.59,1,transaction
+T0233,Account Summary Test 20,account/balance.py,Account,Pixel 7,Android 14,1.5,0,account
+T0234,UPI Transfer Test 12,upi/upi_api.py,UPI,iPhone 12,iOS 17,3.89,1,upi
+T0235,Balance Fetch Test 21,account/account.py,Account,Samsung A54,Android 14,2.77,0,account
+T0236,Statement Download Test 22,account/balance.py,Account,Samsung A34,Android 13,1.5,0,account
+T0237,Account Summary Test 23,account/balance.py,Account,Samsung A34,Android 13,2.32,0,account
+T0238,Fraud Rule Test 24,fraud/anomaly.py,FraudDetection,iPhone 14,iOS 17,3.34,1,frauddetection
+T0239,Session Expiry Test 16,auth/session.py,Authentication,Pixel 7,Android 14,1.75,1,authentication
+T0240,UPI Collect Test 13,upi/upi_api.py,UPI,Samsung S24,Android 15,3.48,1,upi
+T0241,Balance Fetch Test 24,account/balance.py,Account,Samsung A34,Android 13,2.83,0,account
+T0242,Statement Download Test 25,account/balance.py,Account,Samsung A34,Android 13,2.41,0,account
+T0243,Token Refresh Test 17,auth/token_manager.py,Authentication,iPhone 15,iOS 18,1.22,1,authentication
+T0244,Anomaly Detection Test 25,fraud/fraud_engine.py,FraudDetection,Samsung A54,Android 14,4.32,1,frauddetection
+T0245,Biometric Link Test 13,account/security.py,AccountSecurity,iPhone 15,iOS 18,2.35,1,accountsecurity
+T0246,OTP Generation Test 16,otp/otp_validator.py,OTP,Pixel 8,Android 15,3.36,1,otp
+T0247,Transaction History Test 15,transaction/txn_limit.py,Transaction,Pixel 7,Android 14,0.62,1,transaction
+T0248,Analytics Test 23,dashboard/analytics.py,Dashboard,iPhone 12,iOS 17,0.44,0,dashboard
+T0249,Liveness Detection Test 11,biometrics/fingerprint.py,Biometrics,Samsung A54,Android 14,2.06,0,biometrics
+T0250,Root Detection Test 17,device/cert_pinning.py,DeviceSecurity,Samsung A34,Android 13,0.82,0,devicesecurity
+T0251,Security Question Test 14,account/security.py,AccountSecurity,iPhone 12,iOS 17,1.2,1,accountsecurity
+T0252,Unauthorized Access Test 18,auth/role_check.py,Authorization,Pixel 7,Android 14,0.6,1,authorization
+T0253,OTP Validation Test 17,otp/otp_delivery.py,OTP,Samsung S24,Android 15,0.73,1,otp
+T0254,RBAC Test 19,auth/policy.py,Authorization,Samsung S24,Android 15,4.45,1,authorization
+T0255,High-Value Alert Test 26,fraud/anomaly.py,FraudDetection,Pixel 7,Android 14,0.86,1,frauddetection
+T0256,Face ID Test 12,biometrics/fingerprint.py,Biometrics,iPhone 14,iOS 17,0.57,0,biometrics
+T0257,UPI QR Test 14,upi/upi_validator.py,UPI,iPhone 14,iOS 17,2.63,1,upi
+T0258,OTP Expiry Test 18,otp/otp_generator.py,OTP,iPhone 14,iOS 17,4.54,1,otp
+T0259,Account Summary Test 26,account/statement.py,Account,iPhone 14,iOS 17,2.69,0,account
+T0260,Logout Test 18,auth/token_manager.py,Authentication,Samsung A34,Android 13,4.76,1,authentication
+T0261,Multi-device Login Test 19,auth/login.py,Authentication,iPhone 14,iOS 17,4.09,1,authentication
+T0262,OTP Resend Test 19,otp/otp_generator.py,OTP,Pixel 8,Android 15,4.75,1,otp
+T0263,Email Alert Test 17,notification/sms.py,Notification,iPhone 12,iOS 17,2.55,0,notification
+T0264,Payment Flow Test 15,payment/payment_controller.py,Payment,Samsung A34,Android 13,2.24,1,payment
+T0265,Home Screen Test 24,dashboard/analytics.py,Dashboard,Samsung A34,Android 13,0.47,0,dashboard
+T0266,Widget Load Test 25,dashboard/widgets.py,Dashboard,Pixel 7,Android 14,2.83,0,dashboard
+T0267,Transaction Limit Test 16,transaction/txn_limit.py,Transaction,Pixel 7,Android 14,4.62,1,transaction
+T0268,OTP Generation Test 20,otp/otp_delivery.py,OTP,iPhone 14,iOS 17,0.78,1,otp
+T0269,Analytics Test 26,dashboard/home.py,Dashboard,iPhone 15,iOS 18,0.6,0,dashboard
+T0270,Push Notification Test 18,notification/push.py,Notification,Samsung A34,Android 13,0.94,0,notification
+T0271,Payment Failure Test 16,payment/payment_screen.py,Payment,Pixel 8,Android 15,4.99,1,payment
+T0272,Concurrent Transaction Test 17,transaction/txn_limit.py,Transaction,Samsung S24,Android 15,4.9,1,transaction
+T0273,SMS Notification Test 19,notification/sms.py,Notification,Samsung S24,Android 15,1.13,0,notification
+T0274,MPIN Change Test 15,account/biometric_link.py,AccountSecurity,iPhone 15,iOS 18,2.98,1,accountsecurity
+T0275,Login Test 20,auth/session.py,Authentication,Pixel 8,Android 15,2.93,1,authentication
+T0276,OTP Validation Test 21,otp/otp_delivery.py,OTP,Samsung A34,Android 13,3.85,1,otp
+T0277,VPA Validation Test 15,upi/upi_validator.py,UPI,Pixel 7,Android 14,4.8,1,upi
+T0278,Refund Test 17,payment/payment_controller.py,Payment,Samsung S24,Android 15,2.84,1,payment
+T0279,FAQ Search Test 17,support/faq.py,CustomerSupport,Samsung S24,Android 15,1.11,0,customersupport
+T0280,Home Screen Test 27,dashboard/analytics.py,Dashboard,iPhone 14,iOS 17,1.69,0,dashboard
+T0281,Device Binding Test 18,device/device_bind.py,DeviceSecurity,Samsung A54,Android 14,0.39,0,devicesecurity
+T0282,Fraud Rule Test 27,fraud/rules.py,FraudDetection,Samsung A34,Android 13,0.56,1,frauddetection
+T0283,OTP Expiry Test 22,otp/otp_validator.py,OTP,Pixel 8,Android 15,3.18,1,otp
+T0284,Payment Limit Test 18,payment/payment.py,Payment,iPhone 14,iOS 17,3.74,1,payment
+T0285,Transaction History Test 18,transaction/txn.py,Transaction,iPhone 15,iOS 18,4.21,1,transaction
+T0286,UPI Payment Test 19,payment/payment.py,Payment,Pixel 7,Android 14,3.89,1,payment
+T0287,Biometric Link Test 16,account/mpin.py,AccountSecurity,iPhone 14,iOS 17,4.07,1,accountsecurity
+T0288,Widget Load Test 28,dashboard/home.py,Dashboard,Pixel 8,Android 15,2.74,0,dashboard
+T0289,Anomaly Detection Test 28,fraud/fraud_engine.py,FraudDetection,iPhone 12,iOS 17,2.48,1,frauddetection
+T0290,Ticket Creation Test 18,support/faq.py,CustomerSupport,iPhone 15,iOS 18,2.8,0,customersupport
+T0291,Security Question Test 17,account/biometric_link.py,AccountSecurity,Samsung S24,Android 15,3.4,1,accountsecurity
+T0292,KYC Verification Test 13,profile/kyc.py,Profile,Samsung A34,Android 13,1.34,0,profile
+T0293,Session Expiry Test 21,auth/session.py,Authentication,Pixel 7,Android 14,2.75,1,authentication
+T0294,Fingerprint Test 13,biometrics/liveness.py,Biometrics,Samsung A34,Android 13,0.82,0,biometrics
+T0295,Transaction Limit Test 19,transaction/txn.py,Transaction,Samsung S24,Android 15,4.4,1,transaction
+T0296,Role Permission Test 20,auth/policy.py,Authorization,iPhone 12,iOS 17,4.28,1,authorization
+T0297,Profile Photo Test 14,profile/kyc.py,Profile,iPhone 12,iOS 17,2.94,0,profile
+T0298,Concurrent Transaction Test 20,transaction/txn.py,Transaction,Pixel 7,Android 14,3.8,1,transaction
+T0299,UPI Transfer Test 16,upi/upi_validator.py,UPI,Pixel 8,Android 15,4.8,1,upi
+T0300,Payment Flow Test 20,payment/payment_api.py,Payment,iPhone 14,iOS 17,2.71,1,payment
+T0301,Policy Enforcement Test 21,auth/policy.py,Authorization,Pixel 8,Android 15,3.69,1,authorization
+T0302,UPI Collect Test 17,upi/upi_api.py,UPI,Pixel 8,Android 15,1.74,1,upi
+T0303,Liveness Detection Test 14,biometrics/liveness.py,Biometrics,Samsung S24,Android 15,2.88,0,biometrics
+T0304,High-Value Alert Test 29,fraud/rules.py,FraudDetection,Pixel 7,Android 14,3.03,1,frauddetection
+T0305,Balance Fetch Test 27,account/statement.py,Account,iPhone 15,iOS 18,2.79,0,account
+T0306,Token Refresh Test 22,auth/session.py,Authentication,Pixel 8,Android 15,1.37,1,authentication
+T0307,Analytics Test 29,dashboard/widgets.py,Dashboard,Samsung A54,Android 14,1.95,0,dashboard
+T0308,Logout Test 23,auth/token_manager.py,Authentication,iPhone 14,iOS 17,1.22,1,authentication
+T0309,Certificate Pinning Test 19,device/cert_pinning.py,DeviceSecurity,Pixel 8,Android 15,2.34,0,devicesecurity
+T0310,Fraud Rule Test 30,fraud/anomaly.py,FraudDetection,Samsung S24,Android 15,3.5,1,frauddetection
+T0311,Home Screen Test 30,dashboard/home.py,Dashboard,Pixel 8,Android 15,1.38,0,dashboard
+T0312,Payment Failure Test 21,payment/payment_screen.py,Payment,Samsung S24,Android 15,0.81,1,payment
+T0313,Face ID Test 15,biometrics/fingerprint.py,Biometrics,Samsung A34,Android 13,2.95,0,biometrics
+T0314,OTP Resend Test 23,otp/otp_generator.py,OTP,Samsung A54,Android 14,3.64,1,otp
+T0315,Profile Update Test 15,profile/profile_update.py,Profile,iPhone 12,iOS 17,1.22,0,profile
+T0316,Chat Test 19,support/ticket.py,CustomerSupport,iPhone 15,iOS 18,1.72,0,customersupport
+T0317,OTP Generation Test 24,otp/otp_validator.py,OTP,Samsung A54,Android 14,4.59,1,otp
+T0318,Refund Test 22,payment/payment_screen.py,Payment,Pixel 7,Android 14,1.24,1,payment
+T0319,Payment Limit Test 23,payment/payment_controller.py,Payment,iPhone 14,iOS 17,1.78,1,payment
+T0320,MPIN Change Test 18,account/security.py,AccountSecurity,iPhone 15,iOS 18,2.33,1,accountsecurity
+T0321,KYC Verification Test 16,profile/profile.py,Profile,Samsung A34,Android 13,2.77,0,profile
+T0322,Statement Download Test 28,account/statement.py,Account,iPhone 14,iOS 17,0.76,0,account
+T0323,Email Alert Test 20,notification/sms.py,Notification,iPhone 12,iOS 17,2.83,0,notification
+T0324,Fingerprint Test 16,biometrics/liveness.py,Biometrics,Pixel 8,Android 15,1.78,0,biometrics
+T0325,Root Detection Test 20,device/device_bind.py,DeviceSecurity,Pixel 7,Android 14,2.64,0,devicesecurity
+T0326,OTP Validation Test 25,otp/otp_generator.py,OTP,iPhone 15,iOS 18,3.18,1,otp
+T0327,FAQ Search Test 20,support/ticket.py,CustomerSupport,Pixel 7,Android 14,0.72,0,customersupport
+T0328,Biometric Link Test 19,account/security.py,AccountSecurity,iPhone 12,iOS 17,3.69,1,accountsecurity
+T0329,OTP Expiry Test 26,otp/otp_validator.py,OTP,iPhone 15,iOS 18,0.52,1,otp
+T0330,Transaction History Test 21,transaction/txn_limit.py,Transaction,Samsung A54,Android 14,1.77,1,transaction
+T0331,OTP Resend Test 27,otp/otp_delivery.py,OTP,Samsung A54,Android 14,2.55,1,otp
+T0332,Anomaly Detection Test 31,fraud/rules.py,FraudDetection,Samsung S24,Android 15,1.82,1,frauddetection
+T0333,Device Binding Test 21,device/device_bind.py,DeviceSecurity,Samsung S24,Android 15,1.34,0,devicesecurity
+T0334,Transaction Limit Test 22,transaction/txn_history.py,Transaction,Samsung A34,Android 13,2.75,1,transaction
+T0335,Concurrent Transaction Test 23,transaction/txn.py,Transaction,Pixel 8,Android 15,1.96,1,transaction
+T0336,Multi-device Login Test 24,auth/login.py,Authentication,Samsung A54,Android 14,2.99,1,authentication
+T0337,Account Summary Test 29,account/statement.py,Account,iPhone 12,iOS 17,2.65,0,account
+T0338,Transaction History Test 24,transaction/txn_limit.py,Transaction,Pixel 7,Android 14,1.7,1,transaction
+T0339,Profile Photo Test 17,profile/profile_update.py,Profile,Samsung S24,Android 15,1.21,0,profile
+T0340,Push Notification Test 21,notification/email_notif.py,Notification,iPhone 14,iOS 17,0.31,0,notification
+T0341,High-Value Alert Test 32,fraud/fraud_engine.py,FraudDetection,Samsung A34,Android 13,2.65,1,frauddetection
+T0342,Ticket Creation Test 21,support/faq.py,CustomerSupport,Samsung A54,Android 14,0.96,0,customersupport
+T0343,Chat Test 22,support/chat.py,CustomerSupport,Pixel 7,Android 14,2.34,0,customersupport
+T0344,UPI Payment Test 24,payment/payment_api.py,Payment,Pixel 8,Android 15,4.68,1,payment
+T0345,Security Question Test 20,account/mpin.py,AccountSecurity,Samsung A34,Android 13,3.84,1,accountsecurity
+T0346,Transaction Limit Test 25,transaction/txn.py,Transaction,iPhone 12,iOS 17,0.55,1,transaction
+T0347,Profile Update Test 18,profile/profile.py,Profile,Pixel 8,Android 15,2.96,0,profile
+T0348,KYC Verification Test 19,profile/profile_update.py,Profile,iPhone 15,iOS 18,2.18,0,profile
+T0349,Balance Fetch Test 30,account/account.py,Account,iPhone 14,iOS 17,2.36,0,account
+T0350,Fraud Rule Test 33,fraud/fraud_engine.py,FraudDetection,iPhone 12,iOS 17,2.75,1,frauddetection
+T0351,UPI QR Test 18,upi/upi_handler.py,UPI,iPhone 12,iOS 17,2.09,1,upi
+T0352,OTP Generation Test 28,otp/otp_delivery.py,OTP,Pixel 7,Android 14,1.71,1,otp
+T0353,Widget Load Test 31,dashboard/analytics.py,Dashboard,Samsung S24,Android 15,2.2,0,dashboard
+T0354,Liveness Detection Test 17,biometrics/face_id.py,Biometrics,Samsung A34,Android 13,2.56,0,biometrics
+T0355,Unauthorized Access Test 22,auth/policy.py,Authorization,iPhone 12,iOS 17,2.58,1,authorization
+T0356,Profile Photo Test 20,profile/kyc.py,Profile,Pixel 8,Android 15,1.29,0,profile
+T0357,RBAC Test 23,auth/policy.py,Authorization,Samsung A34,Android 13,1.0,1,authorization
+T0358,Payment Flow Test 25,payment/payment_api.py,Payment,iPhone 14,iOS 17,4.91,1,payment
+T0359,Profile Update Test 21,profile/profile_update.py,Profile,Pixel 7,Android 14,1.77,0,profile
+T0360,Statement Download Test 31,account/account.py,Account,iPhone 14,iOS 17,0.88,0,account
+T0361,KYC Verification Test 22,profile/profile.py,Profile,Samsung A54,Android 14,2.32,0,profile
+T0362,Face ID Test 18,biometrics/face_id.py,Biometrics,iPhone 15,iOS 18,2.73,0,biometrics
+T0363,Role Permission Test 24,auth/permissions.py,Authorization,Pixel 8,Android 15,3.18,1,authorization
+T0364,VPA Validation Test 19,upi/upi_api.py,UPI,Pixel 8,Android 15,1.07,1,upi
+T0365,Concurrent Transaction Test 26,transaction/txn_history.py,Transaction,Samsung A34,Android 13,0.66,1,transaction
+T0366,Analytics Test 32,dashboard/widgets.py,Dashboard,iPhone 14,iOS 17,2.2,0,dashboard
+T0367,Policy Enforcement Test 25,auth/role_check.py,Authorization,Samsung S24,Android 15,4.87,1,authorization
+T0368,Profile Photo Test 23,profile/profile.py,Profile,Samsung A34,Android 13,0.55,0,profile
+T0369,Unauthorized Access Test 26,auth/policy.py,Authorization,iPhone 15,iOS 18,3.7,1,authorization
+T0370,Profile Update Test 24,profile/profile.py,Profile,iPhone 15,iOS 18,0.82,0,profile
+T0371,UPI Transfer Test 20,upi/upi_handler.py,UPI,Pixel 7,Android 14,1.31,1,upi
+T0372,Anomaly Detection Test 34,fraud/rules.py,FraudDetection,Pixel 7,Android 14,0.73,1,frauddetection
+T0373,RBAC Test 27,auth/permissions.py,Authorization,iPhone 12,iOS 17,4.56,1,authorization
+T0374,UPI Collect Test 21,upi/upi_handler.py,UPI,iPhone 12,iOS 17,1.73,1,upi
+T0375,MPIN Change Test 21,account/security.py,AccountSecurity,Pixel 7,Android 14,2.35,1,accountsecurity
+T0376,Transaction History Test 27,transaction/txn_limit.py,Transaction,Samsung A54,Android 14,4.76,1,transaction
+T0377,High-Value Alert Test 35,fraud/rules.py,FraudDetection,Samsung A54,Android 14,1.34,1,frauddetection
+T0378,Fraud Rule Test 36,fraud/fraud_engine.py,FraudDetection,iPhone 15,iOS 18,0.53,1,frauddetection
+T0379,Payment Failure Test 26,payment/payment_api.py,Payment,Samsung A34,Android 13,4.6,1,payment
+T0380,SMS Notification Test 22,notification/sms.py,Notification,iPhone 12,iOS 17,0.96,0,notification
+T0381,Biometric Link Test 22,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,3.21,1,accountsecurity
+T0382,Fingerprint Test 19,biometrics/face_id.py,Biometrics,iPhone 12,iOS 17,2.5,0,biometrics
+T0383,KYC Verification Test 25,profile/profile_update.py,Profile,Samsung A54,Android 14,0.86,0,profile
+T0384,Email Alert Test 23,notification/sms.py,Notification,iPhone 12,iOS 17,0.47,0,notification
+T0385,OTP Validation Test 29,otp/otp_validator.py,OTP,iPhone 14,iOS 17,4.59,1,otp
+T0386,OTP Expiry Test 30,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,4.92,1,otp
+T0387,Account Summary Test 32,account/balance.py,Account,Pixel 8,Android 15,2.09,0,account
+T0388,Refund Test 27,payment/payment.py,Payment,Pixel 8,Android 15,4.49,1,payment
+T0389,Certificate Pinning Test 22,device/cert_pinning.py,DeviceSecurity,iPhone 15,iOS 18,2.76,0,devicesecurity
+T0390,Balance Fetch Test 33,account/account.py,Account,iPhone 15,iOS 18,2.74,0,account
+T0391,Home Screen Test 33,dashboard/analytics.py,Dashboard,iPhone 14,iOS 17,1.29,0,dashboard
+T0392,Security Question Test 23,account/biometric_link.py,AccountSecurity,Samsung S24,Android 15,0.9,1,accountsecurity
+T0393,Widget Load Test 34,dashboard/widgets.py,Dashboard,iPhone 14,iOS 17,2.13,0,dashboard
+T0394,Transaction Limit Test 28,transaction/txn.py,Transaction,Samsung A54,Android 14,1.42,1,transaction
+T0395,UPI QR Test 22,upi/upi_api.py,UPI,Pixel 8,Android 15,2.69,1,upi
+T0396,Push Notification Test 24,notification/sms.py,Notification,Pixel 7,Android 14,2.62,0,notification
+T0397,Role Permission Test 28,auth/permissions.py,Authorization,iPhone 12,iOS 17,3.62,1,authorization
+T0398,FAQ Search Test 23,support/ticket.py,CustomerSupport,Pixel 8,Android 15,2.89,0,customersupport
+T0399,Anomaly Detection Test 37,fraud/anomaly.py,FraudDetection,iPhone 12,iOS 17,1.58,1,frauddetection
+T0400,OTP Resend Test 31,otp/otp_delivery.py,OTP,Samsung S24,Android 15,2.64,1,otp
+T0401,Liveness Detection Test 20,biometrics/liveness.py,Biometrics,Samsung A34,Android 13,0.73,0,biometrics
+T0402,Login Test 25,auth/login.py,Authentication,Samsung S24,Android 15,4.82,1,authentication
+T0403,Session Expiry Test 26,auth/login.py,Authentication,iPhone 15,iOS 18,3.2,1,authentication
+T0404,SMS Notification Test 25,notification/push.py,Notification,Pixel 8,Android 15,0.58,0,notification
+T0405,VPA Validation Test 23,upi/upi_api.py,UPI,Pixel 7,Android 14,0.84,1,upi
+T0406,UPI Transfer Test 24,upi/upi_handler.py,UPI,Samsung A34,Android 13,0.74,1,upi
+T0407,Root Detection Test 23,device/device_bind.py,DeviceSecurity,Pixel 7,Android 14,1.04,0,devicesecurity
+T0408,Analytics Test 35,dashboard/widgets.py,Dashboard,Pixel 8,Android 15,2.58,0,dashboard
+T0409,Token Refresh Test 27,auth/token_manager.py,Authentication,Pixel 8,Android 15,4.05,1,authentication
+T0410,Face ID Test 21,biometrics/fingerprint.py,Biometrics,Samsung A34,Android 13,0.91,0,biometrics
+T0411,Ticket Creation Test 24,support/faq.py,CustomerSupport,Samsung S24,Android 15,0.84,0,customersupport
+T0412,MPIN Change Test 24,account/mpin.py,AccountSecurity,iPhone 12,iOS 17,1.76,1,accountsecurity
+T0413,Fingerprint Test 22,biometrics/face_id.py,Biometrics,iPhone 15,iOS 18,2.59,0,biometrics
+T0414,Payment Limit Test 28,payment/payment.py,Payment,iPhone 12,iOS 17,4.52,1,payment
+T0415,Email Alert Test 26,notification/email_notif.py,Notification,iPhone 15,iOS 18,2.67,0,notification
+T0416,Statement Download Test 34,account/account.py,Account,iPhone 14,iOS 17,2.18,0,account
+T0417,Profile Photo Test 26,profile/profile_update.py,Profile,iPhone 15,iOS 18,0.57,0,profile
+T0418,Liveness Detection Test 23,biometrics/fingerprint.py,Biometrics,iPhone 15,iOS 18,1.1,0,biometrics
+T0419,Biometric Link Test 25,account/security.py,AccountSecurity,Samsung S24,Android 15,2.88,1,accountsecurity
+T0420,Security Question Test 26,account/biometric_link.py,AccountSecurity,Pixel 7,Android 14,1.28,1,accountsecurity
+T0421,OTP Generation Test 32,otp/otp_delivery.py,OTP,iPhone 14,iOS 17,3.13,1,otp
+T0422,MPIN Change Test 27,account/biometric_link.py,AccountSecurity,Pixel 7,Android 14,2.97,1,accountsecurity
+T0423,OTP Validation Test 33,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,4.7,1,otp
+T0424,Policy Enforcement Test 29,auth/role_check.py,Authorization,iPhone 12,iOS 17,0.5,1,authorization
+T0425,Account Summary Test 35,account/account.py,Account,Pixel 7,Android 14,0.4,0,account
+T0426,Profile Update Test 27,profile/profile_update.py,Profile,iPhone 12,iOS 17,0.51,0,profile
+T0427,Face ID Test 24,biometrics/fingerprint.py,Biometrics,iPhone 14,iOS 17,1.18,0,biometrics
+T0428,Push Notification Test 27,notification/sms.py,Notification,iPhone 12,iOS 17,1.5,0,notification
+T0429,OTP Expiry Test 34,otp/otp_validator.py,OTP,Samsung S24,Android 15,0.95,1,otp
+T0430,Fingerprint Test 25,biometrics/face_id.py,Biometrics,Pixel 7,Android 14,1.03,0,biometrics
+T0431,Logout Test 28,auth/login.py,Authentication,Pixel 7,Android 14,3.75,1,authentication
+T0432,OTP Resend Test 35,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,3.29,1,otp
+T0433,Unauthorized Access Test 30,auth/policy.py,Authorization,Pixel 7,Android 14,3.3,1,authorization
+T0434,Liveness Detection Test 26,biometrics/fingerprint.py,Biometrics,iPhone 12,iOS 17,2.01,0,biometrics
+T0435,Face ID Test 27,biometrics/fingerprint.py,Biometrics,iPhone 14,iOS 17,2.24,0,biometrics
+T0436,High-Value Alert Test 38,fraud/fraud_engine.py,FraudDetection,Samsung A54,Android 14,4.24,1,frauddetection
+T0437,Fingerprint Test 28,biometrics/face_id.py,Biometrics,iPhone 12,iOS 17,2.89,0,biometrics
+T0438,KYC Verification Test 28,profile/profile.py,Profile,Samsung S24,Android 15,2.65,0,profile
+T0439,UPI Collect Test 25,upi/upi_validator.py,UPI,Pixel 7,Android 14,4.16,1,upi
+T0440,Multi-device Login Test 29,auth/token_manager.py,Authentication,iPhone 15,iOS 18,3.4,1,authentication
+T0441,Liveness Detection Test 29,biometrics/fingerprint.py,Biometrics,Pixel 8,Android 15,1.02,0,biometrics
+T0442,Chat Test 25,support/faq.py,CustomerSupport,Pixel 7,Android 14,2.89,0,customersupport
+T0443,Biometric Link Test 28,account/biometric_link.py,AccountSecurity,Samsung A34,Android 13,4.13,1,accountsecurity
+T0444,Face ID Test 30,biometrics/liveness.py,Biometrics,iPhone 15,iOS 18,0.69,0,biometrics
+T0445,Profile Photo Test 29,profile/profile_update.py,Profile,Samsung A54,Android 14,2.24,0,profile
+T0446,SMS Notification Test 28,notification/push.py,Notification,iPhone 14,iOS 17,1.55,0,notification
+T0447,RBAC Test 31,auth/policy.py,Authorization,Samsung A34,Android 13,4.78,1,authorization
+T0448,Login Test 30,auth/session.py,Authentication,Pixel 8,Android 15,2.69,1,authentication
+T0449,Fingerprint Test 31,biometrics/fingerprint.py,Biometrics,iPhone 14,iOS 17,0.45,0,biometrics
+T0450,Fraud Rule Test 39,fraud/fraud_engine.py,FraudDetection,iPhone 15,iOS 18,3.84,1,frauddetection
+T0451,Balance Fetch Test 36,account/statement.py,Account,Samsung S24,Android 15,0.71,0,account
+T0452,OTP Generation Test 36,otp/otp_generator.py,OTP,Pixel 7,Android 14,4.04,1,otp
+T0453,Role Permission Test 32,auth/permissions.py,Authorization,Samsung A34,Android 13,0.71,1,authorization
+T0454,Security Question Test 29,account/security.py,AccountSecurity,iPhone 12,iOS 17,3.99,1,accountsecurity
+T0455,UPI Payment Test 29,payment/payment_controller.py,Payment,iPhone 12,iOS 17,2.59,1,payment
+T0456,UPI QR Test 26,upi/upi_validator.py,UPI,iPhone 15,iOS 18,1.83,1,upi
+T0457,VPA Validation Test 27,upi/upi_validator.py,UPI,Samsung S24,Android 15,4.0,1,upi
+T0458,FAQ Search Test 26,support/faq.py,CustomerSupport,iPhone 12,iOS 17,1.42,0,customersupport
+T0459,Home Screen Test 36,dashboard/home.py,Dashboard,iPhone 12,iOS 17,1.65,0,dashboard
+T0460,Statement Download Test 37,account/balance.py,Account,iPhone 14,iOS 17,1.62,0,account
+T0461,Session Expiry Test 31,auth/login.py,Authentication,iPhone 12,iOS 17,3.42,1,authentication
+T0462,OTP Validation Test 37,otp/otp_validator.py,OTP,iPhone 12,iOS 17,3.64,1,otp
+T0463,MPIN Change Test 30,account/biometric_link.py,AccountSecurity,iPhone 14,iOS 17,4.57,1,accountsecurity
+T0464,OTP Expiry Test 38,otp/otp_delivery.py,OTP,Samsung S24,Android 15,1.38,1,otp
+T0465,UPI Transfer Test 28,upi/upi_handler.py,UPI,Pixel 8,Android 15,3.22,1,upi
+T0466,Account Summary Test 38,account/balance.py,Account,Samsung S24,Android 15,2.07,0,account
+T0467,Balance Fetch Test 39,account/balance.py,Account,Samsung A54,Android 14,1.76,0,account
+T0468,Biometric Link Test 31,account/security.py,AccountSecurity,Samsung A54,Android 14,4.04,1,accountsecurity
+T0469,Concurrent Transaction Test 29,transaction/txn_limit.py,Transaction,Samsung A54,Android 14,0.79,1,transaction
+T0470,Policy Enforcement Test 33,auth/permissions.py,Authorization,Pixel 7,Android 14,0.76,1,authorization
+T0471,Device Binding Test 24,device/cert_pinning.py,DeviceSecurity,iPhone 12,iOS 17,2.72,0,devicesecurity
+T0472,Certificate Pinning Test 25,device/device_trust.py,DeviceSecurity,Samsung S24,Android 15,0.62,0,devicesecurity
+T0473,Root Detection Test 26,device/device_bind.py,DeviceSecurity,iPhone 12,iOS 17,0.59,0,devicesecurity
+T0474,Token Refresh Test 32,auth/token_manager.py,Authentication,Pixel 7,Android 14,1.85,1,authentication
+T0475,Security Question Test 32,account/biometric_link.py,AccountSecurity,iPhone 14,iOS 17,3.08,1,accountsecurity
+T0476,Ticket Creation Test 27,support/ticket.py,CustomerSupport,Pixel 7,Android 14,2.74,0,customersupport
+T0477,MPIN Change Test 33,account/biometric_link.py,AccountSecurity,iPhone 15,iOS 18,1.58,1,accountsecurity
+T0478,Email Alert Test 29,notification/email_notif.py,Notification,iPhone 14,iOS 17,2.03,0,notification
+T0479,Unauthorized Access Test 34,auth/policy.py,Authorization,iPhone 15,iOS 18,2.63,1,authorization
+T0480,Chat Test 28,support/faq.py,CustomerSupport,iPhone 12,iOS 17,2.38,0,customersupport
+T0481,RBAC Test 35,auth/role_check.py,Authorization,Samsung A54,Android 14,2.75,1,authorization
+T0482,Logout Test 33,auth/login.py,Authentication,Pixel 7,Android 14,4.92,1,authentication
+T0483,Multi-device Login Test 34,auth/login.py,Authentication,iPhone 12,iOS 17,3.52,1,authentication
+T0484,Payment Flow Test 30,payment/payment_screen.py,Payment,iPhone 14,iOS 17,0.76,1,payment
+T0485,Anomaly Detection Test 40,fraud/rules.py,FraudDetection,Samsung S24,Android 15,2.35,1,frauddetection
+T0486,Role Permission Test 36,auth/role_check.py,Authorization,Samsung A54,Android 14,3.11,1,authorization
+T0487,Policy Enforcement Test 37,auth/role_check.py,Authorization,iPhone 12,iOS 17,1.1,1,authorization
+T0488,High-Value Alert Test 41,fraud/anomaly.py,FraudDetection,iPhone 14,iOS 17,4.74,1,frauddetection
+T0489,FAQ Search Test 29,support/chat.py,CustomerSupport,Pixel 7,Android 14,1.64,0,customersupport
+T0490,Statement Download Test 40,account/account.py,Account,Pixel 8,Android 15,1.51,0,account
+T0491,Account Summary Test 41,account/balance.py,Account,Samsung A54,Android 14,0.9,0,account
+T0492,Profile Update Test 30,profile/kyc.py,Profile,Samsung A34,Android 13,1.06,0,profile
+T0493,Fraud Rule Test 42,fraud/anomaly.py,FraudDetection,Pixel 8,Android 15,0.78,1,frauddetection
+T0494,OTP Resend Test 39,otp/otp_validator.py,OTP,Samsung A34,Android 13,4.5,1,otp
+T0495,Widget Load Test 37,dashboard/analytics.py,Dashboard,Samsung A34,Android 13,2.89,0,dashboard
+T0496,Transaction History Test 30,transaction/txn.py,Transaction,iPhone 15,iOS 18,2.82,1,transaction
+T0497,Biometric Link Test 34,account/mpin.py,AccountSecurity,Pixel 8,Android 15,4.16,1,accountsecurity
+T0498,Anomaly Detection Test 43,fraud/rules.py,FraudDetection,Pixel 7,Android 14,3.14,1,frauddetection
+T0499,Analytics Test 38,dashboard/widgets.py,Dashboard,Samsung S24,Android 15,2.82,0,dashboard
+T0500,Transaction Limit Test 31,transaction/txn.py,Transaction,Samsung S24,Android 15,3.65,1,transaction
+T0501,OTP Generation Test 40,otp/otp_delivery.py,OTP,Pixel 8,Android 15,1.73,1,otp
+T0502,Unauthorized Access Test 38,auth/role_check.py,Authorization,Samsung S24,Android 15,2.28,1,authorization
+T0503,KYC Verification Test 31,profile/profile_update.py,Profile,Pixel 7,Android 14,2.88,0,profile
+T0504,Security Question Test 35,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,4.89,1,accountsecurity
+T0505,Payment Failure Test 31,payment/payment_api.py,Payment,Samsung A54,Android 14,2.99,1,payment
+T0506,Home Screen Test 39,dashboard/widgets.py,Dashboard,iPhone 14,iOS 17,1.67,0,dashboard
+T0507,RBAC Test 39,auth/role_check.py,Authorization,iPhone 12,iOS 17,2.48,1,authorization
+T0508,OTP Validation Test 41,otp/otp_validator.py,OTP,Samsung A34,Android 13,1.06,1,otp
+T0509,UPI Collect Test 29,upi/upi_api.py,UPI,Samsung S24,Android 15,1.77,1,upi
+T0510,Balance Fetch Test 42,account/balance.py,Account,Pixel 7,Android 14,0.28,0,account
+T0511,UPI QR Test 30,upi/upi_api.py,UPI,Pixel 8,Android 15,3.08,1,upi
+T0512,Device Binding Test 27,device/device_trust.py,DeviceSecurity,iPhone 14,iOS 17,2.28,0,devicesecurity
+T0513,Refund Test 32,payment/payment.py,Payment,Samsung A34,Android 13,3.33,1,payment
+T0514,MPIN Change Test 36,account/security.py,AccountSecurity,Samsung A34,Android 13,4.55,1,accountsecurity
+T0515,High-Value Alert Test 44,fraud/fraud_engine.py,FraudDetection,iPhone 14,iOS 17,4.93,1,frauddetection
+T0516,Payment Limit Test 33,payment/payment.py,Payment,Samsung S24,Android 15,3.58,1,payment
+T0517,VPA Validation Test 31,upi/upi_api.py,UPI,iPhone 12,iOS 17,0.95,1,upi
+T0518,UPI Transfer Test 32,upi/upi_handler.py,UPI,Pixel 7,Android 14,3.82,1,upi
+T0519,Push Notification Test 30,notification/email_notif.py,Notification,Pixel 7,Android 14,1.07,0,notification
+T0520,Profile Photo Test 32,profile/profile_update.py,Profile,Pixel 8,Android 15,1.52,0,profile
+T0521,Statement Download Test 43,account/account.py,Account,Pixel 7,Android 14,2.36,0,account
+T0522,SMS Notification Test 31,notification/email_notif.py,Notification,iPhone 12,iOS 17,1.38,0,notification
+T0523,Fraud Rule Test 45,fraud/rules.py,FraudDetection,Pixel 7,Android 14,2.19,1,frauddetection
+T0524,Certificate Pinning Test 28,device/device_bind.py,DeviceSecurity,Pixel 7,Android 14,2.72,0,devicesecurity
+T0525,Root Detection Test 29,device/device_bind.py,DeviceSecurity,iPhone 14,iOS 17,1.92,0,devicesecurity
+T0526,Concurrent Transaction Test 32,transaction/txn.py,Transaction,Pixel 8,Android 15,1.07,1,transaction
+T0527,Profile Update Test 33,profile/kyc.py,Profile,iPhone 15,iOS 18,0.68,0,profile
+T0528,Transaction History Test 33,transaction/txn.py,Transaction,Pixel 7,Android 14,4.5,1,transaction
+T0529,Login Test 35,auth/login.py,Authentication,Pixel 7,Android 14,3.91,1,authentication
+T0530,Liveness Detection Test 32,biometrics/face_id.py,Biometrics,iPhone 12,iOS 17,0.61,0,biometrics
+T0531,OTP Expiry Test 42,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,2.14,1,otp
+T0532,Email Alert Test 32,notification/email_notif.py,Notification,iPhone 15,iOS 18,1.33,0,notification
+T0533,Anomaly Detection Test 46,fraud/anomaly.py,FraudDetection,Pixel 8,Android 15,2.79,1,frauddetection
+T0534,Device Binding Test 30,device/device_trust.py,DeviceSecurity,Samsung A34,Android 13,2.45,0,devicesecurity
+T0535,Account Summary Test 44,account/statement.py,Account,Pixel 7,Android 14,2.17,0,account
+T0536,High-Value Alert Test 47,fraud/anomaly.py,FraudDetection,Pixel 7,Android 14,1.79,1,frauddetection
+T0537,UPI Collect Test 33,upi/upi_api.py,UPI,Samsung S24,Android 15,3.81,1,upi
+T0538,Fraud Rule Test 48,fraud/fraud_engine.py,FraudDetection,Pixel 7,Android 14,0.81,1,frauddetection
+T0539,Biometric Link Test 37,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,4.66,1,accountsecurity
+T0540,Widget Load Test 40,dashboard/home.py,Dashboard,iPhone 12,iOS 17,2.61,0,dashboard
+T0541,Session Expiry Test 36,auth/login.py,Authentication,iPhone 14,iOS 17,0.94,1,authentication
+T0542,Anomaly Detection Test 49,fraud/anomaly.py,FraudDetection,Samsung A54,Android 14,2.14,1,frauddetection
+T0543,Balance Fetch Test 45,account/account.py,Account,Samsung A54,Android 14,0.32,0,account
+T0544,Statement Download Test 46,account/account.py,Account,Samsung S24,Android 15,2.16,0,account
+T0545,Role Permission Test 40,auth/role_check.py,Authorization,Pixel 8,Android 15,3.4,1,authorization
+T0546,Face ID Test 33,biometrics/fingerprint.py,Biometrics,Samsung A34,Android 13,1.79,0,biometrics
+T0547,Push Notification Test 33,notification/sms.py,Notification,Pixel 8,Android 15,1.02,0,notification
+T0548,UPI QR Test 34,upi/upi_handler.py,UPI,Samsung A34,Android 13,4.26,1,upi
+T0549,VPA Validation Test 35,upi/upi_api.py,UPI,Samsung A54,Android 14,1.28,1,upi
+T0550,Security Question Test 38,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,4.99,1,accountsecurity
+T0551,Fingerprint Test 34,biometrics/face_id.py,Biometrics,iPhone 12,iOS 17,0.61,0,biometrics
+T0552,Ticket Creation Test 30,support/faq.py,CustomerSupport,Samsung S24,Android 15,2.92,0,customersupport
+T0553,UPI Payment Test 34,payment/payment_api.py,Payment,Samsung S24,Android 15,0.97,1,payment
+T0554,SMS Notification Test 34,notification/push.py,Notification,Samsung A54,Android 14,2.27,0,notification
+T0555,High-Value Alert Test 50,fraud/anomaly.py,FraudDetection,iPhone 12,iOS 17,3.45,1,frauddetection
+T0556,Fraud Rule Test 51,fraud/rules.py,FraudDetection,Samsung A54,Android 14,2.97,1,frauddetection
+T0557,Email Alert Test 35,notification/email_notif.py,Notification,Samsung A54,Android 14,0.45,0,notification
+T0558,KYC Verification Test 34,profile/profile_update.py,Profile,Samsung S24,Android 15,2.72,0,profile
+T0559,Account Summary Test 47,account/statement.py,Account,Samsung A34,Android 13,1.12,0,account
+T0560,Transaction Limit Test 34,transaction/txn_limit.py,Transaction,Samsung A34,Android 13,4.81,1,transaction
+T0561,Profile Photo Test 35,profile/profile_update.py,Profile,Samsung S24,Android 15,2.79,0,profile
+T0562,UPI Transfer Test 36,upi/upi_api.py,UPI,iPhone 12,iOS 17,3.1,1,upi
+T0563,Chat Test 31,support/ticket.py,CustomerSupport,iPhone 15,iOS 18,1.31,0,customersupport
+T0564,Payment Flow Test 35,payment/payment_screen.py,Payment,iPhone 14,iOS 17,3.03,1,payment
+T0565,OTP Resend Test 43,otp/otp_generator.py,OTP,Samsung A54,Android 14,4.5,1,otp
+T0566,Analytics Test 41,dashboard/analytics.py,Dashboard,Pixel 7,Android 14,2.38,0,dashboard
+T0567,UPI Collect Test 37,upi/upi_api.py,UPI,iPhone 15,iOS 18,2.07,1,upi
+T0568,Profile Update Test 36,profile/kyc.py,Profile,Samsung A54,Android 14,2.35,0,profile
+T0569,MPIN Change Test 39,account/biometric_link.py,AccountSecurity,Samsung A54,Android 14,1.2,1,accountsecurity
+T0570,Certificate Pinning Test 31,device/device_bind.py,DeviceSecurity,iPhone 15,iOS 18,2.98,0,devicesecurity
+T0571,Anomaly Detection Test 52,fraud/rules.py,FraudDetection,Pixel 7,Android 14,0.55,1,frauddetection
+T0572,Biometric Link Test 40,account/biometric_link.py,AccountSecurity,Samsung S24,Android 15,4.82,1,accountsecurity
+T0573,Home Screen Test 42,dashboard/analytics.py,Dashboard,iPhone 15,iOS 18,0.97,0,dashboard
+T0574,OTP Generation Test 44,otp/otp_delivery.py,OTP,Samsung A34,Android 13,0.74,1,otp
+T0575,Security Question Test 41,account/mpin.py,AccountSecurity,Samsung A34,Android 13,4.8,1,accountsecurity
+T0576,Payment Failure Test 36,payment/payment_screen.py,Payment,Pixel 7,Android 14,3.58,1,payment
+T0577,Concurrent Transaction Test 35,transaction/txn_limit.py,Transaction,iPhone 14,iOS 17,0.58,1,transaction
+T0578,Token Refresh Test 37,auth/login.py,Authentication,Samsung A54,Android 14,4.66,1,authentication
+T0579,UPI QR Test 38,upi/upi_api.py,UPI,Pixel 8,Android 15,3.29,1,upi
+T0580,OTP Validation Test 45,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,1.28,1,otp
+T0581,Push Notification Test 36,notification/sms.py,Notification,iPhone 14,iOS 17,1.02,0,notification
+T0582,Balance Fetch Test 48,account/account.py,Account,Samsung A34,Android 13,1.18,0,account
+T0583,Widget Load Test 43,dashboard/home.py,Dashboard,iPhone 14,iOS 17,1.64,0,dashboard
+T0584,SMS Notification Test 37,notification/sms.py,Notification,Pixel 7,Android 14,0.37,0,notification
+T0585,Policy Enforcement Test 41,auth/permissions.py,Authorization,iPhone 14,iOS 17,0.96,1,authorization
+T0586,Refund Test 37,payment/payment.py,Payment,Pixel 7,Android 14,3.21,1,payment
+T0587,High-Value Alert Test 53,fraud/fraud_engine.py,FraudDetection,Pixel 8,Android 15,4.84,1,frauddetection
+T0588,Payment Limit Test 38,payment/payment_api.py,Payment,Pixel 7,Android 14,4.84,1,payment
+T0589,Transaction History Test 36,transaction/txn_history.py,Transaction,Pixel 7,Android 14,2.42,1,transaction
+T0590,Statement Download Test 49,account/balance.py,Account,Samsung A54,Android 14,1.79,0,account
+T0591,Transaction Limit Test 37,transaction/txn_history.py,Transaction,Samsung A34,Android 13,4.98,1,transaction
+T0592,Analytics Test 44,dashboard/widgets.py,Dashboard,Pixel 8,Android 15,2.55,0,dashboard
+T0593,UPI Payment Test 39,payment/payment.py,Payment,Samsung S24,Android 15,2.64,1,payment
+T0594,Logout Test 38,auth/token_manager.py,Authentication,Samsung S24,Android 15,4.89,1,authentication
+T0595,OTP Expiry Test 46,otp/otp_delivery.py,OTP,Samsung S24,Android 15,1.09,1,otp
+T0596,Fraud Rule Test 54,fraud/fraud_engine.py,FraudDetection,Pixel 8,Android 15,3.41,1,frauddetection
+T0597,Home Screen Test 45,dashboard/analytics.py,Dashboard,iPhone 12,iOS 17,1.12,0,dashboard
+T0598,FAQ Search Test 32,support/faq.py,CustomerSupport,Samsung A54,Android 14,1.53,0,customersupport
+T0599,Multi-device Login Test 39,auth/token_manager.py,Authentication,Samsung A34,Android 13,0.71,1,authentication
+T0600,MPIN Change Test 42,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,4.88,1,accountsecurity
+T0601,Unauthorized Access Test 42,auth/policy.py,Authorization,Samsung A34,Android 13,3.51,1,authorization
+T0602,RBAC Test 43,auth/policy.py,Authorization,Samsung A54,Android 14,2.84,1,authorization
+T0603,Role Permission Test 44,auth/policy.py,Authorization,Samsung A54,Android 14,1.46,1,authorization
+T0604,Login Test 40,auth/session.py,Authentication,Pixel 8,Android 15,4.77,1,authentication
+T0605,Payment Flow Test 40,payment/payment_controller.py,Payment,Samsung A54,Android 14,4.39,1,payment
+T0606,KYC Verification Test 37,profile/profile.py,Profile,iPhone 14,iOS 17,2.73,0,profile
+T0607,Liveness Detection Test 35,biometrics/fingerprint.py,Biometrics,iPhone 15,iOS 18,2.24,0,biometrics
+T0608,Policy Enforcement Test 45,auth/permissions.py,Authorization,Samsung A54,Android 14,2.52,1,authorization
+T0609,Ticket Creation Test 33,support/faq.py,CustomerSupport,Pixel 8,Android 15,0.94,0,customersupport
+T0610,Unauthorized Access Test 46,auth/permissions.py,Authorization,Samsung A34,Android 13,4.21,1,authorization
+T0611,Concurrent Transaction Test 38,transaction/txn_history.py,Transaction,Pixel 7,Android 14,2.22,1,transaction
+T0612,OTP Resend Test 47,otp/otp_delivery.py,OTP,Pixel 7,Android 14,1.48,1,otp
+T0613,Profile Photo Test 38,profile/profile.py,Profile,Pixel 8,Android 15,2.55,0,profile
+T0614,Profile Update Test 39,profile/profile_update.py,Profile,iPhone 12,iOS 17,1.01,0,profile
+T0615,OTP Generation Test 48,otp/otp_delivery.py,OTP,Samsung A34,Android 13,0.82,1,otp
+T0616,OTP Validation Test 49,otp/otp_generator.py,OTP,iPhone 15,iOS 18,2.74,1,otp
+T0617,OTP Expiry Test 50,otp/otp_generator.py,OTP,Samsung A34,Android 13,2.94,1,otp
+T0618,Payment Failure Test 41,payment/payment_api.py,Payment,Samsung A54,Android 14,2.43,1,payment
+T0619,Refund Test 42,payment/payment.py,Payment,Samsung A54,Android 14,2.22,1,payment
+T0620,VPA Validation Test 39,upi/upi_validator.py,UPI,iPhone 14,iOS 17,4.62,1,upi
+T0621,Face ID Test 36,biometrics/face_id.py,Biometrics,Samsung A34,Android 13,1.76,0,biometrics
+T0622,Account Summary Test 50,account/statement.py,Account,iPhone 14,iOS 17,2.55,0,account
+T0623,OTP Resend Test 51,otp/otp_validator.py,OTP,Samsung A54,Android 14,4.04,1,otp
+T0624,UPI Transfer Test 40,upi/upi_api.py,UPI,Samsung S24,Android 15,4.08,1,upi
+T0625,Chat Test 34,support/ticket.py,CustomerSupport,iPhone 15,iOS 18,3.0,0,customersupport
+T0626,UPI Collect Test 41,upi/upi_handler.py,UPI,Samsung A34,Android 13,2.25,1,upi
+T0627,UPI QR Test 42,upi/upi_validator.py,UPI,Pixel 7,Android 14,0.67,1,upi
+T0628,Root Detection Test 32,device/device_trust.py,DeviceSecurity,iPhone 15,iOS 18,0.63,0,devicesecurity
+T0629,Device Binding Test 33,device/device_bind.py,DeviceSecurity,Pixel 8,Android 15,2.93,0,devicesecurity
+T0630,Widget Load Test 46,dashboard/widgets.py,Dashboard,Samsung S24,Android 15,2.96,0,dashboard
+T0631,Certificate Pinning Test 34,device/device_trust.py,DeviceSecurity,Samsung A34,Android 13,1.14,0,devicesecurity
+T0632,Fingerprint Test 37,biometrics/face_id.py,Biometrics,iPhone 15,iOS 18,2.02,0,biometrics
+T0633,FAQ Search Test 35,support/chat.py,CustomerSupport,Pixel 7,Android 14,1.86,0,customersupport
+T0634,Session Expiry Test 41,auth/session.py,Authentication,Pixel 7,Android 14,0.79,1,authentication
+T0635,Ticket Creation Test 36,support/ticket.py,CustomerSupport,Pixel 8,Android 15,1.27,0,customersupport
+T0636,Email Alert Test 38,notification/push.py,Notification,iPhone 12,iOS 17,2.47,0,notification
+T0637,OTP Generation Test 52,otp/otp_validator.py,OTP,Pixel 8,Android 15,3.35,1,otp
+T0638,Transaction History Test 39,transaction/txn_history.py,Transaction,Samsung A34,Android 13,2.91,1,transaction
+T0639,Transaction Limit Test 40,transaction/txn_history.py,Transaction,iPhone 12,iOS 17,1.33,1,transaction
+T0640,KYC Verification Test 40,profile/profile.py,Profile,Pixel 8,Android 15,1.79,0,profile
+T0641,Profile Photo Test 41,profile/kyc.py,Profile,iPhone 14,iOS 17,1.34,0,profile
+T0642,Analytics Test 47,dashboard/home.py,Dashboard,iPhone 14,iOS 17,1.49,0,dashboard
+T0643,Push Notification Test 39,notification/email_notif.py,Notification,Samsung S24,Android 15,1.86,0,notification
+T0644,Anomaly Detection Test 55,fraud/anomaly.py,FraudDetection,Pixel 8,Android 15,2.58,1,frauddetection
+T0645,Payment Limit Test 43,payment/payment_api.py,Payment,Samsung A54,Android 14,4.9,1,payment
+T0646,Concurrent Transaction Test 41,transaction/txn.py,Transaction,Samsung S24,Android 15,1.85,1,transaction
+T0647,UPI Payment Test 44,payment/payment_controller.py,Payment,Samsung A34,Android 13,3.68,1,payment
+T0648,OTP Validation Test 53,otp/otp_delivery.py,OTP,Samsung A34,Android 13,1.69,1,otp
+T0649,Liveness Detection Test 38,biometrics/liveness.py,Biometrics,iPhone 12,iOS 17,0.9,0,biometrics
+T0650,Home Screen Test 48,dashboard/widgets.py,Dashboard,Samsung S24,Android 15,2.59,0,dashboard
+T0651,Widget Load Test 49,dashboard/analytics.py,Dashboard,Samsung A34,Android 13,1.5,0,dashboard
+T0652,High-Value Alert Test 56,fraud/fraud_engine.py,FraudDetection,iPhone 12,iOS 17,2.75,1,frauddetection
+T0653,SMS Notification Test 40,notification/push.py,Notification,Pixel 8,Android 15,1.18,0,notification
+T0654,Balance Fetch Test 51,account/balance.py,Account,iPhone 12,iOS 17,2.15,0,account
+T0655,VPA Validation Test 43,upi/upi_api.py,UPI,iPhone 14,iOS 17,4.36,1,upi
+T0656,Analytics Test 50,dashboard/widgets.py,Dashboard,iPhone 12,iOS 17,0.32,0,dashboard
+T0657,Fraud Rule Test 57,fraud/fraud_engine.py,FraudDetection,Samsung A34,Android 13,2.69,1,frauddetection
+T0658,Chat Test 37,support/ticket.py,CustomerSupport,iPhone 14,iOS 17,2.51,0,customersupport
+T0659,Payment Flow Test 45,payment/payment.py,Payment,iPhone 15,iOS 18,2.74,1,payment
+T0660,Face ID Test 39,biometrics/face_id.py,Biometrics,Pixel 7,Android 14,0.21,0,biometrics
+T0661,Profile Update Test 42,profile/kyc.py,Profile,Pixel 7,Android 14,0.71,0,profile
+T0662,Email Alert Test 41,notification/email_notif.py,Notification,Samsung S24,Android 15,1.32,0,notification
+T0663,FAQ Search Test 38,support/faq.py,CustomerSupport,Samsung S24,Android 15,0.41,0,customersupport
+T0664,Home Screen Test 51,dashboard/analytics.py,Dashboard,iPhone 12,iOS 17,2.65,0,dashboard
+T0665,Anomaly Detection Test 58,fraud/anomaly.py,FraudDetection,iPhone 12,iOS 17,4.18,1,frauddetection
+T0666,RBAC Test 47,auth/permissions.py,Authorization,iPhone 14,iOS 17,4.66,1,authorization
+T0667,Biometric Link Test 43,account/biometric_link.py,AccountSecurity,Pixel 8,Android 15,2.67,1,accountsecurity
+T0668,Ticket Creation Test 39,support/ticket.py,CustomerSupport,iPhone 15,iOS 18,1.79,0,customersupport
+T0669,OTP Expiry Test 54,otp/otp_validator.py,OTP,iPhone 14,iOS 17,3.39,1,otp
+T0670,Root Detection Test 35,device/device_trust.py,DeviceSecurity,Samsung S24,Android 15,2.86,0,devicesecurity
+T0671,Push Notification Test 42,notification/email_notif.py,Notification,Pixel 7,Android 14,2.18,0,notification
+T0672,Transaction History Test 42,transaction/txn_history.py,Transaction,Samsung S24,Android 15,1.59,1,transaction
+T0673,KYC Verification Test 43,profile/kyc.py,Profile,Samsung A54,Android 14,2.74,0,profile
+T0674,Payment Failure Test 46,payment/payment_api.py,Payment,iPhone 12,iOS 17,3.82,1,payment
+T0675,Device Binding Test 36,device/device_trust.py,DeviceSecurity,Pixel 8,Android 15,0.48,0,devicesecurity
+T0676,Certificate Pinning Test 37,device/device_bind.py,DeviceSecurity,Pixel 7,Android 14,2.34,0,devicesecurity
+T0677,Root Detection Test 38,device/device_bind.py,DeviceSecurity,Pixel 8,Android 15,2.85,0,devicesecurity
+T0678,Refund Test 47,payment/payment_api.py,Payment,Samsung A54,Android 14,0.88,1,payment
+T0679,Token Refresh Test 42,auth/login.py,Authentication,Pixel 8,Android 15,4.29,1,authentication
+T0680,UPI Transfer Test 44,upi/upi_api.py,UPI,iPhone 14,iOS 17,4.41,1,upi
+T0681,UPI Collect Test 45,upi/upi_validator.py,UPI,iPhone 15,iOS 18,1.04,1,upi
+T0682,OTP Resend Test 55,otp/otp_delivery.py,OTP,Samsung A54,Android 14,5.0,1,otp
+T0683,Device Binding Test 39,device/device_bind.py,DeviceSecurity,Samsung A34,Android 13,2.74,0,devicesecurity
+T0684,High-Value Alert Test 59,fraud/anomaly.py,FraudDetection,Samsung S24,Android 15,2.91,1,frauddetection
+T0685,Statement Download Test 52,account/balance.py,Account,Samsung S24,Android 15,1.96,0,account
+T0686,Fraud Rule Test 60,fraud/anomaly.py,FraudDetection,Pixel 8,Android 15,4.65,1,frauddetection
+T0687,SMS Notification Test 43,notification/push.py,Notification,Samsung S24,Android 15,0.8,0,notification
+T0688,Chat Test 40,support/faq.py,CustomerSupport,Pixel 7,Android 14,0.22,0,customersupport
+T0689,Anomaly Detection Test 61,fraud/anomaly.py,FraudDetection,Samsung A34,Android 13,1.5,1,frauddetection
+T0690,Role Permission Test 48,auth/policy.py,Authorization,Samsung A54,Android 14,4.94,1,authorization
+T0691,Payment Limit Test 48,payment/payment_api.py,Payment,Pixel 8,Android 15,2.49,1,payment
+T0692,Transaction Limit Test 43,transaction/txn.py,Transaction,iPhone 15,iOS 18,3.71,1,transaction
+T0693,UPI QR Test 46,upi/upi_api.py,UPI,Samsung S24,Android 15,4.31,1,upi
+T0694,Concurrent Transaction Test 44,transaction/txn_history.py,Transaction,iPhone 14,iOS 17,2.9,1,transaction
+T0695,VPA Validation Test 47,upi/upi_validator.py,UPI,Pixel 7,Android 14,2.12,1,upi
+T0696,Widget Load Test 52,dashboard/home.py,Dashboard,Samsung S24,Android 15,2.43,0,dashboard
+T0697,UPI Transfer Test 48,upi/upi_api.py,UPI,Pixel 7,Android 14,1.0,1,upi
+T0698,Account Summary Test 53,account/balance.py,Account,iPhone 14,iOS 17,0.39,0,account
+T0699,Analytics Test 53,dashboard/widgets.py,Dashboard,iPhone 12,iOS 17,0.89,0,dashboard
+T0700,Email Alert Test 44,notification/sms.py,Notification,Pixel 8,Android 15,0.59,0,notification
+T0701,Fingerprint Test 40,biometrics/face_id.py,Biometrics,iPhone 15,iOS 18,2.63,0,biometrics
+T0702,Certificate Pinning Test 40,device/device_trust.py,DeviceSecurity,Samsung S24,Android 15,0.24,0,devicesecurity
+T0703,Root Detection Test 41,device/cert_pinning.py,DeviceSecurity,Samsung S24,Android 15,1.47,0,devicesecurity
+T0704,Security Question Test 44,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,1.64,1,accountsecurity
+T0705,Liveness Detection Test 41,biometrics/fingerprint.py,Biometrics,Samsung S24,Android 15,0.86,0,biometrics
+T0706,Balance Fetch Test 54,account/balance.py,Account,iPhone 14,iOS 17,1.31,0,account
+T0707,Policy Enforcement Test 49,auth/role_check.py,Authorization,Samsung S24,Android 15,0.73,1,authorization
+T0708,Logout Test 43,auth/login.py,Authentication,iPhone 15,iOS 18,0.85,1,authentication
+T0709,Transaction History Test 45,transaction/txn_history.py,Transaction,iPhone 12,iOS 17,1.7,1,transaction
+T0710,Device Binding Test 42,device/cert_pinning.py,DeviceSecurity,iPhone 15,iOS 18,2.83,0,devicesecurity
+T0711,Certificate Pinning Test 43,device/cert_pinning.py,DeviceSecurity,iPhone 14,iOS 17,1.28,0,devicesecurity
+T0712,Multi-device Login Test 44,auth/token_manager.py,Authentication,Samsung A54,Android 14,1.43,1,authentication
+T0713,Profile Photo Test 44,profile/kyc.py,Profile,Pixel 8,Android 15,0.36,0,profile
+T0714,Unauthorized Access Test 50,auth/role_check.py,Authorization,Samsung A34,Android 13,2.98,1,authorization
+T0715,Root Detection Test 44,device/cert_pinning.py,DeviceSecurity,iPhone 15,iOS 18,2.97,0,devicesecurity
+T0716,Login Test 45,auth/session.py,Authentication,iPhone 14,iOS 17,2.69,1,authentication
+T0717,Push Notification Test 45,notification/sms.py,Notification,Pixel 8,Android 15,2.71,0,notification
+T0718,SMS Notification Test 46,notification/push.py,Notification,Samsung S24,Android 15,2.4,0,notification
+T0719,Profile Update Test 45,profile/profile_update.py,Profile,Samsung A34,Android 13,0.3,0,profile
+T0720,Transaction Limit Test 46,transaction/txn.py,Transaction,Pixel 8,Android 15,3.6,1,transaction
+T0721,KYC Verification Test 46,profile/kyc.py,Profile,Pixel 8,Android 15,1.92,0,profile
+T0722,FAQ Search Test 41,support/faq.py,CustomerSupport,iPhone 14,iOS 17,1.56,0,customersupport
+T0723,UPI Payment Test 49,payment/payment_screen.py,Payment,iPhone 15,iOS 18,2.49,1,payment
+T0724,Face ID Test 42,biometrics/fingerprint.py,Biometrics,Samsung A54,Android 14,1.34,0,biometrics
+T0725,MPIN Change Test 45,account/security.py,AccountSecurity,Samsung S24,Android 15,2.14,1,accountsecurity
+T0726,UPI Collect Test 49,upi/upi_validator.py,UPI,iPhone 14,iOS 17,3.54,1,upi
+T0727,Session Expiry Test 46,auth/token_manager.py,Authentication,iPhone 12,iOS 17,0.84,1,authentication
+T0728,Home Screen Test 54,dashboard/analytics.py,Dashboard,Samsung A34,Android 13,1.54,0,dashboard
+T0729,Payment Flow Test 50,payment/payment.py,Payment,Samsung A54,Android 14,1.91,1,payment
+T0730,Ticket Creation Test 42,support/ticket.py,CustomerSupport,Samsung A54,Android 14,1.96,0,customersupport
+T0731,Fingerprint Test 43,biometrics/liveness.py,Biometrics,Samsung A34,Android 13,1.97,0,biometrics
+T0732,Token Refresh Test 47,auth/token_manager.py,Authentication,Samsung A34,Android 13,3.91,1,authentication
+T0733,UPI QR Test 50,upi/upi_api.py,UPI,iPhone 15,iOS 18,0.58,1,upi
+T0734,Logout Test 48,auth/session.py,Authentication,iPhone 14,iOS 17,0.73,1,authentication
+T0735,Widget Load Test 55,dashboard/widgets.py,Dashboard,iPhone 12,iOS 17,2.84,0,dashboard
+T0736,Statement Download Test 55,account/balance.py,Account,iPhone 14,iOS 17,2.65,0,account
+T0737,OTP Generation Test 56,otp/otp_delivery.py,OTP,Samsung A34,Android 13,0.51,1,otp
+T0738,Email Alert Test 47,notification/email_notif.py,Notification,Samsung A54,Android 14,1.2,0,notification
+T0739,High-Value Alert Test 62,fraud/anomaly.py,FraudDetection,iPhone 14,iOS 17,1.96,1,frauddetection
+T0740,Analytics Test 56,dashboard/home.py,Dashboard,iPhone 14,iOS 17,2.76,0,dashboard
+T0741,Biometric Link Test 46,account/mpin.py,AccountSecurity,iPhone 15,iOS 18,2.67,1,accountsecurity
+T0742,Fraud Rule Test 63,fraud/anomaly.py,FraudDetection,Pixel 7,Android 14,1.36,1,frauddetection
+T0743,Anomaly Detection Test 64,fraud/rules.py,FraudDetection,iPhone 12,iOS 17,4.6,1,frauddetection
+T0744,VPA Validation Test 51,upi/upi_validator.py,UPI,Samsung S24,Android 15,4.56,1,upi
+T0745,Payment Failure Test 51,payment/payment_controller.py,Payment,Pixel 7,Android 14,1.87,1,payment
+T0746,Profile Photo Test 47,profile/kyc.py,Profile,iPhone 14,iOS 17,2.68,0,profile
+T0747,Home Screen Test 57,dashboard/home.py,Dashboard,Pixel 7,Android 14,1.26,0,dashboard
+T0748,High-Value Alert Test 65,fraud/rules.py,FraudDetection,Samsung A54,Android 14,3.78,1,frauddetection
+T0749,UPI Transfer Test 52,upi/upi_api.py,UPI,iPhone 15,iOS 18,2.77,1,upi
+T0750,Push Notification Test 48,notification/push.py,Notification,iPhone 15,iOS 18,0.98,0,notification
+T0751,Liveness Detection Test 44,biometrics/face_id.py,Biometrics,iPhone 14,iOS 17,2.27,0,biometrics
+T0752,Fraud Rule Test 66,fraud/rules.py,FraudDetection,iPhone 15,iOS 18,4.77,1,frauddetection
+T0753,OTP Validation Test 57,otp/otp_generator.py,OTP,Pixel 7,Android 14,2.95,1,otp
+T0754,Face ID Test 45,biometrics/liveness.py,Biometrics,Samsung A54,Android 14,1.71,0,biometrics
+T0755,Widget Load Test 58,dashboard/widgets.py,Dashboard,Pixel 8,Android 15,2.68,0,dashboard
+T0756,Fingerprint Test 46,biometrics/face_id.py,Biometrics,Samsung A34,Android 13,1.35,0,biometrics
+T0757,Account Summary Test 56,account/statement.py,Account,iPhone 15,iOS 18,1.82,0,account
+T0758,Liveness Detection Test 47,biometrics/liveness.py,Biometrics,Samsung A34,Android 13,2.72,0,biometrics
+T0759,Profile Update Test 48,profile/profile_update.py,Profile,iPhone 12,iOS 17,2.07,0,profile
+T0760,Device Binding Test 45,device/device_trust.py,DeviceSecurity,Pixel 8,Android 15,1.87,0,devicesecurity
+T0761,Multi-device Login Test 49,auth/session.py,Authentication,Samsung A54,Android 14,2.2,1,authentication
+T0762,Analytics Test 59,dashboard/widgets.py,Dashboard,iPhone 12,iOS 17,1.74,0,dashboard
+T0763,Anomaly Detection Test 67,fraud/anomaly.py,FraudDetection,iPhone 14,iOS 17,2.62,1,frauddetection
+T0764,Security Question Test 47,account/mpin.py,AccountSecurity,iPhone 14,iOS 17,1.88,1,accountsecurity
+T0765,RBAC Test 51,auth/policy.py,Authorization,iPhone 15,iOS 18,4.24,1,authorization
+T0766,High-Value Alert Test 68,fraud/rules.py,FraudDetection,Samsung S24,Android 15,4.06,1,frauddetection
+T0767,UPI Collect Test 53,upi/upi_validator.py,UPI,Samsung A54,Android 14,0.99,1,upi
+T0768,Concurrent Transaction Test 47,transaction/txn.py,Transaction,Samsung S24,Android 15,3.16,1,transaction
+T0769,Face ID Test 48,biometrics/liveness.py,Biometrics,iPhone 12,iOS 17,1.58,0,biometrics
+T0770,KYC Verification Test 49,profile/kyc.py,Profile,iPhone 15,iOS 18,2.61,0,profile
+T0771,Fraud Rule Test 69,fraud/anomaly.py,FraudDetection,iPhone 14,iOS 17,2.88,1,frauddetection
+T0772,Role Permission Test 52,auth/policy.py,Authorization,Pixel 8,Android 15,4.37,1,authorization
+T0773,OTP Expiry Test 58,otp/otp_validator.py,OTP,Pixel 8,Android 15,3.99,1,otp
+T0774,Profile Photo Test 50,profile/profile.py,Profile,Pixel 7,Android 14,2.39,0,profile
+T0775,SMS Notification Test 49,notification/email_notif.py,Notification,Pixel 8,Android 15,1.21,0,notification
+T0776,OTP Resend Test 59,otp/otp_validator.py,OTP,Samsung A34,Android 13,2.46,1,otp
+T0777,UPI QR Test 54,upi/upi_api.py,UPI,Pixel 8,Android 15,3.04,1,upi
+T0778,Certificate Pinning Test 46,device/device_trust.py,DeviceSecurity,iPhone 15,iOS 18,1.45,0,devicesecurity
+T0779,Email Alert Test 50,notification/push.py,Notification,iPhone 12,iOS 17,1.22,0,notification
+T0780,Login Test 50,auth/login.py,Authentication,Samsung S24,Android 15,2.49,1,authentication
+T0781,OTP Generation Test 60,otp/otp_generator.py,OTP,Pixel 8,Android 15,1.83,1,otp
+T0782,Policy Enforcement Test 53,auth/policy.py,Authorization,Samsung S24,Android 15,3.91,1,authorization
+T0783,Balance Fetch Test 57,account/account.py,Account,iPhone 12,iOS 17,0.26,0,account
+T0784,OTP Validation Test 61,otp/otp_validator.py,OTP,iPhone 12,iOS 17,3.11,1,otp
+T0785,Anomaly Detection Test 70,fraud/anomaly.py,FraudDetection,iPhone 15,iOS 18,2.04,1,frauddetection
+T0786,MPIN Change Test 48,account/mpin.py,AccountSecurity,Samsung A34,Android 13,4.21,1,accountsecurity
+T0787,High-Value Alert Test 71,fraud/rules.py,FraudDetection,Pixel 7,Android 14,4.68,1,frauddetection
+T0788,Fraud Rule Test 72,fraud/fraud_engine.py,FraudDetection,Samsung A54,Android 14,0.68,1,frauddetection
+T0789,Home Screen Test 60,dashboard/analytics.py,Dashboard,iPhone 14,iOS 17,2.01,0,dashboard
+T0790,Session Expiry Test 51,auth/session.py,Authentication,iPhone 15,iOS 18,2.09,1,authentication
+T0791,Profile Update Test 51,profile/kyc.py,Profile,iPhone 12,iOS 17,2.8,0,profile
+T0792,VPA Validation Test 55,upi/upi_handler.py,UPI,iPhone 14,iOS 17,3.66,1,upi
+T0793,OTP Expiry Test 62,otp/otp_generator.py,OTP,Pixel 8,Android 15,2.92,1,otp
+T0794,Fingerprint Test 49,biometrics/liveness.py,Biometrics,Samsung A54,Android 14,0.9,0,biometrics
+T0795,Liveness Detection Test 50,biometrics/face_id.py,Biometrics,Samsung A34,Android 13,1.07,0,biometrics
+T0796,Transaction History Test 48,transaction/txn_limit.py,Transaction,Samsung A34,Android 13,1.19,1,transaction
+T0797,Statement Download Test 58,account/statement.py,Account,Samsung A34,Android 13,0.91,0,account
+T0798,Refund Test 52,payment/payment_api.py,Payment,Pixel 7,Android 14,1.66,1,payment
+T0799,Payment Limit Test 53,payment/payment_api.py,Payment,Pixel 8,Android 15,3.38,1,payment
+T0800,Account Summary Test 59,account/statement.py,Account,Pixel 7,Android 14,2.34,0,account
+T0801,Transaction Limit Test 49,transaction/txn_limit.py,Transaction,Pixel 8,Android 15,3.13,1,transaction
+T0802,Biometric Link Test 49,account/security.py,AccountSecurity,Samsung A34,Android 13,1.54,1,accountsecurity
+T0803,OTP Resend Test 63,otp/otp_delivery.py,OTP,Samsung A54,Android 14,2.05,1,otp
+T0804,Security Question Test 50,account/security.py,AccountSecurity,iPhone 15,iOS 18,0.68,1,accountsecurity
+T0805,KYC Verification Test 52,profile/profile_update.py,Profile,iPhone 14,iOS 17,2.34,0,profile
+T0806,MPIN Change Test 51,account/biometric_link.py,AccountSecurity,Samsung A54,Android 14,4.41,1,accountsecurity
+T0807,OTP Generation Test 64,otp/otp_delivery.py,OTP,iPhone 15,iOS 18,2.39,1,otp
+T0808,Balance Fetch Test 60,account/account.py,Account,iPhone 12,iOS 17,2.93,0,account
+T0809,OTP Validation Test 65,otp/otp_generator.py,OTP,Samsung A34,Android 13,3.92,1,otp
+T0810,Widget Load Test 61,dashboard/home.py,Dashboard,iPhone 15,iOS 18,1.63,0,dashboard
+T0811,Statement Download Test 61,account/balance.py,Account,iPhone 14,iOS 17,2.08,0,account
+T0812,Push Notification Test 51,notification/email_notif.py,Notification,iPhone 14,iOS 17,1.32,0,notification
+T0813,Unauthorized Access Test 54,auth/role_check.py,Authorization,Samsung A34,Android 13,1.21,1,authorization
+T0814,Anomaly Detection Test 73,fraud/rules.py,FraudDetection,Pixel 8,Android 15,4.05,1,frauddetection
+T0815,OTP Expiry Test 66,otp/otp_validator.py,OTP,iPhone 14,iOS 17,2.43,1,otp
+T0816,Profile Photo Test 53,profile/kyc.py,Profile,iPhone 14,iOS 17,2.18,0,profile
+T0817,Token Refresh Test 52,auth/session.py,Authentication,Samsung S24,Android 15,2.01,1,authentication
+T0818,Root Detection Test 47,device/device_bind.py,DeviceSecurity,Samsung A54,Android 14,1.43,0,devicesecurity
+T0819,Face ID Test 51,biometrics/liveness.py,Biometrics,iPhone 15,iOS 18,1.11,0,biometrics
+T0820,Fingerprint Test 52,biometrics/liveness.py,Biometrics,Samsung A34,Android 13,2.29,0,biometrics
+T0821,UPI Transfer Test 56,upi/upi_validator.py,UPI,iPhone 14,iOS 17,4.25,1,upi
+T0822,SMS Notification Test 52,notification/push.py,Notification,Pixel 8,Android 15,2.21,0,notification
+T0823,High-Value Alert Test 74,fraud/fraud_engine.py,FraudDetection,iPhone 15,iOS 18,3.63,1,frauddetection
+T0824,UPI Payment Test 54,payment/payment_controller.py,Payment,Samsung A34,Android 13,1.46,1,payment
+T0825,Fraud Rule Test 75,fraud/anomaly.py,FraudDetection,Samsung A34,Android 13,2.43,1,frauddetection
+T0826,Anomaly Detection Test 76,fraud/rules.py,FraudDetection,Samsung A54,Android 14,4.42,1,frauddetection
+T0827,OTP Resend Test 67,otp/otp_validator.py,OTP,Pixel 8,Android 15,3.62,1,otp
+T0828,RBAC Test 55,auth/policy.py,Authorization,Samsung A34,Android 13,0.69,1,authorization
+T0829,Account Summary Test 62,account/balance.py,Account,iPhone 14,iOS 17,0.92,0,account
+T0830,Biometric Link Test 52,account/biometric_link.py,AccountSecurity,Samsung A54,Android 14,2.27,1,accountsecurity
+T0831,Chat Test 43,support/ticket.py,CustomerSupport,iPhone 15,iOS 18,0.38,0,customersupport
+T0832,Balance Fetch Test 63,account/statement.py,Account,iPhone 14,iOS 17,2.18,0,account
+T0833,Analytics Test 62,dashboard/home.py,Dashboard,Samsung A54,Android 14,0.84,0,dashboard
+T0834,Role Permission Test 56,auth/role_check.py,Authorization,Pixel 7,Android 14,3.68,1,authorization
+T0835,Home Screen Test 63,dashboard/widgets.py,Dashboard,iPhone 15,iOS 18,0.26,0,dashboard
+T0836,OTP Generation Test 68,otp/otp_validator.py,OTP,Samsung S24,Android 15,4.74,1,otp
+T0837,Statement Download Test 64,account/balance.py,Account,Pixel 7,Android 14,0.47,0,account
+T0838,Security Question Test 53,account/security.py,AccountSecurity,Samsung A54,Android 14,4.88,1,accountsecurity
+T0839,OTP Validation Test 69,otp/otp_delivery.py,OTP,Samsung A34,Android 13,1.06,1,otp
+T0840,Concurrent Transaction Test 50,transaction/txn_history.py,Transaction,Samsung S24,Android 15,2.56,1,transaction
+T0841,Payment Flow Test 55,payment/payment_api.py,Payment,iPhone 12,iOS 17,1.14,1,payment
+T0842,Liveness Detection Test 53,biometrics/liveness.py,Biometrics,Pixel 8,Android 15,1.23,0,biometrics
+T0843,Logout Test 53,auth/session.py,Authentication,iPhone 12,iOS 17,3.71,1,authentication
+T0844,Account Summary Test 65,account/balance.py,Account,Pixel 8,Android 15,2.76,0,account
+T0845,Payment Failure Test 56,payment/payment_api.py,Payment,Samsung A54,Android 14,2.12,1,payment
+T0846,MPIN Change Test 54,account/biometric_link.py,AccountSecurity,iPhone 15,iOS 18,0.78,1,accountsecurity
+T0847,Widget Load Test 64,dashboard/home.py,Dashboard,Pixel 8,Android 15,1.28,0,dashboard
+T0848,Transaction History Test 51,transaction/txn_limit.py,Transaction,Samsung S24,Android 15,1.83,1,transaction
+T0849,High-Value Alert Test 77,fraud/anomaly.py,FraudDetection,iPhone 15,iOS 18,2.68,1,frauddetection
+T0850,Biometric Link Test 55,account/security.py,AccountSecurity,Pixel 8,Android 15,0.77,1,accountsecurity
+T0851,OTP Expiry Test 70,otp/otp_generator.py,OTP,Samsung S24,Android 15,1.29,1,otp
+T0852,Transaction Limit Test 52,transaction/txn_limit.py,Transaction,iPhone 15,iOS 18,3.0,1,transaction
+T0853,OTP Resend Test 71,otp/otp_delivery.py,OTP,Samsung S24,Android 15,3.35,1,otp
+T0854,UPI Collect Test 57,upi/upi_handler.py,UPI,iPhone 12,iOS 17,1.41,1,upi
+T0855,Multi-device Login Test 54,auth/token_manager.py,Authentication,Samsung A34,Android 13,0.81,1,authentication
+T0856,Concurrent Transaction Test 53,transaction/txn.py,Transaction,iPhone 12,iOS 17,0.98,1,transaction
+T0857,Login Test 55,auth/token_manager.py,Authentication,Samsung S24,Android 15,3.82,1,authentication
+T0858,Balance Fetch Test 66,account/account.py,Account,Pixel 8,Android 15,1.06,0,account
+T0859,OTP Generation Test 72,otp/otp_validator.py,OTP,Pixel 8,Android 15,2.21,1,otp
+T0860,Profile Update Test 54,profile/profile.py,Profile,Samsung A54,Android 14,2.98,0,profile
+T0861,Device Binding Test 48,device/cert_pinning.py,DeviceSecurity,Samsung A54,Android 14,2.87,0,devicesecurity
+T0862,Fraud Rule Test 78,fraud/rules.py,FraudDetection,Samsung A54,Android 14,2.41,1,frauddetection
+T0863,KYC Verification Test 55,profile/kyc.py,Profile,iPhone 15,iOS 18,2.63,0,profile
+T0864,Face ID Test 54,biometrics/face_id.py,Biometrics,Pixel 7,Android 14,1.64,0,biometrics
+T0865,Transaction History Test 54,transaction/txn_limit.py,Transaction,Samsung S24,Android 15,2.39,1,transaction
+T0866,Fingerprint Test 55,biometrics/liveness.py,Biometrics,iPhone 14,iOS 17,0.95,0,biometrics
+T0867,Policy Enforcement Test 57,auth/policy.py,Authorization,Pixel 8,Android 15,1.74,1,authorization
+T0868,Liveness Detection Test 56,biometrics/face_id.py,Biometrics,Pixel 7,Android 14,0.91,0,biometrics
+T0869,Face ID Test 57,biometrics/fingerprint.py,Biometrics,Pixel 8,Android 15,0.76,0,biometrics
+T0870,Anomaly Detection Test 79,fraud/anomaly.py,FraudDetection,Samsung A54,Android 14,3.86,1,frauddetection
+T0871,Refund Test 57,payment/payment_screen.py,Payment,Pixel 8,Android 15,2.4,1,payment
+T0872,OTP Validation Test 73,otp/otp_generator.py,OTP,iPhone 15,iOS 18,3.86,1,otp
+T0873,Certificate Pinning Test 49,device/device_trust.py,DeviceSecurity,Pixel 8,Android 15,0.65,0,devicesecurity
+T0874,Transaction Limit Test 55,transaction/txn_history.py,Transaction,Samsung A34,Android 13,4.25,1,transaction
+T0875,OTP Expiry Test 74,otp/otp_validator.py,OTP,Pixel 8,Android 15,2.67,1,otp
+T0876,High-Value Alert Test 80,fraud/rules.py,FraudDetection,Samsung A34,Android 13,1.22,1,frauddetection
+T0877,Security Question Test 56,account/mpin.py,AccountSecurity,Samsung A34,Android 13,2.25,1,accountsecurity
+T0878,Concurrent Transaction Test 56,transaction/txn_limit.py,Transaction,Samsung S24,Android 15,2.29,1,transaction
+T0879,Payment Limit Test 58,payment/payment_screen.py,Payment,iPhone 14,iOS 17,4.34,1,payment
+T0880,Unauthorized Access Test 58,auth/role_check.py,Authorization,Samsung A34,Android 13,1.43,1,authorization
+T0881,UPI QR Test 58,upi/upi_handler.py,UPI,iPhone 12,iOS 17,3.11,1,upi
+T0882,Transaction History Test 57,transaction/txn_limit.py,Transaction,iPhone 15,iOS 18,4.15,1,transaction
+T0883,RBAC Test 59,auth/role_check.py,Authorization,Samsung A54,Android 14,3.84,1,authorization
+T0884,UPI Payment Test 59,payment/payment_api.py,Payment,iPhone 14,iOS 17,2.82,1,payment
+T0885,Fingerprint Test 58,biometrics/fingerprint.py,Biometrics,Samsung A34,Android 13,0.32,0,biometrics
+T0886,Email Alert Test 53,notification/sms.py,Notification,iPhone 14,iOS 17,2.2,0,notification
+T0887,Analytics Test 65,dashboard/widgets.py,Dashboard,Samsung A54,Android 14,1.39,0,dashboard
+T0888,MPIN Change Test 57,account/biometric_link.py,AccountSecurity,iPhone 14,iOS 17,1.42,1,accountsecurity
+T0889,Root Detection Test 50,device/device_bind.py,DeviceSecurity,Pixel 8,Android 15,0.5,0,devicesecurity
+T0890,Fraud Rule Test 81,fraud/anomaly.py,FraudDetection,iPhone 14,iOS 17,2.36,1,frauddetection
+T0891,Session Expiry Test 56,auth/session.py,Authentication,Samsung A34,Android 13,2.1,1,authentication
+T0892,Payment Flow Test 60,payment/payment_screen.py,Payment,Samsung A34,Android 13,3.08,1,payment
+T0893,Device Binding Test 51,device/device_trust.py,DeviceSecurity,Samsung A54,Android 14,2.82,0,devicesecurity
+T0894,VPA Validation Test 59,upi/upi_handler.py,UPI,iPhone 15,iOS 18,1.92,1,upi
+T0895,Anomaly Detection Test 82,fraud/fraud_engine.py,FraudDetection,Pixel 8,Android 15,3.16,1,frauddetection
+T0896,Statement Download Test 67,account/account.py,Account,iPhone 15,iOS 18,2.09,0,account
+T0897,Token Refresh Test 57,auth/session.py,Authentication,iPhone 15,iOS 18,3.92,1,authentication
+T0898,OTP Resend Test 75,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,1.56,1,otp
+T0899,Certificate Pinning Test 52,device/cert_pinning.py,DeviceSecurity,Samsung S24,Android 15,1.04,0,devicesecurity
+T0900,Profile Photo Test 56,profile/profile.py,Profile,iPhone 15,iOS 18,1.22,0,profile
+T0901,FAQ Search Test 44,support/ticket.py,CustomerSupport,Samsung A34,Android 13,0.28,0,customersupport
+T0902,Root Detection Test 53,device/device_trust.py,DeviceSecurity,Pixel 8,Android 15,2.82,0,devicesecurity
+T0903,Transaction Limit Test 58,transaction/txn_history.py,Transaction,iPhone 12,iOS 17,4.28,1,transaction
+T0904,Account Summary Test 68,account/balance.py,Account,Samsung S24,Android 15,2.84,0,account
+T0905,Concurrent Transaction Test 59,transaction/txn_limit.py,Transaction,Samsung A34,Android 13,4.87,1,transaction
+T0906,OTP Generation Test 76,otp/otp_generator.py,OTP,iPhone 14,iOS 17,2.76,1,otp
+T0907,Transaction History Test 60,transaction/txn_history.py,Transaction,Pixel 8,Android 15,4.93,1,transaction
+T0908,Ticket Creation Test 45,support/ticket.py,CustomerSupport,iPhone 15,iOS 18,0.77,0,customersupport
+T0909,Chat Test 46,support/chat.py,CustomerSupport,Samsung S24,Android 15,0.32,0,customersupport
+T0910,Biometric Link Test 58,account/biometric_link.py,AccountSecurity,Pixel 8,Android 15,2.98,1,accountsecurity
+T0911,Device Binding Test 54,device/device_trust.py,DeviceSecurity,Samsung S24,Android 15,2.73,0,devicesecurity
+T0912,Liveness Detection Test 59,biometrics/fingerprint.py,Biometrics,Pixel 7,Android 14,0.21,0,biometrics
+T0913,Certificate Pinning Test 55,device/cert_pinning.py,DeviceSecurity,iPhone 12,iOS 17,0.63,0,devicesecurity
+T0914,Face ID Test 60,biometrics/face_id.py,Biometrics,Samsung S24,Android 15,1.25,0,biometrics
+T0915,Payment Failure Test 61,payment/payment_controller.py,Payment,Pixel 7,Android 14,0.68,1,payment
+T0916,OTP Validation Test 77,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,4.42,1,otp
+T0917,Transaction Limit Test 61,transaction/txn_limit.py,Transaction,Pixel 8,Android 15,1.75,1,transaction
+T0918,Role Permission Test 60,auth/policy.py,Authorization,Samsung A54,Android 14,3.01,1,authorization
+T0919,High-Value Alert Test 83,fraud/fraud_engine.py,FraudDetection,Samsung S24,Android 15,4.03,1,frauddetection
+T0920,UPI Transfer Test 60,upi/upi_api.py,UPI,Pixel 8,Android 15,2.24,1,upi
+T0921,Policy Enforcement Test 61,auth/policy.py,Authorization,Samsung S24,Android 15,2.35,1,authorization
+T0922,Logout Test 58,auth/token_manager.py,Authentication,Samsung S24,Android 15,4.01,1,authentication
+T0923,Unauthorized Access Test 62,auth/policy.py,Authorization,iPhone 14,iOS 17,2.28,1,authorization
+T0924,Balance Fetch Test 69,account/account.py,Account,Pixel 8,Android 15,1.98,0,account
+T0925,Profile Update Test 57,profile/profile.py,Profile,Pixel 8,Android 15,1.99,0,profile
+T0926,Fraud Rule Test 84,fraud/rules.py,FraudDetection,Samsung A54,Android 14,3.46,1,frauddetection
+T0927,KYC Verification Test 58,profile/profile_update.py,Profile,Samsung S24,Android 15,1.28,0,profile
+T0928,Multi-device Login Test 59,auth/session.py,Authentication,Samsung A34,Android 13,2.92,1,authentication
+T0929,Root Detection Test 56,device/device_bind.py,DeviceSecurity,Pixel 7,Android 14,1.63,0,devicesecurity
+T0930,Statement Download Test 70,account/account.py,Account,Pixel 8,Android 15,1.95,0,account
+T0931,Security Question Test 59,account/mpin.py,AccountSecurity,Samsung A54,Android 14,2.5,1,accountsecurity
+T0932,Profile Photo Test 59,profile/profile.py,Profile,Samsung A34,Android 13,2.27,0,profile
+T0933,FAQ Search Test 47,support/faq.py,CustomerSupport,Samsung A54,Android 14,1.61,0,customersupport
+T0934,Fingerprint Test 61,biometrics/fingerprint.py,Biometrics,Samsung S24,Android 15,2.6,0,biometrics
+T0935,Home Screen Test 66,dashboard/analytics.py,Dashboard,iPhone 14,iOS 17,2.64,0,dashboard
+T0936,Push Notification Test 54,notification/email_notif.py,Notification,iPhone 15,iOS 18,0.24,0,notification
+T0937,Ticket Creation Test 48,support/faq.py,CustomerSupport,Pixel 7,Android 14,2.01,0,customersupport
+T0938,Chat Test 49,support/ticket.py,CustomerSupport,Samsung A54,Android 14,0.64,0,customersupport
+T0939,UPI Collect Test 61,upi/upi_handler.py,UPI,iPhone 15,iOS 18,3.14,1,upi
+T0940,Device Binding Test 57,device/device_trust.py,DeviceSecurity,iPhone 14,iOS 17,0.38,0,devicesecurity
+T0941,Account Summary Test 71,account/account.py,Account,Samsung S24,Android 15,1.62,0,account
+T0942,RBAC Test 63,auth/policy.py,Authorization,iPhone 15,iOS 18,4.98,1,authorization
+T0943,Certificate Pinning Test 58,device/cert_pinning.py,DeviceSecurity,iPhone 12,iOS 17,1.91,0,devicesecurity
+T0944,Root Detection Test 59,device/cert_pinning.py,DeviceSecurity,iPhone 12,iOS 17,2.17,0,devicesecurity
+T0945,Login Test 60,auth/session.py,Authentication,Pixel 7,Android 14,3.16,1,authentication
+T0946,Balance Fetch Test 72,account/statement.py,Account,Samsung A34,Android 13,2.61,0,account
+T0947,Refund Test 62,payment/payment.py,Payment,iPhone 15,iOS 18,3.03,1,payment
+T0948,Anomaly Detection Test 85,fraud/rules.py,FraudDetection,Pixel 8,Android 15,3.7,1,frauddetection
+T0949,Profile Update Test 60,profile/profile.py,Profile,Pixel 7,Android 14,1.39,0,profile
+T0950,Statement Download Test 73,account/account.py,Account,Samsung A34,Android 13,2.28,0,account
+T0951,High-Value Alert Test 86,fraud/rules.py,FraudDetection,Samsung S24,Android 15,1.02,1,frauddetection
+T0952,Liveness Detection Test 62,biometrics/fingerprint.py,Biometrics,Samsung A54,Android 14,2.99,0,biometrics
+T0953,Widget Load Test 67,dashboard/widgets.py,Dashboard,iPhone 14,iOS 17,2.59,0,dashboard
+T0954,UPI QR Test 62,upi/upi_validator.py,UPI,Samsung S24,Android 15,0.83,1,upi
+T0955,Concurrent Transaction Test 62,transaction/txn_history.py,Transaction,Pixel 7,Android 14,4.86,1,transaction
+T0956,VPA Validation Test 63,upi/upi_api.py,UPI,Samsung A54,Android 14,4.1,1,upi
+T0957,SMS Notification Test 55,notification/email_notif.py,Notification,iPhone 15,iOS 18,0.68,0,notification
+T0958,Account Summary Test 74,account/statement.py,Account,iPhone 14,iOS 17,0.44,0,account
+T0959,OTP Expiry Test 78,otp/otp_generator.py,OTP,Samsung A34,Android 13,3.87,1,otp
+T0960,OTP Resend Test 79,otp/otp_delivery.py,OTP,iPhone 12,iOS 17,2.71,1,otp
+T0961,KYC Verification Test 61,profile/kyc.py,Profile,iPhone 12,iOS 17,1.71,0,profile
+T0962,FAQ Search Test 50,support/chat.py,CustomerSupport,iPhone 15,iOS 18,1.23,0,customersupport
+T0963,Session Expiry Test 61,auth/login.py,Authentication,Pixel 8,Android 15,4.57,1,authentication
+T0964,Token Refresh Test 62,auth/session.py,Authentication,Pixel 7,Android 14,2.04,1,authentication
+T0965,Role Permission Test 64,auth/policy.py,Authorization,Samsung S24,Android 15,0.5,1,authorization
+T0966,Email Alert Test 56,notification/email_notif.py,Notification,Pixel 8,Android 15,1.88,0,notification
+T0967,Logout Test 63,auth/session.py,Authentication,Pixel 7,Android 14,3.68,1,authentication
+T0968,Analytics Test 68,dashboard/analytics.py,Dashboard,Samsung A34,Android 13,1.66,0,dashboard
+T0969,OTP Generation Test 80,otp/otp_validator.py,OTP,Samsung A54,Android 14,2.04,1,otp
+T0970,Policy Enforcement Test 65,auth/policy.py,Authorization,Samsung A54,Android 14,2.04,1,authorization
+T0971,Profile Photo Test 62,profile/kyc.py,Profile,iPhone 15,iOS 18,1.39,0,profile
+T0972,Face ID Test 63,biometrics/face_id.py,Biometrics,iPhone 12,iOS 17,1.82,0,biometrics
+T0973,Transaction History Test 63,transaction/txn_history.py,Transaction,iPhone 15,iOS 18,0.65,1,transaction
+T0974,Profile Update Test 63,profile/profile_update.py,Profile,iPhone 12,iOS 17,0.39,0,profile
+T0975,Balance Fetch Test 75,account/account.py,Account,iPhone 12,iOS 17,1.05,0,account
+T0976,Payment Limit Test 63,payment/payment.py,Payment,Pixel 7,Android 14,2.23,1,payment
+T0977,Transaction Limit Test 64,transaction/txn_history.py,Transaction,iPhone 14,iOS 17,1.58,1,transaction
+T0978,OTP Validation Test 81,otp/otp_generator.py,OTP,Samsung A34,Android 13,3.14,1,otp
+T0979,Fingerprint Test 64,biometrics/liveness.py,Biometrics,Samsung A34,Android 13,1.99,0,biometrics
+T0980,UPI Transfer Test 64,upi/upi_validator.py,UPI,Pixel 8,Android 15,4.63,1,upi
+T0981,UPI Collect Test 65,upi/upi_api.py,UPI,iPhone 12,iOS 17,2.08,1,upi
+T0982,UPI QR Test 66,upi/upi_handler.py,UPI,Pixel 7,Android 14,3.97,1,upi
+T0983,Unauthorized Access Test 66,auth/permissions.py,Authorization,Pixel 7,Android 14,1.0,1,authorization
+T0984,Home Screen Test 69,dashboard/widgets.py,Dashboard,Samsung A34,Android 13,2.05,0,dashboard
+T0985,Widget Load Test 70,dashboard/widgets.py,Dashboard,Samsung A54,Android 14,0.3,0,dashboard
+T0986,MPIN Change Test 60,account/biometric_link.py,AccountSecurity,iPhone 12,iOS 17,0.85,1,accountsecurity
+T0987,KYC Verification Test 64,profile/kyc.py,Profile,iPhone 15,iOS 18,0.88,0,profile
+T0988,Liveness Detection Test 65,biometrics/face_id.py,Biometrics,Samsung S24,Android 15,2.19,0,biometrics
+T0989,Concurrent Transaction Test 65,transaction/txn.py,Transaction,Pixel 8,Android 15,4.17,1,transaction
+T0990,Multi-device Login Test 64,auth/token_manager.py,Authentication,Pixel 7,Android 14,3.06,1,authentication
+T0991,Biometric Link Test 61,account/security.py,AccountSecurity,Pixel 7,Android 14,3.59,1,accountsecurity
+T0992,VPA Validation Test 67,upi/upi_api.py,UPI,iPhone 12,iOS 17,4.47,1,upi
+T0993,RBAC Test 67,auth/role_check.py,Authorization,Samsung A54,Android 14,4.23,1,authorization
+T0994,Role Permission Test 68,auth/permissions.py,Authorization,Pixel 7,Android 14,1.12,1,authorization
+T0995,Security Question Test 62,account/security.py,AccountSecurity,iPhone 14,iOS 17,0.59,1,accountsecurity
+T0996,Analytics Test 71,dashboard/widgets.py,Dashboard,Samsung A34,Android 13,1.51,0,dashboard
+T0997,UPI Payment Test 64,payment/payment_api.py,Payment,Samsung S24,Android 15,0.81,1,payment
+T0998,Transaction History Test 66,transaction/txn_history.py,Transaction,iPhone 12,iOS 17,4.85,1,transaction
+T0999,Policy Enforcement Test 69,auth/policy.py,Authorization,Samsung S24,Android 15,3.11,1,authorization
+T1000,Statement Download Test 76,account/statement.py,Account,Samsung A34,Android 13,0.68,0,account

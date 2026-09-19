@@ -10,13 +10,18 @@ from backend.simulation.failure_simulator import run_all_failure_scenarios, SCEN
 from backend.api.auth_routes import get_user_from_token
 from backend.engine.audit_logger import log_event
 
+from backend.security.input_validator import detect_bypass_attempt
+
 router = APIRouter(prefix="/experiment", tags=["Experiment Lab"])
 
 
 @router.post("/run")
-def run_experiment(payload: ChangeAnalysisRequest, token: Optional[str] = None):
+def run_experiment(payload: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
     """Executes a side-by-side benchmark comparison."""
-    user = get_user_from_token(token)
+    role = user["role"]
+    blocked, msg = detect_bypass_attempt("RUN_EXPERIMENT", f"Compared Smart vs Baseline for changes: {payload.changed_files}", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     try:
         res = run_experiment_comparison(
             changed_files=payload.changed_files,
@@ -43,9 +48,12 @@ def get_scenarios():
 
 
 @router.post("/run-scenarios")
-def run_scenarios(token: Optional[str] = None):
+def run_scenarios(user: dict = Depends(get_user_from_token)):
     """Executes all 5 failure mode simulation assertions."""
-    user = get_user_from_token(token)
+    role = user["role"]
+    blocked, msg = detect_bypass_attempt("RUN_SCENARIOS", "Executed 5 safety scenarios", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     try:
         results = run_all_failure_scenarios()
         # Count passes

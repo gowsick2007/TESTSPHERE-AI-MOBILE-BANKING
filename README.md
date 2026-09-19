@@ -4,7 +4,7 @@
 TestSphere.AI is an intelligent, rule-based test selection engine. It reduces regression suite execution time by calculating the exact impact radius of any code change through deep dependency traversing, historic failure analysis, and safety-centric risk scoring. 
 
 ## 2. Problem Statement
-Running a complete mobile banking regression suite on hundreds of devices for every single micro-change takes hours. TestSphere.AI resolves this by guaranteeing that only affected tests are selected for execution while maintaining a zero false-negative safety mandate.
+Running a complete mobile banking regression suite on hundreds of devices for every single micro-change takes hours. TestSphere.AI resolves this by prioritizing safety and minimizing missed affected tests through conservative risk scoring.
 
 ## 3. Phase 1 Scope
 Phase 1 (Core Engine & Application) encompasses universal dataset ingestion, dependency graph algorithms (BFS/DFS depth traversals), historical failure heuristics, risk-scoring matrix, and a deterministic Test Selection engine (RUN/SKIP) with human-readable rationale logic.
@@ -63,21 +63,31 @@ python run_tests_manually.py
 4. Under **Test Selector**, review the targeted test execution pipeline and verify the `RUN/SKIP` rationales.
 
 ## 12. Experiment Execution & Verified Performance
-To programmatically prove the Time Reduction metrics and Zero False Negative guarantee, review the Jupyter Notebook:
+To programmatically evaluate Time Reduction metrics and safety performance, review the Jupyter Notebook:
 `experiments/testsphere_experiment.ipynb`
 
-### Verified Phase 1 Benchmark Results
-- **Audit Verdict:** `PHASE 1 — PASS WITH DOCUMENTED LIMITATIONS`
-- **Measured Runtime Reduction:** **5.1% – 9.1%** across single-module changes under strict security safety overrides.
-- **Benchmark Example (Payment Module Change):**
-  - **Baseline Suite:** 1,000 executed, 0 skipped, 2,238.33 seconds (~37.31 min).
-  - **Smart Selection:** 921 executed, 79 skipped, 2,110.50 seconds (~35.18 min).
-  - **Time Saved:** 127.83 seconds (**5.7% reduction**).
-- **Safety Guarantee:** **0 False Negatives** across all verified change scenarios.
+### Verified Phase 1 Benchmark Results (Seed 12345, Threshold 50)
+- **Scoring Strategy:** `RUN_THRESHOLD = 50` (Retained). The scoring strategy prioritizes safety and minimizing missed affected tests over aggressive test-suite reduction. This can result in a higher number of false-positive RUN decisions.
+- **Overall Aggregate Results (5 Scenarios, 5,000 Decisions):**
+  - **True Positives (TP):** 621
+  - **True Negatives (TN):** 469
+  - **False Positives (FP):** 3,909
+  - **False Negatives (FN):** 1 (Recall: **99.84%**)
+  - **Overall Precision:** **13.71%** (0.1371)
+  - **Overall Recall:** **99.84%** (0.9984)
+  - **Total RUN Decisions:** 4,530
+  - **Total SKIP Decisions:** 470
+- **Scenario Breakdown (SIMULATED EXECUTION TIME):**
+  - **CHG001 (Payment):** RUN=991, SKIP=9 | TP=130, TN=9, FP=861, FN=0 | Prec=0.1312, Rec=1.0000 | SIMULATED EXECUTION TIME: 37.49 min vs 37.80 min (0.8% reduction)
+  - **CHG003 (Authentication):** RUN=730, SKIP=270 | TP=68, TN=270, FP=662, FN=0 | Prec=0.0932, Rec=1.0000 | SIMULATED EXECUTION TIME: 30.53 min vs 37.80 min (19.2% reduction)
+  - **CHG008 (Transaction):** RUN=959, SKIP=41 | TP=142, TN=41, FP=817, FN=0 | Prec=0.1481, Rec=1.0000 | SIMULATED EXECUTION TIME: 36.51 min vs 37.80 min (3.4% reduction)
+  - **CHG011 (Notification):** RUN=920, SKIP=80 | TP=82, TN=79, FP=838, FN=1 | Prec=0.0891, Rec=0.9880 | SIMULATED EXECUTION TIME: 35.42 min vs 37.80 min (6.3% reduction)
+  - **CHG_MULTI (Payment + Auth):** RUN=930, SKIP=70 | TP=199, TN=70, FP=731, FN=0 | Prec=0.2140, Rec=1.0000 | SIMULATED EXECUTION TIME: 35.84 min vs 37.80 min (5.2% reduction)
 
 ## 13. Known Limitations
-- **Simulated Execution Benchmark:** Runtime reduction metrics are calculated using simulated test execution time metadata.
+- **SIMULATED EXECUTION TIME:** Runtime reduction metrics are calculated using simulated test execution time metadata, not real hardware or production execution time.
 - **Transitive Dependency Depth:** Graph traversal is bounded at depth 3 for performance optimization.
-- **Browser Automation:** Playwright browser automation was marked `NOT VERIFIED — ENVIRONMENT BLOCKED` due to Playwright driver CDN setup availability.
+- **Browser Automation:** Playwright browser automation was marked `NOT VERIFIED — ENVIRONMENT BLOCKED` due to environment driver setup.
 - **Stakeholder Validation:** Live user/stakeholder feedback is marked `DATA REQUIRED` (survey infrastructure is present in `feedback` table, pending live survey responses).
+
 

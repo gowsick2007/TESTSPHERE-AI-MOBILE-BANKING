@@ -37,11 +37,10 @@ def get_status():
 @router.post("/upload/full")
 async def upload_full_dataset(
     file: UploadFile = File(...),
-    token: Optional[str] = None,
+    user: dict = Depends(get_user_from_token),
     commit: bool = True,
     mapping: Optional[str] = None
 ):
-    user = get_user_from_token(token)
     role = user["role"]
 
     # Enforce backend role check
@@ -185,11 +184,10 @@ async def upload_full_dataset(
 async def upload_dataset(
     dataset_type: str,
     file: UploadFile = File(...),
-    token: Optional[str] = None,
+    user: dict = Depends(get_user_from_token),
     commit: bool = True,
     mapping: Optional[str] = None
 ):
-    user = get_user_from_token(token)
     role = user["role"]
 
     # Enforce backend role check
@@ -267,8 +265,7 @@ async def upload_dataset(
 
 
 @router.post("/demo")
-def load_demo(token: Optional[str] = None):
-    user = get_user_from_token(token)
+def load_demo(user: dict = Depends(get_user_from_token)):
     role = user["role"]
 
     blocked, msg = detect_bypass_attempt("LOAD_DEMO", "Generate demo dataset", role)
@@ -291,8 +288,7 @@ def load_demo(token: Optional[str] = None):
 
 
 @router.delete("/{dataset_type}")
-def delete_dataset(dataset_type: str, token: Optional[str] = None):
-    user = get_user_from_token(token)
+def delete_dataset(dataset_type: str, user: dict = Depends(get_user_from_token)):
     role = user["role"]
 
     blocked, msg = detect_bypass_attempt("CLEAR_DATASET", f"Clear {dataset_type}", role)

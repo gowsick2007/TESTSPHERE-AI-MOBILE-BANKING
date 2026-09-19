@@ -1,2 +1,2 @@
 change_id,file_path,module,change_type,risk_level,changed_at,is_security_sensitive
-CHG-T01,auth.py,Auth,MODIFIED,LOW,2026-08-01 12:00:00,0
+CHG-T01,auth/login.py,Authentication,MODIFIED,LOW,2026-08-01 12:00:00,0

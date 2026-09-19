@@ -3,7 +3,7 @@ TestSphere AI — Pydantic Schemas
 Defines input/output payloads for API routes.
 """
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 
 
 class LoginRequest(BaseModel):
@@ -49,4 +49,31 @@ class FeedbackRequest(BaseModel):
     dashboard_clear: int
     additional_comments: Optional[str] = None
     rating: int = 5
+
+
+class DecisionRecord(BaseModel):
+    test_id: str
+    test_name: str
+    module: Optional[str] = "Unknown"
+    device: Optional[str] = "Unknown"
+    os_version: Optional[str] = "—"
+    execution_time: Optional[float] = 0.5
+    risk_score: int
+    decision: str
+    confidence: str
+    evidence: List[str] = []
+    overrides: List[Any] = []
+    rationale: str
+    why_run: Optional[List[str]] = None
+    why_skip: Optional[List[str]] = None
+
+
+class SelectionResponse(BaseModel):
+    change_context: Dict[str, Any]
+    dependency_info: Dict[str, Any]
+    coverage_info: Dict[str, Any]
+    failure_info: Dict[str, Any]
+    decisions: List[Dict[str, Any]]
+    summary: Dict[str, Any]
+
 

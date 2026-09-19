@@ -5,7 +5,8 @@ nb = nbf.v4.new_notebook()
 text = """\
 # TestSphere.AI Experiment Notebook
 This notebook loads the dataset, dependency map, test coverage, and failure history to evaluate the change-impact test selection.
-It runs a baseline (all tests) and TestSphere.AI's smart selection, then compares execution time reduction and affected-test false negatives.
+It runs a baseline (all tests) and TestSphere.AI's smart selection, then compares simulated execution time reduction and affected-test false negatives against ground truth.
+All timing values represent SIMULATED EXECUTION TIME calculated from test execution time metadata.
 """
 nb['cells'].append(nbf.v4.new_markdown_cell(text))
 
@@ -44,49 +45,61 @@ print(f"Loaded {len(coverage_df)} tests, {len(deps_df)} dependencies, {len(failu
 nb['cells'].append(nbf.v4.new_code_cell(code2))
 
 code3 = """\
-# 5. Define code-change scenarios
+# 5. Define code-change scenarios matching canonical ground truth
 scenarios = [
-    {"name": "Scenario 1: Payment logic change", "files": ["payment/payment.py"], "module": "Payment"},
-    {"name": "Scenario 2: Auth login change", "files": ["auth/login.py"], "module": "Authentication"},
-    {"name": "Scenario 3: Transfer change", "files": ["transaction/txn.py"], "module": "Transaction"},
-    {"name": "Scenario 4: Notification change", "files": ["notification/push.py"], "module": "Notification"},
-    {"name": "Scenario 5: Multi-file change", "files": ["payment/payment.py", "auth/login.py"], "module": "Payment"}
+    {"id": "CHG001", "name": "Scenario 1: Payment core change", "files": ["payment/payment.py"], "module": "Payment", "risk": "HIGH", "is_sec": False},
+    {"id": "CHG003", "name": "Scenario 2: Auth login patch", "files": ["auth/login.py"], "module": "Authentication", "risk": "HIGH", "is_sec": True},
+    {"id": "CHG008", "name": "Scenario 3: Transaction limit change", "files": ["transaction/txn_limit.py"], "module": "Transaction", "risk": "MEDIUM", "is_sec": False},
+    {"id": "CHG011", "name": "Scenario 4: Notification push update", "files": ["notification/push.py"], "module": "Notification", "risk": "LOW", "is_sec": False},
+    {"id": "CHG_MULTI", "name": "Scenario 5: Multi-module change", "files": ["payment/payment.py", "auth/login.py"], "module": "Payment", "risk": "HIGH", "is_sec": True}
 ]
 """
 nb['cells'].append(nbf.v4.new_code_cell(code3))
 
 code4 = """\
-# 6-11. Run Baseline vs Target and compute metrics
+# 6-11. Run Baseline vs Smart Selector and compute verified metrics
 results = []
 for s in scenarios:
-    print(f"\\nRunning {s['name']}...")
+    print(f"\\nRunning {s['name']} (ID: {s['id']})...")
     
-    # 6. Baseline
+    # Baseline run
     baseline = run_baseline()
     
-    # 7. TestSphere.AI selection
-    selection = run_selection(changed_files=s["files"], change_type="MODIFIED", module=s["module"], is_security_sensitive=False, risk_level="MEDIUM")
+    # TestSphere.AI selection
+    selection = run_selection(
+        changed_files=s["files"],
+        change_type="MODIFIED",
+        module=s["module"],
+        is_security_sensitive=s["is_sec"],
+        risk_level=s["risk"]
+    )
     decisions = selection["decisions"]
     
-    # 8. Compare selected tests
+    # Smart execution simulation
     smart_exec = run_smart(decisions)
     
-    # 9. Calculate runtime reduction
+    # Calculate runtime reduction (SIMULATED EXECUTION TIME)
     all_tests = coverage_df.to_dict('records')
     selected_tests = [t for t in all_tests if any(d["test_id"] == t["test_id"] and d["decision"] == "RUN" for d in decisions)]
     time_metrics = calculate_time_metrics(all_tests, selected_tests)
     
-    # 10. Calculate false negatives (Assuming CHG001 represents our generic ground truth logic for the first scenario for demo purposes)
-    metrics = calculate_experiment_metrics(decisions, change_id="CHG001" if s["files"] == ["payment/payment.py"] else "CHG001")
+    # Calculate quality metrics against actual synthetic ground truth
+    metrics = calculate_experiment_metrics(decisions, change_id=s["id"])
     
     res = {
-        "Scenario": s['name'],
-        "Total Tests": baseline['total'],
-        "Executed Tests (Baseline)": baseline['executed'],
-        "Executed Tests (Target)": smart_exec['executed'],
-        "Skipped Tests (Target)": smart_exec['skipped'],
-        "Time Reduction %": time_metrics['time_reduction_pct'],
-        "False Negatives": metrics['false_negatives']
+        "Scenario ID": s['id'],
+        "Scenario Name": s['name'],
+        "Total Tests": baseline['total_tests'],
+        "RUN Tests": smart_exec['executed'],
+        "SKIP Tests": smart_exec['skipped'],
+        "TP": metrics['true_positives'],
+        "TN": metrics['true_negatives'],
+        "FP": metrics['false_positives'],
+        "FN": metrics['false_negatives'],
+        "Precision": metrics['precision'],
+        "Recall": metrics['recall'],
+        "Simulated Time Reduction %": time_metrics['time_reduction_pct'],
+        "Simulated Time Saved (min)": time_metrics['time_saved_minutes']
     }
     results.append(res)
 
@@ -97,3 +110,5 @@ nb['cells'].append(nbf.v4.new_code_cell(code4))
 
 with open('experiments/testsphere_experiment.ipynb', 'w') as f:
     nbf.write(nb, f)
+
+print("experiments/testsphere_experiment.ipynb successfully generated.")

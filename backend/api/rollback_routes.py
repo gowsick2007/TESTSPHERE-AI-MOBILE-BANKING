@@ -21,9 +21,8 @@ def get_strategy():
 
 
 @router.post("/rollback")
-def rollback(payload: RollbackRequest, token: Optional[str] = None):
+def rollback(payload: RollbackRequest, user: dict = Depends(get_user_from_token)):
     """Triggers an emergency fallback toggle."""
-    user = get_user_from_token(token)
     role = user["role"]
 
     # Server-side authorization check

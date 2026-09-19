@@ -423,7 +423,10 @@ def parse_and_validate_csv(
                     report["issues"].append(f"Row {idx + 1}: Missing required identifier '{col}' (cannot import)")
                 report["is_valid_to_save"] = False
             else:
-                clean_df.loc[null_mask, col] = fill_val
+                if pd.api.types.is_string_dtype(clean_df[col].dtype):
+                    clean_df.loc[null_mask, col] = str(fill_val)
+                else:
+                    clean_df.loc[null_mask, col] = fill_val
                 filled_count += int(null_count)
                 report["issues"].append(f"Filled {null_count} missing values in '{col}' with '{fill_val}'")
 
@@ -1088,7 +1091,10 @@ def parse_and_validate_full_csv(
                     elif "categories" in schema and col in schema["categories"]:
                         fill_val = schema["categories"][col]["default"]
                     
-                    group_df.loc[null_mask, col] = fill_val
+                    if pd.api.types.is_string_dtype(group_df[col].dtype):
+                        group_df.loc[null_mask, col] = str(fill_val)
+                    else:
+                        group_df.loc[null_mask, col] = fill_val
                     actions.append(f"✓ [{g}] Filled {null_mask.sum()} missing values in '{col}' with '{fill_val}'.")
 
         dropped_missing = drop_mask.sum()

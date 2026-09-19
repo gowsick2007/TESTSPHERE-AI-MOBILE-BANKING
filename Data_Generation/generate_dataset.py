@@ -1,9 +1,11 @@
 """
 TestSphere AI — Synthetic Dataset Generator (Updated)
-Generates realistic, deterministic demo data (seed=42) for all 5 core datasets.
+Generates realistic, deterministic demo data (default seed=12345) for all 5 core datasets.
+Supports --seed argument for reproducible generation and canonical CSV exports.
 """
-import sqlite3
+import csv
 import random
+import sqlite3
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -13,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from Engine.database import get_connection as get_db_connection, initialize_database, upsert_dataset_metadata
 
-SEED = 42
+SEED = 12345
 random.seed(SEED)
 
 MODULES = [
@@ -39,7 +41,7 @@ DEVICES = [
     ("D008", "iPhone 12",    "iOS",     "iOS 17",      "LOW",    0.03),
 ]
 
-DEVICE_NAMES  = [d[1] for d in DEVICES]
+DEVICE_NAMES = [d[1] for d in DEVICES]
 DEVICE_OS_MAP = {d[1]: (d[3]) for d in DEVICES}
 
 MODULE_FILES = {
@@ -86,10 +88,11 @@ SEVERITY_LEVELS = ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
 ERROR_TYPES = ["NullPointerException", "TimeoutError", "AssertionError", "NetworkError", "AuthError", "ValueError"]
 
 
-def generate_tests(n: int = 1000) -> list[dict]:
+def generate_tests(n: int = 1000, seed: int = None) -> list[dict]:
     tests = []
     counters = {m: 0 for m in MODULES}
-    rng = random.Random(SEED)
+    s = SEED if seed is None else seed
+    rng = random.Random(s)
 
     for i in range(1, n + 1):
         module = rng.choice(MODULES)
@@ -119,8 +122,9 @@ def generate_tests(n: int = 1000) -> list[dict]:
     return tests
 
 
-def generate_dependencies() -> list[dict]:
-    rng = random.Random(SEED + 1)
+def generate_dependencies(seed: int = None) -> list[dict]:
+    s = SEED if seed is None else seed
+    rng = random.Random(s + 1)
     deps = []
     seen = set()
 
@@ -167,8 +171,9 @@ def generate_dependencies() -> list[dict]:
     return deps
 
 
-def generate_failure_history(tests: list[dict], n_failures: int = 2400) -> list[dict]:
-    rng = random.Random(SEED + 2)
+def generate_failure_history(tests: list[dict], n_failures: int = 2400, seed: int = None) -> list[dict]:
+    s = SEED if seed is None else seed
+    rng = random.Random(s + 2)
     records = []
     critical_tests = [t for t in tests if t["module"] in CRITICAL_MODULES]
     non_critical_tests = [t for t in tests if t["module"] not in CRITICAL_MODULES]
@@ -210,8 +215,9 @@ def generate_failure_history(tests: list[dict], n_failures: int = 2400) -> list[
     return records
 
 
-def generate_code_changes() -> list[dict]:
-    rng = random.Random(SEED + 3)
+def generate_code_changes(seed: int = None) -> list[dict]:
+    s = SEED if seed is None else seed
+    rng = random.Random(s + 3)
     changes = []
     base_date = datetime(2025, 6, 1)
 
@@ -249,8 +255,9 @@ def generate_code_changes() -> list[dict]:
     return changes
 
 
-def generate_ground_truth(tests: list[dict], changes: list[dict], deps: list[dict]) -> list[dict]:
-    rng = random.Random(SEED + 4)
+def generate_ground_truth(tests: list[dict], changes: list[dict], deps: list[dict], seed: int = None) -> list[dict]:
+    s = SEED if seed is None else seed
+    rng = random.Random(s + 4)
     
     scenario_configs = [
         ("CHG001", ["payment/payment.py"], "Payment"),
@@ -285,6 +292,49 @@ def generate_ground_truth(tests: list[dict], changes: list[dict], deps: list[dic
     return records
 
 
+def build_device_rows(tests: list[dict]) -> list[dict]:
+    from collections import Counter
+    device_rows = []
+    tc = Counter(t["device"] for t in tests)
+    for d in DEVICES:
+        device_rows.append({
+            "device_id": d[0],
+            "device_name": d[1],
+            "os_type": d[2],
+            "os_version": d[3],
+            "risk_level": d[4],
+            "failure_rate": d[5],
+            "last_failure_date": "2025-08-01",
+            "test_count": tc.get(d[1], 0),
+        })
+    return device_rows
+
+
+def export_to_csv(tests, deps, failures, changes, ground_truth, device_rows, output_dir: Path) -> dict:
+    """Exports dataset tables to deterministic CSV files with LF newlines."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    files_written = {}
+    tables = {
+        "test_coverage.csv": tests,
+        "dependency_map.csv": deps,
+        "failure_history.csv": failures,
+        "device_matrix.csv": device_rows,
+        "code_changes.csv": changes,
+        "experiment_ground_truth.csv": ground_truth,
+    }
+    for filename, rows in tables.items():
+        if not rows:
+            continue
+        file_path = output_dir / filename
+        fieldnames = list(rows[0].keys())
+        with open(file_path, mode="w", newline="\n", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(rows)
+        files_written[filename] = len(rows)
+    return files_written
+
+
 def _bulk_insert(conn: sqlite3.Connection, table: str, rows: list[dict]) -> None:
     if not rows:
         return
@@ -295,7 +345,7 @@ def _bulk_insert(conn: sqlite3.Connection, table: str, rows: list[dict]) -> None
     conn.executemany(sql, [tuple(r[k] for k in keys) for r in rows])
 
 
-def load_into_db(tests, deps, failures, changes, ground_truth) -> None:
+def load_into_db(tests, deps, failures, changes, ground_truth, device_rows=None) -> None:
     conn = get_db_connection()
     try:
         for table in ["test_coverage", "dependency_map", "failure_history", "device_matrix", "code_changes", "experiment_ground_truth"]:
@@ -303,17 +353,8 @@ def load_into_db(tests, deps, failures, changes, ground_truth) -> None:
 
         _bulk_insert(conn, "test_coverage", tests)
 
-        device_rows = []
-        for d in DEVICES:
-            device_rows.append({
-                "device_id": d[0], "device_name": d[1], "os_type": d[2],
-                "os_version": d[3], "risk_level": d[4], "failure_rate": d[5],
-                "last_failure_date": "2025-08-01", "test_count": 0,
-            })
-        from collections import Counter
-        tc = Counter(t["device"] for t in tests)
-        for dr in device_rows:
-            dr["test_count"] = tc.get(dr["device_name"], 0)
+        if device_rows is None:
+            device_rows = build_device_rows(tests)
         _bulk_insert(conn, "device_matrix", device_rows)
 
         _bulk_insert(conn, "dependency_map", deps)
@@ -333,15 +374,28 @@ def load_into_db(tests, deps, failures, changes, ground_truth) -> None:
         conn.close()
 
 
-def generate_and_load(verbose: bool = True) -> dict:
-    initialize_database()
-    tests = generate_tests(1000)
-    deps = generate_dependencies()
-    failures = generate_failure_history(tests)
-    changes = generate_code_changes()
-    ground_truth = generate_ground_truth(tests, changes, deps)
+def generate_and_load(*args, seed: int = 12345, output_dir: Path | None = None, load_db: bool = True, verbose: bool = True) -> dict:
+    if args:
+        if isinstance(args[0], bool):
+            verbose = args[0]
+        elif isinstance(args[0], int):
+            seed = args[0]
 
-    load_into_db(tests, deps, failures, changes, ground_truth)
+    if load_db:
+        initialize_database()
+
+    tests = generate_tests(1000, seed=seed)
+    deps = generate_dependencies(seed=seed)
+    failures = generate_failure_history(tests, seed=seed)
+    changes = generate_code_changes(seed=seed)
+    ground_truth = generate_ground_truth(tests, changes, deps, seed=seed)
+    device_rows = build_device_rows(tests)
+
+    if load_db:
+        load_into_db(tests, deps, failures, changes, ground_truth, device_rows=device_rows)
+
+    if output_dir is not None:
+        export_to_csv(tests, deps, failures, changes, ground_truth, device_rows, Path(output_dir))
 
     return {
         "tests": len(tests),
@@ -349,14 +403,30 @@ def generate_and_load(verbose: bool = True) -> dict:
         "failures": len(failures),
         "changes": len(changes),
         "ground_truth": len(ground_truth),
-        "devices": len(DEVICES),
+        "devices": len(device_rows),
         "modules": len(MODULES),
         "files": len(ALL_FILES),
     }
 
 
 if __name__ == "__main__":
-    result = generate_and_load(verbose=True)
-    print("\n=== Demo Dataset Generated and Loaded ===")
-    for k, v in result.items():
-        print(f"  {k}: {v}")
+    import argparse
+    parser = argparse.ArgumentParser(description="TestSphere AI Synthetic Dataset Generator")
+    parser.add_argument("--seed", type=int, default=12345, help="Random seed for deterministic generation (default: 12345)")
+    parser.add_argument("--output-dir", type=str, default=str(Path(__file__).resolve().parent.parent / "Dataset" / "synthetic_canonical"), help="Directory to save generated CSV files")
+    parser.add_argument("--no-db", action="store_true", help="Skip database insertion and only generate CSVs")
+    parser.add_argument("--quiet", action="store_true", help="Suppress console output")
+    args = parser.parse_args()
+
+    out_dir = Path(args.output_dir)
+    result = generate_and_load(
+        seed=args.seed,
+        output_dir=out_dir,
+        load_db=not args.no_db,
+        verbose=not args.quiet
+    )
+    if not args.quiet:
+        print(f"\n=== Synthetic Dataset Generated (Seed: {args.seed}) ===")
+        print(f"  Canonical location: {out_dir}")
+        for k, v in result.items():
+            print(f"  {k}: {v}")

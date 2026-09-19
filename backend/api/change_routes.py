@@ -11,11 +11,13 @@ from backend.engine.coverage_analyzer import find_covered_tests
 from backend.engine.data_access import get_code_changes, get_db_connection
 from backend.api.auth_routes import get_user_from_token
 
+from backend.security.input_validator import detect_bypass_attempt
+
 router = APIRouter(prefix="/change", tags=["Change Analysis"])
 
 
 @router.post("/analyze")
-def analyze(payload: ChangeAnalysisRequest):
+def analyze(payload: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
     """Analyze changed files and report impact predictions."""
     try:
         ctx = analyze_change(
@@ -46,9 +48,12 @@ def get_history():
 
 
 @router.post("/register")
-def register_change(payload: ChangeAnalysisRequest, token: Optional[str] = None):
+def register_change(payload: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
     """Saves a new change request into SQLite."""
-    user = get_user_from_token(token)
+    role = user["role"]
+    blocked, msg = detect_bypass_attempt("REGISTER_CHANGE", f"Register change targeting {payload.changed_files}", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     conn = get_db_connection()
     try:
         import uuid

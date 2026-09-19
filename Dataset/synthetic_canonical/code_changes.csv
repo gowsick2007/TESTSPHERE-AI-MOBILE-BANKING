@@ -1,0 +1,16 @@
+change_id,file_path,module,change_type,is_security_sensitive,risk_level,changed_at,changed_by,description
+CHG001,payment/payment.py,Payment,MODIFIED,1,HIGH,2025-06-01T00:00:00,dev_bob,MODIFIED in Payment module: payment/payment.py
+CHG002,payment/payment_controller.py,Payment,MODIFIED,1,HIGH,2025-06-11T00:00:00,dev_charlie,MODIFIED in Payment module: payment/payment_controller.py
+CHG003,auth/login.py,Authentication,SECURITY_PATCH,1,HIGH,2025-06-18T00:00:00,dev_charlie,SECURITY_PATCH in Authentication module: auth/login.py
+CHG004,auth/token_manager.py,Authentication,MODIFIED,1,HIGH,2025-06-24T00:00:00,dev_alice,MODIFIED in Authentication module: auth/token_manager.py
+CHG005,otp/otp_generator.py,OTP,MODIFIED,1,MEDIUM,2025-06-29T00:00:00,dev_bob,MODIFIED in OTP module: otp/otp_generator.py
+CHG006,fraud/fraud_engine.py,FraudDetection,MODIFIED,1,HIGH,2025-07-06T00:00:00,dev_diana,MODIFIED in FraudDetection module: fraud/fraud_engine.py
+CHG007,upi/upi_handler.py,UPI,MODIFIED,0,HIGH,2025-07-16T00:00:00,dev_alice,MODIFIED in UPI module: upi/upi_handler.py
+CHG008,transaction/txn_limit.py,Transaction,MODIFIED,0,MEDIUM,2025-07-21T00:00:00,dev_diana,MODIFIED in Transaction module: transaction/txn_limit.py
+CHG009,profile/profile_update.py,Profile,MODIFIED,0,LOW,2025-07-27T00:00:00,dev_bob,MODIFIED in Profile module: profile/profile_update.py
+CHG010,dashboard/analytics.py,Dashboard,ADDED,0,LOW,2025-08-03T00:00:00,dev_charlie,ADDED in Dashboard module: dashboard/analytics.py
+CHG011,notification/push.py,Notification,MODIFIED,0,LOW,2025-08-10T00:00:00,dev_alice,MODIFIED in Notification module: notification/push.py
+CHG012,account/balance.py,Account,MODIFIED,0,MEDIUM,2025-08-18T00:00:00,dev_diana,MODIFIED in Account module: account/balance.py
+CHG013,device/cert_pinning.py,DeviceSecurity,SECURITY_PATCH,1,HIGH,2025-08-25T00:00:00,dev_charlie,SECURITY_PATCH in DeviceSecurity module: device/cert_pinning.py
+CHG014,biometrics/face_id.py,Biometrics,MODIFIED,0,MEDIUM,2025-08-31T00:00:00,dev_alice,MODIFIED in Biometrics module: biometrics/face_id.py
+CHG015,support/ticket.py,CustomerSupport,ADDED,0,LOW,2025-09-09T00:00:00,dev_alice,ADDED in CustomerSupport module: support/ticket.py

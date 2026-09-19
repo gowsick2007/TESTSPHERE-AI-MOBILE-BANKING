@@ -1,2 +1,2 @@
 test_id,test_name,file_path,module,device,os_version,execution_time,is_security_critical
-T101,Verify Login,auth.py,Auth,iPhone,15.2,1.5,0
+T101,Verify Login,auth/login.py,Authentication,Pixel 8,Android 15,1.5,0

@@ -9,14 +9,14 @@ from pathlib import Path
 from typing import Optional
 from datetime import datetime
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form, APIRouter
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, APIRouter, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 # Import routers from the backend package to enable premium HTML frontend API connectivity
-from backend.api.auth_routes import router as auth_router
+from backend.api.auth_routes import router as auth_router, get_user_from_token
 from backend.api.data_routes import router as data_router
 from backend.api.change_routes import router as change_router
 from backend.api.test_routes import router as test_router
@@ -78,7 +78,7 @@ api_router.include_router(rollback_router)
 api_router.include_router(audit_router)
 
 @api_router.post("/what-if")
-def what_if(payload: WhatIfRequest):
+def what_if(payload: WhatIfRequest, user: dict = Depends(get_user_from_token)):
     """Simulates selector decisions for a custom changed module and device combination."""
     tests = get_all_tests()
     if not tests:

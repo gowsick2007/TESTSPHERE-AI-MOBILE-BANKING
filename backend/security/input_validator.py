@@ -22,8 +22,11 @@ def detect_bypass_attempt(action: str, input_summary: str, role: str) -> Tuple[b
     """
     role = (role or "VIEWER").upper()
 
-    # Rule 1: VIEWER role cannot perform writing actions
-    if role == "VIEWER" and action in ["ROLLBACK", "CLEAR_DATASET", "IMPORT_DATA", "LOAD_DEMO"]:
+    # Rule 1: VIEWER role cannot perform mutating/execution actions
+    if role == "VIEWER" and action in [
+        "ROLLBACK", "CLEAR_DATASET", "IMPORT_DATA", "LOAD_DEMO",
+        "REGISTER_CHANGE", "RUN_TESTS", "RUN_EXPERIMENT", "RUN_SCENARIOS"
+    ]:
         return True, f"Permission Denied: User role 'VIEWER' is not authorized to execute {action}."
 
     # Rule 2: QA_ENGINEER cannot execute Rollback
