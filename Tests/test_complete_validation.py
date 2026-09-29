@@ -52,8 +52,9 @@ def test_login():
 
 def test_auth_me(admin_session):
     headers = {"Authorization": f"Bearer {admin_session['token']}"}
-    cookies = {"session_token": admin_session["cookie"]} if admin_session["cookie"] else None
-    res = client.get("/api/auth/me", headers=headers, cookies=cookies)
+    if admin_session.get("cookie"):
+        client.cookies.set("session_token", admin_session["cookie"])
+    res = client.get("/api/auth/me", headers=headers)
     assert res.status_code == 200
     assert res.json().get("authenticated") is True
     assert res.json().get("role") == "ADMIN"

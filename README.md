@@ -6,12 +6,20 @@ TestSphere.AI is an intelligent, rule-based test selection engine. It reduces re
 ## 2. Problem Statement
 Running a complete mobile banking regression suite on hundreds of devices for every single micro-change takes hours. TestSphere.AI resolves this by prioritizing safety and minimizing missed affected tests through conservative risk scoring.
 
-## 3. Phase 1 Scope
-Phase 1 (Core Engine & Application) encompasses universal dataset ingestion, dependency graph algorithms (BFS/DFS depth traversals), historical failure heuristics, risk-scoring matrix, and a deterministic Test Selection engine (RUN/SKIP) with human-readable rationale logic.
+## 3. Scope & Milestones
+- **Phase 1 (35%)**: Core rule-based test selection engine, universal dataset ingestion, dependency graph algorithms (BFS/DFS traversals), risk-scoring matrix (threshold 50), and deterministic RUN/SKIP rationale logic.
+- **Phase 2 (70% Target Achieved)**: 
+  - **Dependency Graph Hardening**: Cycle detection (`has_cycles`), bounded depth (max depth 3), missing node resilience, traversal telemetry.
+  - **Controlled Test Execution Management**: Plan creation and execution lifecycle with explicit separation of `SIMULATED` execution vs `ACTUAL` physical execution.
+  - **Controlled Multi-Threshold Evaluation**: Empirical benchmarking across thresholds [30, 40, 50, 60, 70] against ground truth, safety rejection if FN > 0.
+  - **Immutable Experiment Management**: Persistent experiment records, comparison delta analysis, and strict immutability locks (PUT returns 400).
+  - **Atomic Strategy Versioning & Rollback**: Single-transaction SQLite rollback switch between `SMART_SELECTOR` and `LEGACY_FULL_SUITE` with version tracking.
+  - **Redacted Audit System & Stakeholder Feedback**: Audit logger with secret redaction (Bearer tokens, credentials) and structured stakeholder feedback collection.
+  - **Analytics & Diagnostic Telemetry**: False-negative/false-positive root-cause diagnostics, threshold sensitivity curves, and system summary APIs.
 
 ## 4. Architecture
 - **Backend**: Python (FastAPI), heavily leveraging `pandas` and `networkx`.
-- **Database**: In-memory optimized SQLite (`testsphere.db`).
+- **Database**: In-memory optimized SQLite (`testsphere.db`) with automated schema migrations.
 - **Frontend**: Lightweight HTML/CSS/Vanilla JS (No heavy web frameworks) via dynamic REST bindings.
 
 ## 5. Installation & Configuration
@@ -25,42 +33,50 @@ pip install -r requirements.txt
 ### Configuration Setup
 The application requires a local `config.json` configuration file to run. To create it from the template:
 ```bash
-cp config.example.json config.json  # On Windows PowerShell / Command Prompt: copy config.example.json config.json
+cp config.example.json config.json  # On Windows PowerShell: copy config.example.json config.json
 ```
-Edit `config.json` locally to configure your local credentials and settings. Note that `config.json` is git-ignored to prevent sensitive local credentials from being committed to source control.
-
+Edit `config.json` locally to configure credentials and settings (`config.json` is git-ignored).
 
 ## 6. Running Backend
-The backend initializes the database and serves API endpoints dynamically.
+The backend initializes the database and serves API endpoints dynamically:
 ```bash
 python backend/main.py
 ```
-*Note: The frontend static files are served natively through the FastAPI instance on port 8001.*
+*The frontend static files are served natively through the FastAPI instance on port 8001.*
 
 ## 7. Running Frontend
 Navigate to `http://localhost:8001/` in any modern web browser after starting the backend.
 
-## 8. Dataset Generation
+## 8. Dataset Generation & Seeding
 The project relies on a strictly structured dataset matching Mobile Banking schema norms. Generate 1000+ realistic rows of test data via:
 ```bash
 python Data_Generation/generate_dataset.py
 ```
-*(You can also use the `Load Demo Dataset` button in the Web UI Data Management tab).*
+*(Or use the `Load Demo Dataset` button in the Web UI Data Management tab).*
 
 ## 9. Database Setup
-The SQLite database automatically provisions itself at `Data/testsphere.db` on backend initialization. Manual schemas are defined in `Engine/database.py`.
+The SQLite database automatically provisions itself at `Data/testsphere.db` on backend initialization. Manual schemas are defined in `Engine/database.py` and `backend/database.py`.
 
-## 10. Test Execution
-Run the programmatic safety and CSV validation unit tests natively:
+## 10. Test Execution & Verification
+Run the complete automated test suite with full clean cache:
 ```bash
-python run_tests_manually.py
+pytest --cache-clear Tests/ -v
 ```
+*Current test suite status: 129 passing tests across 14 test modules (0 failures).*
 
-## 11. Phase 1 Demo Flow
-1. Load up `http://localhost:8001/` and Login.
-2. Under **Data Management**, initialize the environment with the synthetic Demo Dataset.
-3. Under **Change Analysis**, register an example file modification (e.g. `payment/payment.py`).
-4. Under **Test Selector**, review the targeted test execution pipeline and verify the `RUN/SKIP` rationales.
+## 11. Phase 2 Key Features & Workflow
+1. **Change Impact Analysis**: Submit modified files via UI or `POST /api/change/analyze` to obtain targeted dependency radius and test rankings.
+2. **Controlled Test Execution**:
+   - `POST /api/execution/plan`: Generate an execution plan from selected tests.
+   - `POST /api/execution/run`: Run the plan with explicit mode: `SIMULATED` (using test duration metadata) or `ACTUAL` (executing test targets).
+3. **Threshold Sensitivity Analysis**:
+   - Inspect empirical performance across thresholds via `GET /api/experiment/threshold-evaluation` or `GET /api/analytics/threshold-sensitivity`.
+4. **Strategy Versioning & Emergency Rollback**:
+   - View versions via `GET /api/strategy/versions`.
+   - Perform atomic rollback to `LEGACY_FULL_SUITE` via `POST /api/strategy/rollback` (ADMIN only).
+5. **Auditing & Stakeholder Feedback**:
+   - Filter logs via `GET /api/audit/logs?action=...&username=...`.
+   - Submit ratings via `POST /api/audit/feedback` and inspect stats via `GET /api/audit/feedback/stats`.
 
 ## 12. Experiment Execution & Verified Performance
 To programmatically evaluate Time Reduction metrics and safety performance, review the Jupyter Notebook:
@@ -84,10 +100,10 @@ To programmatically evaluate Time Reduction metrics and safety performance, revi
   - **CHG011 (Notification):** RUN=920, SKIP=80 | TP=82, TN=79, FP=838, FN=1 | Prec=0.0891, Rec=0.9880 | SIMULATED EXECUTION TIME: 35.42 min vs 37.80 min (6.3% reduction)
   - **CHG_MULTI (Payment + Auth):** RUN=930, SKIP=70 | TP=199, TN=70, FP=731, FN=0 | Prec=0.2140, Rec=1.0000 | SIMULATED EXECUTION TIME: 35.84 min vs 37.80 min (5.2% reduction)
 
-## 13. Known Limitations
-- **SIMULATED EXECUTION TIME:** Runtime reduction metrics are calculated using simulated test execution time metadata, not real hardware or production execution time.
+## 13. Known Limitations & Transparency
+- **SIMULATED vs ACTUAL Execution:** Runtime reduction metrics are calculated using simulated test execution time metadata unless executed via `ACTUAL` mode against active mobile test scripts.
 - **Transitive Dependency Depth:** Graph traversal is bounded at depth 3 for performance optimization.
-- **Browser Automation:** Playwright browser automation was marked `NOT VERIFIED — ENVIRONMENT BLOCKED` due to environment driver setup.
-- **Stakeholder Validation:** Live user/stakeholder feedback is marked `DATA REQUIRED` (survey infrastructure is present in `feedback` table, pending live survey responses).
+- **Browser Automation:** Playwright browser automation is marked `NOT VERIFIED — ENVIRONMENT BLOCKED` in headless environments without display servers.
+- **Stakeholder Survey Data:** Live stakeholder survey collection infrastructure is fully implemented and verified via automated test suites; awaiting field deployment for production survey metrics.
 
 

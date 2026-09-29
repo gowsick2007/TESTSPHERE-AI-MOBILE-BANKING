@@ -23,11 +23,21 @@ from backend.api.test_routes import router as test_router
 from backend.api.experiment_routes import router as experiment_router
 from backend.api.rollback_routes import router as rollback_router
 from backend.api.audit_routes import router as audit_router
+from backend.api.execution_routes import router as execution_router
+from backend.api.analytics_routes import router as analytics_router
+
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    initialize_database()
+    yield
 
 app = FastAPI(
     title="TestSphere AI",
     description="Intelligent Change Impact Test Selection & Risk Analysis Platform",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # Enable CORS for development flexibility
@@ -39,11 +49,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Database Initialization
-@app.on_event("startup")
-def on_startup():
-    initialize_database()
-
 
 # Include Router API prefixes under /api
 api_router = APIRouter(prefix="/api")
@@ -54,10 +59,13 @@ api_router.include_router(test_router)
 api_router.include_router(experiment_router)
 api_router.include_router(rollback_router)
 api_router.include_router(audit_router)
+api_router.include_router(execution_router)
+api_router.include_router(analytics_router)
 
 
 @api_router.post("/what-if")
 def what_if(payload: WhatIfRequest, user: dict = Depends(get_user_from_token)):
+
     """
     Simulates selector decisions for a custom changed module and device combination.
     """

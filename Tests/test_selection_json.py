@@ -96,3 +96,29 @@ def test_selection_json_special_characters_resilience(auth_header):
     for d in parsed["decisions"]:
         assert isinstance(d["rationale"], str)
         assert isinstance(d["test_name"], str)
+
+
+def test_selection_json_special_symbols_and_long_rationale(auth_header):
+    """Test special symbols and verify RFC-8259 compliance under extreme input rationale length."""
+    symbols_payload = {
+        "changed_files": ["payment/payment.py"],
+        "change_type": "<script>alert('xss')</script> & {key: [val]} | `ls -la` ~!@#$%^&*()_+",
+        "module": "Payment",
+        "is_security_sensitive": False,
+        "risk_level": "LOW"
+    }
+    res = client.post("/api/tests/selection", json=symbols_payload, headers=auth_header)
+    assert res.status_code == 200
+    data = res.json()
+    assert "decisions" in data
+    assert len(data["decisions"]) > 0
+
+    # Business rationale check
+    first = data["decisions"][0]
+    assert isinstance(first["rationale"], str)
+    assert len(first["rationale"]) > 0
+    # JSON roundtrip validation
+    serialized = json.dumps(data)
+    deserialized = json.loads(serialized)
+    assert deserialized["summary"]["total_tests"] == data["summary"]["total_tests"]
+

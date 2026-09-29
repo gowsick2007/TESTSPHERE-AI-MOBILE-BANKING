@@ -161,15 +161,122 @@ def initialize_database():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS feedback (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        feedback_id TEXT UNIQUE,
         username TEXT NOT NULL,
-        understandable TEXT NOT NULL,
-        clear_reasons TEXT NOT NULL,
-        trust_system TEXT NOT NULL,
-        rollback_useful TEXT NOT NULL,
-        dashboard_clear TEXT NOT NULL,
+        project_area TEXT DEFAULT 'General',
+        understandable TEXT NOT NULL DEFAULT 'Yes',
+        clear_reasons TEXT NOT NULL DEFAULT 'Yes',
+        trust_system TEXT NOT NULL DEFAULT 'Yes',
+        rollback_useful TEXT NOT NULL DEFAULT 'Yes',
+        dashboard_clear TEXT NOT NULL DEFAULT 'Yes',
         additional_comments TEXT,
         rating INTEGER NOT NULL DEFAULT 5,
+        linked_entity_id TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    """)
+
+    # Seamless column migration for existing feedback tables
+    try:
+        existing_cols = {r[1] for r in cursor.execute("PRAGMA table_info(feedback)").fetchall()}
+        cols_to_add = [
+            ("feedback_id", "TEXT"),
+            ("username", "TEXT DEFAULT 'system'"),
+            ("project_area", "TEXT DEFAULT 'General'"),
+            ("understandable", "TEXT DEFAULT 'Yes'"),
+            ("clear_reasons", "TEXT DEFAULT 'Yes'"),
+            ("trust_system", "TEXT DEFAULT 'Yes'"),
+            ("rollback_useful", "TEXT DEFAULT 'Yes'"),
+            ("dashboard_clear", "TEXT DEFAULT 'Yes'"),
+            ("additional_comments", "TEXT"),
+            ("rating", "INTEGER DEFAULT 5"),
+            ("linked_entity_id", "TEXT"),
+            ("created_at", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"),
+        ]
+        for cname, ctype in cols_to_add:
+            if cname not in existing_cols:
+                cursor.execute(f"ALTER TABLE feedback ADD COLUMN {cname} {ctype}")
+    except Exception as exc:
+        logger.warning("Feedback column migration warning: %s", exc)
+
+    # ── 12. Strategy Configuration table ──────────────────────────────────────
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS strategy_config (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        key TEXT UNIQUE NOT NULL,
+        value TEXT NOT NULL,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_by TEXT DEFAULT 'system'
+    );
+    """)
+
+    # ── 13. Strategy Versions table ───────────────────────────────────────────
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS strategy_versions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        version_id TEXT UNIQUE NOT NULL,
+        strategy_name TEXT NOT NULL,
+        threshold REAL NOT NULL DEFAULT 50.0,
+        scoring_weights TEXT NOT NULL,
+        safety_rules TEXT NOT NULL,
+        created_by TEXT NOT NULL DEFAULT 'admin',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        status TEXT NOT NULL DEFAULT 'ACTIVE',
+        description TEXT
+    );
+    """)
+
+    # ── 14. Execution Plans table (Phase 2 Workflow) ───────────────────────────
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS execution_plans (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        plan_id TEXT UNIQUE NOT NULL,
+        change_id TEXT NOT NULL,
+        strategy TEXT NOT NULL DEFAULT 'SMART_SELECTOR',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_by TEXT NOT NULL DEFAULT 'system',
+        total_tests INTEGER NOT NULL DEFAULT 0,
+        selected_tests INTEGER NOT NULL DEFAULT 0,
+        skipped_tests INTEGER NOT NULL DEFAULT 0,
+        estimated_duration_seconds REAL NOT NULL DEFAULT 0.0,
+        status TEXT NOT NULL DEFAULT 'CREATED'
+    );
+    """)
+
+    # ── 15. Execution Results table (Phase 2 Workflow) ────────────────────────
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS execution_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        plan_id TEXT NOT NULL,
+        test_id TEXT NOT NULL,
+        selected INTEGER NOT NULL DEFAULT 1,
+        execution_type TEXT NOT NULL DEFAULT 'SIMULATED',
+        execution_status TEXT NOT NULL DEFAULT 'PASSED',
+        duration REAL NOT NULL DEFAULT 0.5,
+        result TEXT NOT NULL DEFAULT 'PASS',
+        failure_reason TEXT,
+        executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        change_id TEXT NOT NULL,
+        experiment_id TEXT
+    );
+    """)
+
+    # ── 16. Managed Experiments table (Phase 2 Lab) ───────────────────────────
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS experiments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        experiment_id TEXT UNIQUE NOT NULL,
+        scenario TEXT NOT NULL,
+        configuration TEXT NOT NULL,
+        threshold REAL NOT NULL DEFAULT 50.0,
+        dataset_version INTEGER NOT NULL DEFAULT 1,
+        seed INTEGER NOT NULL DEFAULT 12345,
+        start_time TIMESTAMP NOT NULL,
+        end_time TIMESTAMP,
+        metrics TEXT,
+        results TEXT,
+        status TEXT NOT NULL DEFAULT 'COMPLETED',
+        created_by TEXT NOT NULL DEFAULT 'system'
     );
     """)
 
@@ -178,18 +285,57 @@ def initialize_database():
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_coverage_file_path ON test_coverage(file_path);")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_dep_source_file ON dependency_map(source_file);")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_failure_test_id ON failure_history(test_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_plan_id ON execution_plans(plan_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_exec_plan_id ON execution_results(plan_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_exec_test_id ON execution_results(test_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_exp_id ON experiments(experiment_id);")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_strat_ver_id ON strategy_versions(version_id);")
+
+    # Seed baseline strategy version if not present
+    cursor.execute("SELECT COUNT(*) FROM strategy_versions")
+    if cursor.fetchone()[0] == 0:
+        import json
+        weights = {
+            "direct_coverage": 40,
+            "dependency_relationship": 30,
+            "security_sensitive_module": 30,
+            "critical_banking_module": 25,
+            "historical_failure": 20,
+            "recent_failure": 15,
+            "high_risk_device": 10
+        }
+        rules = [
+            "RULE_1_UNKNOWN_DEPENDENCY",
+            "RULE_2_UNKNOWN_COVERAGE",
+            "RULE_3_SECURITY_CRITICAL",
+            "RULE_4_CRITICAL_MODULE",
+            "RULE_5_NO_FAILURE_DATA",
+            "RULE_6_LOW_CONFIDENCE",
+            "RULE_7_RATIONALE_MANDATED"
+        ]
+        cursor.execute("""
+            INSERT INTO strategy_versions 
+            (version_id, strategy_name, threshold, scoring_weights, safety_rules, created_by, status, description)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            "v1.0.0-canonical",
+            "SMART_SELECTOR",
+            50.0,
+            json.dumps(weights),
+            json.dumps(rules),
+            "admin",
+            "ACTIVE",
+            "Canonical Phase 1/2 baseline strategy with 50 threshold and safety overrides"
+        ))
 
     # Create default users if empty (using hashed passwords)
-    # Admin@123 -> $2b$12$KkQ/v1u/s7P.k5.P1YtM4u86PjHjGzC4w5YtqS7rN.Z.W5/v1u/s7
-    # (We will use bcrypt in security, but let's pre-populate with known hashed values)
-    # Actually, we can import bcrypt and hash them dynamically on startup!
     cursor.execute("SELECT COUNT(*) FROM users")
     if cursor.fetchone()[0] == 0:
         import bcrypt
         default_users = [
-            ("admin", "admin123", "ADMIN"),
-            ("qa_eng", "qa123", "QA_ENGINEER"),
-            ("viewer", "view123", "VIEWER")
+            ("admin", "Admin@123", "ADMIN"),
+            ("qa", "QA@123", "QA_ENGINEER"),
+            ("viewer", "View@123", "VIEWER")
         ]
         for username, password, role in default_users:
             hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt(12)).decode("utf-8")
@@ -205,3 +351,4 @@ def initialize_database():
 
 if __name__ == "__main__":
     initialize_database()
+

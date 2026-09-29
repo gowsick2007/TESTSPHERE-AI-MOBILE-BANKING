@@ -225,7 +225,7 @@ def get_current_strategy() -> str:
     """Read the active selection strategy configuration."""
     conn = get_db_connection()
     try:
-        row = conn.execute("SELECT value FROM strategy_config WHERE key = 'active_strategy'").fetchone()
+        row = conn.execute("SELECT value FROM strategy_config WHERE key IN ('current_strategy', 'active_strategy') ORDER BY id DESC LIMIT 1").fetchone()
         if row:
             return row[0]
         # Return default if config doesn't exist
@@ -242,21 +242,29 @@ def set_current_strategy(strategy: str, user: str) -> bool:
     try:
         conn.execute("""
             INSERT OR REPLACE INTO strategy_config (key, value, updated_at, updated_by)
+            VALUES ('current_strategy', ?, CURRENT_TIMESTAMP, ?)
+        """, (strategy, user))
+        conn.execute("""
+            INSERT OR REPLACE INTO strategy_config (key, value, updated_at, updated_by)
             VALUES ('active_strategy', ?, CURRENT_TIMESTAMP, ?)
         """, (strategy, user))
         conn.commit()
         return True
     except sqlite3.OperationalError:
-        # Create table if missing during migration
         try:
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS strategy_config (
-                    key TEXT PRIMARY KEY,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    key TEXT UNIQUE NOT NULL,
                     value TEXT NOT NULL,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_by TEXT
                 )
             """)
+            conn.execute("""
+                INSERT OR REPLACE INTO strategy_config (key, value, updated_at, updated_by)
+                VALUES ('current_strategy', ?, CURRENT_TIMESTAMP, ?)
+            """, (strategy, user))
             conn.execute("""
                 INSERT OR REPLACE INTO strategy_config (key, value, updated_at, updated_by)
                 VALUES ('active_strategy', ?, CURRENT_TIMESTAMP, ?)
@@ -267,6 +275,7 @@ def set_current_strategy(strategy: str, user: str) -> bool:
             return False
     finally:
         conn.close()
+
 
 
 def get_dataset_metadata() -> List[Dict[str, Any]]:

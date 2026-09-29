@@ -220,7 +220,7 @@ def set_current_strategy(strategy: str, updated_by: str = "system") -> None:
     from datetime import datetime
     conn = _conn()
     try:
-        now = datetime.utcnow().isoformat()
+        now = datetime.now().isoformat()
         conn.execute(
             "INSERT OR REPLACE INTO strategy_config (key, value, updated_at, updated_by) VALUES (?, ?, ?, ?)",
             ("current_strategy", strategy, now, updated_by)

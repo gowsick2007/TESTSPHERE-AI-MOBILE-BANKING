@@ -70,6 +70,18 @@ def evaluate_safety_overrides(
             badge="SECURITY CRITICAL → RUN",
         ))
 
+    # Rule 4: Direct file modification / Direct test coverage
+    is_direct_coverage = (
+        test.get("is_direct_coverage", False) or
+        any("Direct coverage" in ev for ev in test.get("evidence", []))
+    )
+    if is_direct_coverage:
+        overrides.append(SafetyOverride(
+            rule_id="RULE_4_DIRECT_FILE_MODIFICATION",
+            reason="Test directly covers a modified file. Direct code changes mandate test execution.",
+            badge="DIRECT FILE MODIFICATION → RUN",
+        ))
+
     # Rule 4: Critical banking module → prefer RUN
     if module in CRITICAL_MODULES:
         overrides.append(SafetyOverride(

@@ -62,7 +62,7 @@ def is_recently_failed(test_id: str, days: int = RECENT_FAILURE_DAYS) -> bool:
     failures = get_failures_for_test(test_id)
     if not failures:
         return False
-    cutoff = datetime.utcnow() - timedelta(days=days)
+    cutoff = datetime.now() - timedelta(days=days)
     for f in failures:
         try:
             fd = datetime.fromisoformat(f["failure_date"])

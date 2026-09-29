@@ -4,7 +4,7 @@ Manages strategy switching between SMART_SELECTOR and LEGACY_FULL_SUITE.
 All changes are persisted to the database and audit logged.
 """
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from Engine.database import get_connection
 from Engine.data_access import get_current_strategy, set_current_strategy
 from Engine.audit_logger import log_rollback
@@ -74,7 +74,7 @@ def switch_strategy(
     if current == to_strategy:
         return {"success": True, "message": f"Strategy is already {to_strategy}"}
 
-    now = datetime.utcnow().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     version = STRATEGIES[to_strategy]["version"]
 
     conn = get_connection()

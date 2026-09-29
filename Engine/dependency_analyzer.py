@@ -38,17 +38,14 @@ def build_dependency_graph(force_refresh: bool = False) -> nx.DiGraph:
     return G
 
 
-def get_impacted_files(changed_files: list[str], graph: Optional[nx.DiGraph] = None) -> dict:
+def get_impacted_files(
+    changed_files: list[str],
+    graph: Optional[nx.DiGraph] = None,
+    max_depth: int = 3
+) -> dict:
     """
     Return files directly and indirectly impacted by `changed_files`.
-
-    Strategy:
-      - Direct dependents: files that directly depend on (or are depended upon by) a changed file
-      - Indirect dependents: reachable via BFS up to depth 3
-      - Also returns files the changed files themselves depend on
-
-    Returns:
-        dict with keys: direct, indirect, all_impacted, graph_available
+    Guarantees safe bounded termination on cyclic and disconnected graphs.
     """
     if graph is None:
         try:
@@ -60,6 +57,12 @@ def get_impacted_files(changed_files: list[str], graph: Optional[nx.DiGraph] = N
                 "indirect": [],
                 "all_impacted": [],
                 "graph_available": False,
+                "has_cycles": False,
+                "traversal_depth": 0,
+                "visited_nodes": [],
+                "missing_nodes": changed_files,
+                "impacted_modules": [],
+                "impact_reasons": {},
                 "error": str(exc),
             }
 
@@ -70,37 +73,98 @@ def get_impacted_files(changed_files: list[str], graph: Optional[nx.DiGraph] = N
             "indirect": [],
             "all_impacted": [],
             "graph_available": False,
+            "has_cycles": False,
+            "traversal_depth": 0,
+            "visited_nodes": [],
+            "missing_nodes": changed_files,
+            "impacted_modules": [],
+            "impact_reasons": {},
             "error": "Empty dependency graph",
         }
 
+    # Detect cycles safely without infinite loops
+    has_cycles = False
+    try:
+        has_cycles = not nx.is_directed_acyclic_graph(graph)
+    except Exception:
+        has_cycles = False
+
     direct: set[str] = set()
     indirect: set[str] = set()
+    visited_nodes: set[str] = set()
+    missing_nodes: list[str] = []
+    impact_reasons: dict[str, str] = {}
+    impacted_modules: set[str] = set()
+    max_depth_reached = 0
 
     for changed_file in changed_files:
         if changed_file not in graph:
+            missing_nodes.append(changed_file)
             continue
+
+        visited_nodes.add(changed_file)
+        impact_reasons[changed_file] = "CHANGED_FILE"
 
         # Predecessors: files that depend on the changed file (reverse edges)
         preds = set(graph.predecessors(changed_file))
-        direct.update(preds)
-        # Who depends on changed_file's dependents? (2-hop)
         for p in preds:
-            indirect.update(graph.predecessors(p))
+            direct.add(p)
+            visited_nodes.add(p)
+            impact_reasons[p] = "DIRECT_DEPENDENCY_PREDECESSOR"
+            max_depth_reached = max(max_depth_reached, 1)
 
         # What does the changed file depend on? (downstream)
         succs = set(graph.successors(changed_file))
-        direct.update(succs)
         for s in succs:
-            indirect.update(graph.successors(s))
+            direct.add(s)
+            visited_nodes.add(s)
+            impact_reasons[s] = "DIRECT_DEPENDENCY_SUCCESSOR"
+            max_depth_reached = max(max_depth_reached, 1)
 
-        # BFS from changed_file in both directions
-        try:
-            undirected = graph.to_undirected()
-            reachable = set(nx.single_source_shortest_path_length(undirected, changed_file, cutoff=3).keys())
-            reachable.discard(changed_file)
-            indirect.update(reachable - direct)
-        except Exception:
-            pass
+        # Multi-hop transitive traversal with explicit depth limit and cycle guard
+        if max_depth >= 2:
+            for p in preds:
+                for p2 in graph.predecessors(p):
+                    if p2 not in direct and p2 != changed_file:
+                        indirect.add(p2)
+                        visited_nodes.add(p2)
+                        impact_reasons[p2] = "INDIRECT_DEPENDENCY_DEPTH_2"
+                        max_depth_reached = max(max_depth_reached, 2)
+            for s in succs:
+                for s2 in graph.successors(s):
+                    if s2 not in direct and s2 != changed_file:
+                        indirect.add(s2)
+                        visited_nodes.add(s2)
+                        impact_reasons[s2] = "INDIRECT_DEPENDENCY_DEPTH_2"
+                        max_depth_reached = max(max_depth_reached, 2)
+
+        # Bounded BFS traversal up to max_depth for transitive connections
+        if max_depth >= 3:
+            try:
+                undirected = graph.to_undirected()
+                lengths = nx.single_source_shortest_path_length(undirected, changed_file, cutoff=max_depth)
+                for node, dist in lengths.items():
+                    visited_nodes.add(node)
+                    if node != changed_file and node not in direct:
+                        if dist >= 2:
+                            indirect.add(node)
+                            max_depth_reached = max(max_depth_reached, dist)
+                            if node not in impact_reasons:
+                                impact_reasons[node] = f"TRANSITIVE_DEPENDENCY_DEPTH_{dist}"
+            except Exception:
+                pass
+
+    # Extract impacted modules from edge attributes
+    for node in visited_nodes:
+        if node in graph:
+            for _, _, data in graph.edges(node, data=True):
+                mod = data.get("module")
+                if mod:
+                    impacted_modules.add(mod)
+            for _, _, data in graph.in_edges(node, data=True):
+                mod = data.get("module")
+                if mod:
+                    impacted_modules.add(mod)
 
     # Remove changed files themselves from results
     changed_set = set(changed_files)
@@ -115,6 +179,12 @@ def get_impacted_files(changed_files: list[str], graph: Optional[nx.DiGraph] = N
         "indirect": sorted(indirect),
         "all_impacted": sorted(all_impacted),
         "graph_available": True,
+        "has_cycles": has_cycles,
+        "traversal_depth": max_depth_reached,
+        "visited_nodes": sorted(visited_nodes),
+        "missing_nodes": sorted(missing_nodes),
+        "impacted_modules": sorted(impacted_modules),
+        "impact_reasons": impact_reasons,
         "error": None,
     }
 

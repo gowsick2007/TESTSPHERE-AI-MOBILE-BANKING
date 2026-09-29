@@ -5,7 +5,7 @@ Roles: ADMIN, QA_ENGINEER, VIEWER
 No JWT — session token managed by the FastAPI/JS frontend.
 """
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from Engine.database import get_connection
 
 logger = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ def verify_password(username: str, password: str) -> dict | None:
         # Update last_login
         conn.execute(
             "UPDATE users SET last_login = ? WHERE username = ?",
-            (datetime.utcnow().isoformat(), username)
+            (datetime.now(timezone.utc).isoformat(), username)
         )
         conn.commit()
         return dict(row)

@@ -52,7 +52,7 @@ def run_baseline(seed: int = SEED) -> dict:
 
     return {
         "strategy":         "LEGACY_FULL_SUITE",
-        "run_timestamp":    datetime.utcnow().isoformat(),
+        "run_timestamp":    datetime.now().isoformat(),
         "total_tests":      len(all_tests),
         "executed":         len(all_tests),
         "passed":           passed,
@@ -69,5 +69,5 @@ def _empty_run(strategy: str) -> dict:
         "strategy": strategy, "total_tests": 0, "executed": 0,
         "passed": 0, "failed": 0, "skipped": 0,
         "runtime_seconds": 0, "runtime_minutes": 0, "test_results": [],
-        "run_timestamp": datetime.utcnow().isoformat(),
+        "run_timestamp": datetime.now().isoformat(),
     }

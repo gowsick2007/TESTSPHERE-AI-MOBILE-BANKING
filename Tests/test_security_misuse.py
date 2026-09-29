@@ -74,6 +74,20 @@ def tokens():
     ("/api/data/demo", "POST", None),
     ("/api/strategy/rollback", "POST", {"to_strategy": "LEGACY_FULL_SUITE", "reason": "test"}),
     ("/api/what-if", "POST", SAMPLE_WHATIF),
+    ("/api/audit/feedback", "POST", {
+        "understandable": "YES", "clear_reasons": "YES", "trust_system": "YES",
+        "rollback_useful": "YES", "dashboard_clear": "YES", "rating": 5
+    }),
+    ("/api/execution/plan", "POST", SAMPLE_CHANGE),
+    ("/api/execution/run", "POST", {"plan_id": "PLAN-MOCK", "execution_type": "SIMULATED"}),
+    ("/api/experiment/create", "POST", {
+        "scenario": "Test_Exp",
+        "changed_files": ["payment/payment.py"]
+    }),
+    ("/api/strategy/versions", "POST", {
+        "version_id": "v-test", "strategy_name": "SMART", "threshold": 50.0,
+        "scoring_weights": {}, "safety_rules": []
+    }),
 ])
 def test_unauthenticated_requests_return_401(endpoint, method, payload):
     """Endpoints requiring authentication must reject unauthenticated requests with 401."""
@@ -178,6 +192,34 @@ def test_viewer_blocked_from_delete_dataset(tokens):
     """VIEWER role cannot delete dataset tables."""
     res = client.delete(f"/api/data/code_changes?token={tokens['viewer']}")
     assert res.status_code == 403
+
+
+def test_viewer_blocked_from_execution_plan_and_run(tokens):
+    """VIEWER role cannot create or execute test plans."""
+    res_plan = client.post(f"/api/execution/plan?token={tokens['viewer']}", json=SAMPLE_CHANGE)
+    assert res_plan.status_code == 403
+
+    res_run = client.post(f"/api/execution/run?token={tokens['viewer']}", json={
+        "plan_id": "PLAN-MOCK",
+        "execution_type": "SIMULATED"
+    })
+    assert res_run.status_code == 403
+
+
+def test_viewer_and_qa_blocked_from_strategy_versions(tokens):
+    """VIEWER and QA_ENGINEER cannot register new strategy versions (ADMIN only)."""
+    payload = {
+        "version_id": "v3.0.0-unauthorized",
+        "strategy_name": "SMART",
+        "threshold": 50.0,
+        "scoring_weights": {},
+        "safety_rules": []
+    }
+    res_view = client.post(f"/api/strategy/versions?token={tokens['viewer']}", json=payload)
+    assert res_view.status_code == 403
+
+    res_qa = client.post(f"/api/strategy/versions?token={tokens['qa']}", json=payload)
+    assert res_qa.status_code == 403
 
 
 # ============================================================================

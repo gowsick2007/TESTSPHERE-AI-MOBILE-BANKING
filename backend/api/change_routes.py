@@ -57,7 +57,7 @@ def register_change(payload: ChangeAnalysisRequest, user: dict = Depends(get_use
     conn = get_db_connection()
     try:
         import uuid
-        from datetime import datetime
+        from datetime import datetime, timezone
         chg_id = f"CHG-{uuid.uuid4().hex[:6].upper()}"
         fp_str = ",".join(payload.changed_files)
         mod = payload.module or "Payment"
@@ -72,7 +72,7 @@ def register_change(payload: ChangeAnalysisRequest, user: dict = Depends(get_use
             payload.change_type,
             1 if payload.is_security_sensitive else 0,
             payload.risk_level,
-            datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),
             user["username"],
             f"Code change submission targeting: {fp_str}"
         ))

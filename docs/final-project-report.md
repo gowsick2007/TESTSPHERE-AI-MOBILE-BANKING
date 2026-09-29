@@ -2,7 +2,7 @@
 ## Change-Impact Test Selector for Mobile Banking
 
 ### 1. Problem Statement
-A mobile banking application is released on many device types, requiring extensive regression testing. Development teams struggle to determine which tests can be safely skipped when a code change is low-risk. The solution must identify affected tests, safely skip unaffected ones, provide transparent explanation, and guarantee zero false negatives (no missed affected tests), all while reducing regression execution time.
+A mobile banking application is released on many device types, requiring extensive regression testing. Development teams struggle to determine which tests can be safely skipped when a code change is low-risk. The solution must identify affected tests, safely skip unaffected ones, provide transparent explanation, and maximize recall with safety overrides to minimize missed regressions, all while reducing regression execution time.
 
 ### 2. Operational Pain
 Running the full regression suite on every single code change is time-consuming, expensive, and slows down the delivery pipeline. Developers wait hours for results of small changes, leading to reduced productivity and delayed deployments.
@@ -122,4 +122,4 @@ Feedback form addresses:
 Unlike opaque ML models, the rule-based approach provides absolute transparency, determinism, and safety, which are critical in the heavily regulated mobile banking sector.
 
 ### 30. Conclusion
-TestSphere.AI successfully solves the operational pain of bloated regression suites. By integrating transparent dependency tracing and failure intelligence, it demonstrably reduces test execution time while maintaining a zero false-negative safety guarantee.
+TestSphere.AI successfully addresses the operational burden of bloated regression suites. By integrating transparent dependency tracing and failure intelligence, it demonstrably reduces test execution time while maintaining a 99.84% empirical recall on canonical benchmarks through deterministic safety overrides.

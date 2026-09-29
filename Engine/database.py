@@ -248,6 +248,70 @@ def _create_meta_tables(conn: sqlite3.Connection) -> None:
             updated_at TEXT NOT NULL,
             updated_by TEXT DEFAULT 'system'
         );
+
+        CREATE TABLE IF NOT EXISTS strategy_versions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            version_id TEXT UNIQUE NOT NULL,
+            strategy_name TEXT NOT NULL,
+            threshold REAL NOT NULL DEFAULT 50.0,
+            scoring_weights TEXT NOT NULL,
+            safety_rules TEXT NOT NULL,
+            created_by TEXT NOT NULL DEFAULT 'admin',
+            created_at TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'ACTIVE',
+            description TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS execution_plans (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            plan_id TEXT UNIQUE NOT NULL,
+            change_id TEXT NOT NULL,
+            strategy TEXT NOT NULL DEFAULT 'SMART_SELECTOR',
+            created_at TEXT NOT NULL,
+            created_by TEXT NOT NULL DEFAULT 'system',
+            total_tests INTEGER NOT NULL DEFAULT 0,
+            selected_tests INTEGER NOT NULL DEFAULT 0,
+            skipped_tests INTEGER NOT NULL DEFAULT 0,
+            estimated_duration_seconds REAL NOT NULL DEFAULT 0.0,
+            status TEXT NOT NULL DEFAULT 'CREATED'
+        );
+
+        CREATE TABLE IF NOT EXISTS execution_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            plan_id TEXT NOT NULL,
+            test_id TEXT NOT NULL,
+            selected INTEGER NOT NULL DEFAULT 1,
+            execution_type TEXT NOT NULL DEFAULT 'SIMULATED',
+            execution_status TEXT NOT NULL DEFAULT 'PASSED',
+            duration REAL NOT NULL DEFAULT 0.5,
+            result TEXT NOT NULL DEFAULT 'PASS',
+            failure_reason TEXT,
+            executed_at TEXT NOT NULL,
+            change_id TEXT NOT NULL,
+            experiment_id TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS experiments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            experiment_id TEXT UNIQUE NOT NULL,
+            scenario TEXT NOT NULL,
+            configuration TEXT NOT NULL,
+            threshold REAL NOT NULL DEFAULT 50.0,
+            dataset_version INTEGER NOT NULL DEFAULT 1,
+            seed INTEGER NOT NULL DEFAULT 12345,
+            start_time TEXT NOT NULL,
+            end_time TEXT,
+            metrics TEXT,
+            results TEXT,
+            status TEXT NOT NULL DEFAULT 'COMPLETED',
+            created_by TEXT NOT NULL DEFAULT 'system'
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_plan_id ON execution_plans(plan_id);
+        CREATE INDEX IF NOT EXISTS idx_exec_plan_id ON execution_results(plan_id);
+        CREATE INDEX IF NOT EXISTS idx_exec_test_id ON execution_results(test_id);
+        CREATE INDEX IF NOT EXISTS idx_exp_id ON experiments(experiment_id);
+        CREATE INDEX IF NOT EXISTS idx_strat_ver_id ON strategy_versions(version_id);
     """)
 
 
@@ -263,7 +327,7 @@ def _seed_default_users(conn: sqlite3.Connection) -> None:
         cfg = json.load(f)
 
     existing = {row[0] for row in conn.execute("SELECT username FROM users").fetchall()}
-    now = datetime.utcnow().isoformat()
+    now = datetime.now().isoformat()
 
     for u in cfg["auth"]["default_users"]:
         if u["username"] not in existing:
@@ -319,7 +383,7 @@ def upsert_dataset_metadata(
             (dataset_type,)
         ).fetchone()
         version = (last["version"] + 1) if last else 1
-        now = datetime.utcnow().isoformat()
+        now = datetime.now().isoformat()
         conn.execute(
             """INSERT INTO dataset_metadata
                (dataset_type, version, file_name, record_count, source, uploaded_by, uploaded_at, status)

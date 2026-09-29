@@ -116,7 +116,7 @@ def score_all_tests(
         from Engine.data_access import get_failure_history
         from datetime import datetime, timedelta
         failures = get_failure_history()
-        cutoff = datetime.utcnow() - timedelta(days=90)
+        cutoff = datetime.now() - timedelta(days=90)
         failed_ids = set()
         for f in failures:
             try:
@@ -152,5 +152,6 @@ def score_all_tests(
             failed_ids=failed_ids,
             device_risks=device_risks,
         )
-        results.append({**test, "risk_score": score, "evidence": evidence})
+        is_direct = (test["test_id"] in covered_test_ids)
+        results.append({**test, "risk_score": score, "evidence": evidence, "is_direct_coverage": is_direct})
     return results

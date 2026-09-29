@@ -27,7 +27,7 @@ def log_event(
                (timestamp, username, action, input_summary, decision, system_mode, result, ip_address)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
             (
-                datetime.utcnow().isoformat(),
+                datetime.now().isoformat(),
                 username,
                 action,
                 input_summary[:500] if input_summary else "",

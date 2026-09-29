@@ -137,5 +137,6 @@ def score_all_tests(
             failed_ids=failed_ids,
             device_risks=device_risks,
         )
-        res.append({**t, "risk_score": score, "evidence": evidence})
+        is_direct = (t["test_id"] in covered_test_ids)
+        res.append({**t, "risk_score": score, "evidence": evidence, "is_direct_coverage": is_direct})
     return res

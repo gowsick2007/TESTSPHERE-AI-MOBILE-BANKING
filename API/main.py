@@ -23,6 +23,8 @@ from backend.api.test_routes import router as test_router
 from backend.api.experiment_routes import router as experiment_router
 from backend.api.rollback_routes import router as rollback_router
 from backend.api.audit_routes import router as audit_router
+from backend.api.execution_routes import router as execution_router
+from backend.api.analytics_routes import router as analytics_router
 from backend.schemas import WhatIfRequest
 from backend.engine.data_access import get_all_tests
 from backend.engine.risk_scorer import compute_risk_score, RUN_THRESHOLD
@@ -50,14 +52,20 @@ from Security.input_validator import validate_file_paths, validate_test_id, dete
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize DB on startup
-initialize_database()
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    initialize_database()
+    yield
 
 app = FastAPI(
     title="TestSphere AI API",
     description="Change Impact Test Selection Backend",
     version="1.0.0",
+    lifespan=lifespan,
 )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -76,9 +84,12 @@ api_router.include_router(test_router)
 api_router.include_router(experiment_router)
 api_router.include_router(rollback_router)
 api_router.include_router(audit_router)
+api_router.include_router(execution_router)
+api_router.include_router(analytics_router)
 
 @api_router.post("/what-if")
 def what_if(payload: WhatIfRequest, user: dict = Depends(get_user_from_token)):
+
     """Simulates selector decisions for a custom changed module and device combination."""
     tests = get_all_tests()
     if not tests:
@@ -142,10 +153,8 @@ def what_if(payload: WhatIfRequest, user: dict = Depends(get_user_from_token)):
         "skipped_tests": skipped_count,
         "overall_risk": "HIGH" if payload.is_security_sensitive or payload.risk_level == "HIGH" else "MEDIUM"
     }
-
+    
 app.include_router(api_router)
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 
@@ -184,7 +193,7 @@ class WhatIfRequest(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "version": "1.0.0", "timestamp": datetime.utcnow().isoformat()}
+    return {"status": "ok", "version": "1.0.0", "timestamp": datetime.now().isoformat()}
 
 
 @app.get("/data-health")
@@ -195,11 +204,11 @@ def data_health():
 # ─── Change Analysis ──────────────────────────────────────────────────────────
 
 @app.post("/analyze-change")
-def api_analyze_change(req: ChangeAnalysisRequest):
+def api_analyze_change(req: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
     try:
         paths = validate_file_paths(req.changed_files)
     except Exception as e:
-        log_event("SECURITY_REJECTION", result=str(e))
+        log_event("SECURITY_REJECTION", result=str(e), username=user.get("username", "system"))
         raise HTTPException(status_code=400, detail=str(e))
 
     ctx = analyze_change(
@@ -209,12 +218,12 @@ def api_analyze_change(req: ChangeAnalysisRequest):
         is_security_sensitive=req.is_security_sensitive,
         risk_level=req.risk_level,
     )
-    log_event("CHANGE_ANALYSIS", input_summary=str(paths), result="success")
+    log_event("CHANGE_ANALYSIS", input_summary=str(paths), result="success", username=user.get("username", "system"))
     return ctx
 
 
 @app.post("/test-selection")
-def api_test_selection(req: ChangeAnalysisRequest):
+def api_test_selection(req: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
     try:
         paths = validate_file_paths(req.changed_files)
     except Exception as e:
@@ -231,22 +240,32 @@ def api_test_selection(req: ChangeAnalysisRequest):
     run_count  = sum(1 for d in result["decisions"] if d["decision"] == "RUN")
     skip_count = sum(1 for d in result["decisions"] if d["decision"] == "SKIP")
     log_event("TEST_SELECTION", decision=f"RUN={run_count} SKIP={skip_count}",
-              system_mode=get_current_strategy(), result="success")
+              system_mode=get_current_strategy(), result="success", username=user.get("username", "system"))
     return result
 
 
 # ─── Baseline / Smart Runs ───────────────────────────────────────────────────
 
 @app.post("/run-baseline")
-def api_run_baseline():
+def api_run_baseline(user: dict = Depends(get_user_from_token)):
+    role = user.get("role", "VIEWER")
+    from backend.security.input_validator import detect_bypass_attempt
+    blocked, msg = detect_bypass_attempt("RUN_TESTS", "Run baseline", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     result = run_baseline()
     log_event("LEGACY_RUN", system_mode="LEGACY_FULL_SUITE",
-              result=f"Executed {result['executed']} tests")
+              result=f"Executed {result['executed']} tests", username=user.get("username", "system"))
     return result
 
 
 @app.post("/run-smart")
-def api_run_smart(req: ChangeAnalysisRequest):
+def api_run_smart(req: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
+    role = user.get("role", "VIEWER")
+    from backend.security.input_validator import detect_bypass_attempt
+    blocked, msg = detect_bypass_attempt("RUN_TESTS", f"Run smart: {req.changed_files}", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     selection = run_selection(
         changed_files=req.changed_files,
         change_type=req.change_type,
@@ -256,14 +275,19 @@ def api_run_smart(req: ChangeAnalysisRequest):
     )
     smart = run_smart(selection["decisions"])
     log_event("SMART_RUN", system_mode="SMART_SELECTOR",
-              result=f"Executed {smart['executed']} tests")
+              result=f"Executed {smart['executed']} tests", username=user.get("username", "system"))
     return {"selection": selection, "execution": smart}
 
 
 # ─── Experiment ───────────────────────────────────────────────────────────────
 
 @app.post("/experiment")
-def api_experiment(req: ChangeAnalysisRequest):
+def api_experiment(req: ChangeAnalysisRequest, user: dict = Depends(get_user_from_token)):
+    role = user.get("role", "VIEWER")
+    from backend.security.input_validator import detect_bypass_attempt
+    blocked, msg = detect_bypass_attempt("RUN_EXPERIMENT", f"Run experiment: {req.changed_files}", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     result = run_experiment(
         changed_files=req.changed_files,
         change_type=req.change_type,
@@ -271,7 +295,7 @@ def api_experiment(req: ChangeAnalysisRequest):
         is_security_sensitive=req.is_security_sensitive,
         risk_level=req.risk_level,
     )
-    log_event("EXPERIMENT_RUN", result=f"Time reduction {result['comparison']['time_reduction_pct']}%")
+    log_event("EXPERIMENT_RUN", result=f"Time reduction {result['comparison']['time_reduction_pct']}%", username=user.get("username", "system"))
     return result
 
 
@@ -283,9 +307,14 @@ def api_failure_scenarios():
 
 
 @app.post("/run-failure-scenarios")
-def api_run_failure_scenarios():
+def api_run_failure_scenarios(user: dict = Depends(get_user_from_token)):
+    role = user.get("role", "VIEWER")
+    from backend.security.input_validator import detect_bypass_attempt
+    blocked, msg = detect_bypass_attempt("RUN_SCENARIOS", "Run failure scenarios", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
     results = run_all_scenarios()
-    log_event("FAILURE_SCENARIO_RUN", result=f"{sum(1 for r in results if r['verdict']=='PASS')}/5 passed")
+    log_event("FAILURE_SCENARIO_RUN", result=f"{sum(1 for r in results if r['verdict']=='PASS')}/5 passed", username=user.get("username", "system"))
     return {"results": results}
 
 
@@ -297,9 +326,13 @@ def api_get_strategy():
 
 
 @app.post("/rollback")
-def api_rollback(req: RollbackRequest):
-    blocked, reason = detect_bypass_attempt("ROLLBACK", target=req.to_strategy, user_role="ADMIN")
-    result = switch_strategy(req.to_strategy, req.reason, req.changed_by)
+def api_rollback(req: RollbackRequest, user: dict = Depends(get_user_from_token)):
+    role = user.get("role", "VIEWER")
+    from backend.security.input_validator import detect_bypass_attempt
+    blocked, msg = detect_bypass_attempt("ROLLBACK", f"Rollback to {req.to_strategy}", role)
+    if blocked:
+        raise HTTPException(status_code=403, detail=msg)
+    result = switch_strategy(req.to_strategy, req.reason, user.get("username", req.changed_by))
     return result
 
 
@@ -318,7 +351,7 @@ def api_audit_log(action: str = "", username: str = "", limit: int = 100):
 # ─── What-If ─────────────────────────────────────────────────────────────────
 
 @app.post("/what-if")
-def api_what_if(req: WhatIfRequest):
+def api_what_if(req: WhatIfRequest, user: dict = Depends(get_user_from_token)):
     from Engine.data_access import get_tests_by_module
     tests = get_tests_by_module(req.module)
     device_tests = [t for t in tests if t.get("device") == req.device]

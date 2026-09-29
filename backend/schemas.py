@@ -42,13 +42,56 @@ class RollbackRequest(BaseModel):
 
 
 class FeedbackRequest(BaseModel):
-    understandable: int
-    clear_reasons: int
-    trust_system: int
-    rollback_useful: int
-    dashboard_clear: int
+    understandable: Optional[int] = 5
+    clear_reasons: Optional[int] = 5
+    trust_system: Optional[int] = 5
+    rollback_useful: Optional[int] = 5
+    dashboard_clear: Optional[int] = 5
     additional_comments: Optional[str] = None
     rating: int = 5
+    reviewer_name: Optional[str] = None
+    project_area: Optional[str] = "General"
+    comments: Optional[str] = None
+    linked_entity_id: Optional[str] = None
+
+
+class ExecutionPlanRequest(BaseModel):
+    changed_files: List[str]
+    change_type: str = "MODIFIED"
+    module: Optional[str] = None
+    is_security_sensitive: bool = False
+    risk_level: str = "MEDIUM"
+    strategy: str = "SMART_SELECTOR"
+    change_id: Optional[str] = None
+
+
+class ExecutePlanRequest(BaseModel):
+    plan_id: str
+    execution_type: str = "SIMULATED"
+    experiment_id: Optional[str] = None
+
+
+class ExperimentCreateRequest(BaseModel):
+    scenario: str
+    changed_files: List[str]
+    module: Optional[str] = None
+    is_security_sensitive: bool = False
+    risk_level: str = "MEDIUM"
+    threshold: float = 50.0
+    seed: int = 12345
+
+
+class ExperimentCompareRequest(BaseModel):
+    experiment_ids: List[str]
+
+
+class StrategyVersionCreateRequest(BaseModel):
+    version_id: str
+    strategy_name: str
+    threshold: float = 50.0
+    scoring_weights: Dict[str, Any]
+    safety_rules: List[str]
+    description: Optional[str] = None
 
 
 class DecisionRecord(BaseModel):
@@ -75,5 +118,6 @@ class SelectionResponse(BaseModel):
     failure_info: Dict[str, Any]
     decisions: List[Dict[str, Any]]
     summary: Dict[str, Any]
+
 
 

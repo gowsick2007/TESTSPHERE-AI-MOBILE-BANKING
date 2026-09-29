@@ -25,7 +25,8 @@ def detect_bypass_attempt(action: str, input_summary: str, role: str) -> Tuple[b
     # Rule 1: VIEWER role cannot perform mutating/execution actions
     if role == "VIEWER" and action in [
         "ROLLBACK", "CLEAR_DATASET", "IMPORT_DATA", "LOAD_DEMO",
-        "REGISTER_CHANGE", "RUN_TESTS", "RUN_EXPERIMENT", "RUN_SCENARIOS"
+        "REGISTER_CHANGE", "RUN_TESTS", "RUN_EXPERIMENT", "RUN_SCENARIOS",
+        "CREATE_PLAN", "RUN_PLAN", "CREATE_EXPERIMENT"
     ]:
         return True, f"Permission Denied: User role 'VIEWER' is not authorized to execute {action}."
 

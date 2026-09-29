@@ -69,7 +69,7 @@ def run_smart(decisions: list[dict], seed: int = SEED) -> dict:
 
     return {
         "strategy":         "SMART_SELECTOR",
-        "run_timestamp":    datetime.utcnow().isoformat(),
+        "run_timestamp":    datetime.now().isoformat(),
         "total_tests":      len(decisions),
         "executed":         len(run_tests),
         "passed":           passed,
@@ -86,5 +86,5 @@ def _empty_run() -> dict:
         "strategy": "SMART_SELECTOR", "total_tests": 0, "executed": 0,
         "passed": 0, "failed": 0, "skipped": 0,
         "runtime_seconds": 0, "runtime_minutes": 0, "test_results": [],
-        "run_timestamp": datetime.utcnow().isoformat(),
+        "run_timestamp": datetime.now().isoformat(),
     }
