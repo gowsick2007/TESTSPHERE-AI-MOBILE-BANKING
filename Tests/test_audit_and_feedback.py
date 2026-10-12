@@ -30,14 +30,14 @@ def test_audit_secret_redaction():
     assert "sk-test-secret-key-1234" not in logged_event["result"]
 
 
-def test_audit_log_filtering_via_api(client):
+def test_audit_log_filtering_via_api(client, admin_headers):
     """Verify GET /api/audit/logs filtering parameters."""
-    res = client.get("/api/audit/logs?limit=10")
+    res = client.get("/api/audit/logs?limit=10", headers=admin_headers)
     assert res.status_code == 200
     assert "logs" in res.json()
 
     # Filter by specific action
-    res_filtered = client.get("/api/audit/logs?action=LOGIN&limit=5")
+    res_filtered = client.get("/api/audit/logs?action=LOGIN&limit=5", headers=admin_headers)
     assert res_filtered.status_code == 200
     for l in res_filtered.json()["logs"]:
         assert l["action"] == "LOGIN"

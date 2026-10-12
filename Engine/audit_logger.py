@@ -10,6 +10,25 @@ from Engine.database import get_connection
 logger = logging.getLogger(__name__)
 
 
+import re
+
+SECRET_PATTERNS = [
+    re.compile(r'("?(?:password|token|secret|api_key|access_token|key)"?\s*[:=]\s*)"[^"]+"', re.IGNORECASE),
+    re.compile(r'("?(?:password|token|secret|api_key|access_token|key)"?\s*[:=]\s*)\'[^\']+\'', re.IGNORECASE),
+    re.compile(r'(Bearer\s+)[A-Za-z0-9_\-\.]+', re.IGNORECASE),
+]
+
+
+def _redact_secrets(text: str | None) -> str:
+    """Redact passwords, tokens, API keys, and Bearer credentials from audit messages."""
+    if not text:
+        return ""
+    redacted = str(text)
+    for pat in SECRET_PATTERNS:
+        redacted = pat.sub(r'\1"[REDACTED]"', redacted)
+    return redacted
+
+
 def log_event(
     action: str,
     username: str = "system",
@@ -19,7 +38,11 @@ def log_event(
     result: str = "",
     ip_address: str = "",
 ) -> None:
-    """Append a new audit log entry to the database."""
+    """Append a new audit log entry to the database with automatic secret redaction."""
+    safe_summary = _redact_secrets(input_summary)[:500] if input_summary else ""
+    safe_decision = _redact_secrets(decision)[:200] if decision else ""
+    safe_result = _redact_secrets(result)[:500] if result else ""
+
     conn = get_connection()
     try:
         conn.execute(
@@ -30,10 +53,10 @@ def log_event(
                 datetime.now().isoformat(),
                 username,
                 action,
-                input_summary[:500] if input_summary else "",
-                decision[:200] if decision else "",
+                safe_summary,
+                safe_decision,
                 system_mode,
-                result[:500] if result else "",
+                safe_result,
                 ip_address,
             )
         )

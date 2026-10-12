@@ -17,27 +17,27 @@
       "to_strategy": "LEGACY_FULL_SUITE",
       "message": "Successfully switched to LEGACY_FULL_SUITE strategy."
     },
-    "strategy_after_rollback1": "SMART_SELECTOR",
-    "rows_before": 20,
-    "rows_after_rollback1": 21,
+    "strategy_after_rollback1": "LEGACY_FULL_SUITE",
+    "rows_before": 305,
+    "rows_after_rollback1": 306,
     "latest_history_entry_1": {
-      "id": 21,
+      "id": 306,
       "from_strategy": "SMART_SELECTOR",
       "to_strategy": "LEGACY_FULL_SUITE",
       "version": "v1.0.0",
-      "changed_at": "2026-09-03T15:19:53.666591",
+      "changed_at": "2026-10-12T10:18:52.393499+00:00",
       "reason": "Final clean-state verification test 1",
       "changed_by": "admin"
     },
     "rollback2_response_status": 200,
     "strategy_after_rollback2": "SMART_SELECTOR",
-    "rows_after_rollback2": 22,
+    "rows_after_rollback2": 307,
     "latest_history_entry_2": {
-      "id": 22,
+      "id": 307,
       "from_strategy": "LEGACY_FULL_SUITE",
       "to_strategy": "SMART_SELECTOR",
       "version": "v1.0.0",
-      "changed_at": "2026-09-03T15:19:53.722109",
+      "changed_at": "2026-10-12T10:18:52.428564+00:00",
       "reason": "Final clean-state verification test 2",
       "changed_by": "admin"
     },
@@ -59,39 +59,39 @@
         ],
         "module": "Payment",
         "ground_truth_affected_tests": 0,
-        "smart_run_tests": 921,
-        "smart_skip_tests": 79,
-        "true_positives": 125,
-        "false_positives": 796,
-        "true_negatives": 79,
+        "smart_run_tests": 967,
+        "smart_skip_tests": 33,
+        "true_positives": 130,
+        "false_positives": 837,
+        "true_negatives": 33,
         "false_negatives": 0
       },
       {
-        "change_id": "CHG002",
+        "change_id": "CHG003",
         "files": [
           "auth/login.py"
         ],
         "module": "Authentication",
         "ground_truth_affected_tests": 0,
-        "smart_run_tests": 875,
-        "smart_skip_tests": 125,
-        "true_positives": 0,
-        "false_positives": 0,
-        "true_negatives": 0,
+        "smart_run_tests": 890,
+        "smart_skip_tests": 110,
+        "true_positives": 68,
+        "false_positives": 822,
+        "true_negatives": 110,
         "false_negatives": 0
       },
       {
-        "change_id": "CHG005",
+        "change_id": "CHG008",
         "files": [
-          "transaction/transfer.py"
+          "transaction/txn_limit.py"
         ],
         "module": "Transaction",
         "ground_truth_affected_tests": 0,
-        "smart_run_tests": 1000,
-        "smart_skip_tests": 0,
-        "true_positives": 0,
-        "false_positives": 0,
-        "true_negatives": 0,
+        "smart_run_tests": 959,
+        "smart_skip_tests": 41,
+        "true_positives": 142,
+        "false_positives": 817,
+        "true_negatives": 41,
         "false_negatives": 0
       },
       {
@@ -101,11 +101,26 @@
         ],
         "module": "Notification",
         "ground_truth_affected_tests": 0,
-        "smart_run_tests": 927,
-        "smart_skip_tests": 73,
-        "true_positives": 0,
-        "false_positives": 0,
-        "true_negatives": 0,
+        "smart_run_tests": 921,
+        "smart_skip_tests": 79,
+        "true_positives": 83,
+        "false_positives": 838,
+        "true_negatives": 79,
+        "false_negatives": 0
+      },
+      {
+        "change_id": "CHG_MULTI",
+        "files": [
+          "payment/payment.py",
+          "auth/login.py"
+        ],
+        "module": "Payment",
+        "ground_truth_affected_tests": 0,
+        "smart_run_tests": 976,
+        "smart_skip_tests": 24,
+        "true_positives": 199,
+        "false_positives": 777,
+        "true_negatives": 24,
         "false_negatives": 0
       }
     ],
@@ -117,35 +132,35 @@
       "total_tests": 1000,
       "executed": 1000,
       "skipped": 0,
-      "runtime_seconds": 2238.33,
-      "runtime_minutes": 37.31
+      "runtime_seconds": 2268.18,
+      "runtime_minutes": 37.8
     },
     "smart_payment": {
       "changed_file": "payment/payment.py",
       "total_tests": 1000,
-      "executed": 921,
-      "skipped": 79,
-      "runtime_seconds": 2110.67,
-      "runtime_minutes": 35.18,
-      "runtime_reduction_pct": 5.7
+      "executed": 967,
+      "skipped": 33,
+      "runtime_seconds": 2210.71,
+      "runtime_minutes": 36.85,
+      "runtime_reduction_pct": 2.5
     },
     "smart_auth": {
       "changed_file": "auth/login.py",
       "total_tests": 1000,
-      "executed": 875,
-      "skipped": 125,
-      "runtime_seconds": 2034.62,
-      "runtime_minutes": 33.91,
-      "runtime_reduction_pct": 9.1
+      "executed": 890,
+      "skipped": 110,
+      "runtime_seconds": 2093.04,
+      "runtime_minutes": 34.88,
+      "runtime_reduction_pct": 7.7
     },
     "smart_push": {
       "changed_file": "notification/push.py",
       "total_tests": 1000,
-      "executed": 927,
-      "skipped": 73,
-      "runtime_seconds": 2124.25,
-      "runtime_minutes": 35.4,
-      "runtime_reduction_pct": 5.1
+      "executed": 921,
+      "skipped": 79,
+      "runtime_seconds": 2126.72,
+      "runtime_minutes": 35.45,
+      "runtime_reduction_pct": 6.2
     }
   },
   "security_verification": {
@@ -157,15 +172,15 @@
   },
   "database_integrity": {
     "test_coverage": 1000,
-    "dependency_map": 84,
+    "dependency_map": 94,
     "failure_history": 2400,
     "device_matrix": 8,
-    "code_changes": 15,
-    "experiment_ground_truth": 1000,
+    "code_changes": 16,
+    "experiment_ground_truth": 5000,
     "selection_results": 0,
     "strategy_config": 3,
-    "rollback_history": 22,
-    "feedback": 0,
-    "audit_log": 68
+    "rollback_history": 307,
+    "feedback": 45,
+    "audit_log": 1207
   }
 }

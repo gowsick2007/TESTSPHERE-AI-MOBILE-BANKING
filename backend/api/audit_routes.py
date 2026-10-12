@@ -12,6 +12,11 @@ from backend.api.auth_routes import get_user_from_token
 
 router = APIRouter(prefix="/audit", tags=["Compliance Audit"])
 
+# Roles permitted to read audit logs (VIEWER is intentionally excluded —
+# audit logs may contain usernames, action details, and decision rationale
+# that are restricted to security/ops personnel only).
+_AUDIT_ALLOWED_ROLES = {"ADMIN", "QA_ENGINEER"}
+
 
 @router.get("/logs")
 def get_logs(
@@ -21,8 +26,23 @@ def get_logs(
     system_mode: Optional[str] = Query(None, description="Filter by system strategy mode"),
     date_from: Optional[str] = Query(None, description="ISO timestamp start filter"),
     date_to: Optional[str] = Query(None, description="ISO timestamp end filter"),
+    user: dict = Depends(get_user_from_token),
 ):
-    """Retrieve system audit logs with multi-parameter filtering."""
+    """Retrieve system audit logs with multi-parameter filtering.
+
+    WHY RBAC IS REQUIRED HERE:
+    Audit logs contain usernames, action details, decision rationale, and
+    system-mode information.  Exposing this to VIEWER-role users would violate
+    the principle of least privilege and could leak information about other
+    users' activity.  Only ADMIN and QA_ENGINEER roles are permitted.
+    """
+    # Enforce RBAC: only ADMIN and QA_ENGINEER may read audit logs
+    role = user.get("role", "VIEWER")
+    if role not in _AUDIT_ALLOWED_ROLES:
+        raise HTTPException(
+            status_code=403,
+            detail="Access denied. Audit log access requires ADMIN or QA_ENGINEER role.",
+        )
     logs = get_audit_log(
         limit=limit,
         action=action,
@@ -36,10 +56,16 @@ def get_logs(
 
 @router.post("/feedback")
 def submit_feedback(payload: FeedbackRequest, user: dict = Depends(get_user_from_token)):
-    """Saves structured stakeholder feedback responses into SQLite."""
+    """Saves structured stakeholder feedback responses into SQLite.
+
+    WHY AUTH REQUIRED:
+    Feedback submissions are tied to a named project reviewer for traceability.
+    Requiring authentication prevents anonymous spam submissions and allows
+    administrators to audit the source of each feedback record.
+    """
     conn = get_db_connection()
     feedback_id = f"FBK-{uuid.uuid4().hex[:8].upper()}"
-    reviewer = payload.reviewer_name or user["username"]
+    reviewer = payload.reviewer_name or user.get("username", "anonymous")
     comments = payload.comments or payload.additional_comments or ""
     area = payload.project_area or "General"
 
@@ -71,7 +97,7 @@ def submit_feedback(payload: FeedbackRequest, user: dict = Depends(get_user_from
 
         log_event(
             action="SUBMIT_FEEDBACK",
-            username=user["username"],
+            username=user.get("username", reviewer),
             input_summary=f"Stakeholder feedback {feedback_id} for {area}: {payload.rating} stars",
             result="SUCCESS"
         )
@@ -128,4 +154,3 @@ def get_feedback_stats():
         return {"response_count": 0, "average_rating": 0.0, "positive_pct": 0.0, "feedbacks": []}
     finally:
         conn.close()
-

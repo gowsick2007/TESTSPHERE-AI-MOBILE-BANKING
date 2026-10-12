@@ -62,6 +62,11 @@ def get_strategy_versions():
     return {"versions": versions}
 
 
+import sqlite3
+import logging
+
+logger = logging.getLogger(__name__)
+
 @router.post("/versions")
 def api_create_strategy_version(payload: StrategyVersionCreateRequest, user: dict = Depends(get_user_from_token)):
     """Registers a new strategy version (ADMIN role required)."""
@@ -80,6 +85,12 @@ def api_create_strategy_version(payload: StrategyVersionCreateRequest, user: dic
             description=payload.description
         )
         return ver
+    except sqlite3.IntegrityError:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Conflict: Strategy version '{payload.version_id}' already exists."
+        )
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Failed to create strategy version: {str(exc)}")
+        logger.error("Failed to create strategy version: %s", exc)
+        raise HTTPException(status_code=500, detail="Failed to create strategy version.")
 

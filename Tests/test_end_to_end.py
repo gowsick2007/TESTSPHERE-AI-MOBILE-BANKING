@@ -190,7 +190,7 @@ def test_full_master_end_to_end_lifecycle(client, admin_headers, qa_headers, vie
     assert client.get("/api/strategy").json()["current_strategy"] == "SMART_SELECTOR"
 
     # ── 9. Audit Trail & Secret Redaction ────────────────────────────────────
-    audit_res = client.get("/api/audit/logs?limit=50")
+    audit_res = client.get("/api/audit/logs?limit=50", headers=admin_headers)
     assert audit_res.status_code == 200
     logs = audit_res.json()["logs"]
     assert len(logs) > 0

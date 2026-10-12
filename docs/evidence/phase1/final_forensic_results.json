@@ -1,16 +1,16 @@
 {
   "environment": {
-    "python_version": "3.11.9",
-    "working_directory": "C:\\Users\\A\\Documents\\MOBILE BANKING",
-    "database_path": "C:\\Users\\A\\Documents\\MOBILE BANKING\\Data\\testsphere.db",
+    "python_version": "3.13.2",
+    "working_directory": "C:\\Users\\kabil\\Documents\\MOBILE BANKING (2)\\MOBILE BANKING",
+    "database_path": "C:\\Users\\kabil\\Documents\\MOBILE BANKING (2)\\MOBILE BANKING\\Data\\testsphere.db",
     "database_exists": true,
-    "backend_framework": "fastapi==0.115.5",
-    "uvicorn_version": "0.32.1",
-    "pandas_version": "2.2.3",
-    "networkx_version": "3.4.2",
-    "pytest_version": "8.3.4",
-    "bcrypt_version": "4.2.1",
-    "pydantic_version": "2.11.7",
+    "backend_framework": "fastapi==0.139.2",
+    "uvicorn_version": "0.51.0",
+    "pandas_version": "3.0.3",
+    "networkx_version": "3.6.1",
+    "pytest_version": "9.1.1",
+    "bcrypt_version": "5.0.0",
+    "pydantic_version": "2.13.4",
     "git_status": "git command not available in shell path",
     "commit_hash": "N/A (no git executable in PATH)"
   },
@@ -196,16 +196,16 @@
   "database": {
     "row_counts": {
       "test_coverage": 1000,
-      "dependency_map": 84,
+      "dependency_map": 94,
       "failure_history": 2400,
       "device_matrix": 8,
       "code_changes": 15,
-      "experiment_ground_truth": 1000,
+      "experiment_ground_truth": 5000,
       "selection_results": 0,
-      "dataset_metadata": 37,
-      "audit_log": 21,
-      "rollback_history": 2,
-      "feedback": 0,
+      "dataset_metadata": 1263,
+      "audit_log": 1208,
+      "rollback_history": 307,
+      "feedback": 45,
       "users": 3,
       "strategy_config": 3
     },
@@ -214,38 +214,38 @@
       "unique_test_ids": 1000,
       "unique_modules_count": 15,
       "modules_list": [
-        "Dashboard",
-        "Payment",
-        "CustomerSupport",
-        "Authentication",
         "Account",
         "AccountSecurity",
         "OTP",
-        "Transaction",
-        "Notification",
-        "UPI",
-        "Biometrics",
-        "Profile",
-        "Authorization",
         "FraudDetection",
-        "DeviceSecurity"
+        "Payment",
+        "Notification",
+        "Dashboard",
+        "DeviceSecurity",
+        "Biometrics",
+        "CustomerSupport",
+        "UPI",
+        "Transaction",
+        "Authentication",
+        "Authorization",
+        "Profile"
       ],
       "unique_devices_count": 8,
       "devices_list": [
         "Pixel 8",
+        "iPhone 15",
         "Samsung S24",
         "Pixel 7",
+        "iPhone 14",
         "Samsung A54",
         "iPhone 12",
-        "iPhone 15",
-        "Samsung A34",
-        "iPhone 14"
+        "Samsung A34"
       ],
       "unique_os_versions": [
         "Android 15",
+        "iOS 18",
         "Android 14",
         "iOS 17",
-        "iOS 18",
         "Android 13"
       ],
       "null_test_ids": 0,
@@ -255,26 +255,26 @@
   "dependency_analysis": {
     "payment_py": {
       "direct_count": 6,
-      "indirect_count": 25,
-      "total_impacted": 32,
+      "indirect_count": 33,
+      "total_impacted": 40,
       "graph_available": true,
       "direct_sample": [
-        "device/cert_pinning.py",
+        "account/mpin.py",
+        "fraud/fraud_engine.py",
         "payment/payment_api.py",
         "payment/payment_controller.py",
-        "payment/payment_screen.py",
-        "upi/upi_api.py"
+        "payment/payment_screen.py"
       ],
       "indirect_sample": [
-        "account/account.py",
         "account/balance.py",
+        "account/biometric_link.py",
         "account/security.py",
-        "auth/login.py",
+        "account/statement.py",
         "auth/permissions.py"
       ]
     },
     "graph_nodes_count": 46,
-    "graph_edges_count": 84
+    "graph_edges_count": 94
   },
   "test_selector": {
     "scenarios_tested": [
@@ -283,13 +283,13 @@
         "module": "Payment",
         "change_id": "CHG001",
         "total_tests": 1000,
-        "selected_tests": 921,
-        "skipped_tests": 79,
-        "time_reduction_pct": 5.7,
+        "selected_tests": 967,
+        "skipped_tests": 33,
+        "time_reduction_pct": 2.5,
         "ground_truth_available": true,
-        "true_positives": 125,
-        "false_positives": 796,
-        "true_negatives": 79,
+        "true_positives": 130,
+        "false_positives": 837,
+        "true_negatives": 33,
         "false_negatives": 0
       },
       {
@@ -297,13 +297,13 @@
         "module": "Authentication",
         "change_id": "CHG002",
         "total_tests": 1000,
-        "selected_tests": 875,
-        "skipped_tests": 125,
-        "time_reduction_pct": 9.1,
-        "ground_truth_available": false,
-        "true_positives": 0,
-        "false_positives": 0,
-        "true_negatives": 0,
+        "selected_tests": 890,
+        "skipped_tests": 110,
+        "time_reduction_pct": 7.7,
+        "ground_truth_available": true,
+        "true_positives": 68,
+        "false_positives": 822,
+        "true_negatives": 110,
         "false_negatives": 0
       },
       {
@@ -311,13 +311,13 @@
         "module": "Notification",
         "change_id": "CHG011",
         "total_tests": 1000,
-        "selected_tests": 927,
-        "skipped_tests": 73,
-        "time_reduction_pct": 5.1,
-        "ground_truth_available": false,
-        "true_positives": 0,
-        "false_positives": 0,
-        "true_negatives": 0,
+        "selected_tests": 921,
+        "skipped_tests": 79,
+        "time_reduction_pct": 6.2,
+        "ground_truth_available": true,
+        "true_positives": 83,
+        "false_positives": 838,
+        "true_negatives": 79,
         "false_negatives": 0
       },
       {
@@ -328,9 +328,9 @@
         "selected_tests": 1000,
         "skipped_tests": 0,
         "time_reduction_pct": 0.0,
-        "ground_truth_available": false,
-        "true_positives": 0,
-        "false_positives": 0,
+        "ground_truth_available": true,
+        "true_positives": 142,
+        "false_positives": 858,
         "true_negatives": 0,
         "false_negatives": 0
       }
@@ -343,11 +343,11 @@
     "baseline_total_tests": 1000,
     "baseline_executed_tests": 1000,
     "baseline_skipped_tests": 0,
-    "baseline_runtime_seconds": 2238.33,
-    "baseline_runtime_minutes": 37.31,
-    "smart_executed_tests": 921,
-    "smart_skipped_tests": 79,
-    "measured_time_reduction_pct": 5.7,
+    "baseline_runtime_seconds": 2268.18,
+    "baseline_runtime_minutes": 37.8,
+    "smart_executed_tests": 967,
+    "smart_skipped_tests": 33,
+    "measured_time_reduction_pct": 2.5,
     "execution_mode": "SIMULATED EXECUTION (using test execution_time property)"
   },
   "failure_scenarios": {
@@ -383,11 +383,12 @@
         "triggered_rules": [
           "RULE_3_SECURITY_CRITICAL",
           "RULE_4_CRITICAL_MODULE",
+          "RULE_4_DIRECT_FILE_MODIFICATION",
           "RULE_6_LOW_CONFIDENCE"
         ],
         "total_tests": 1000,
-        "tests_selected": 839,
-        "tests_skipped": 161,
+        "tests_selected": 909,
+        "tests_skipped": 91,
         "verdict": "PASS"
       },
       {
@@ -399,11 +400,12 @@
         "expected_rule": "RULE_3_SECURITY_CRITICAL",
         "triggered_rules": [
           "RULE_3_SECURITY_CRITICAL",
-          "RULE_4_CRITICAL_MODULE"
+          "RULE_4_CRITICAL_MODULE",
+          "RULE_4_DIRECT_FILE_MODIFICATION"
         ],
         "total_tests": 1000,
-        "tests_selected": 839,
-        "tests_skipped": 161,
+        "tests_selected": 893,
+        "tests_skipped": 107,
         "verdict": "PASS"
       },
       {
@@ -416,11 +418,12 @@
         "triggered_rules": [
           "RULE_3_SECURITY_CRITICAL",
           "RULE_4_CRITICAL_MODULE",
+          "RULE_4_DIRECT_FILE_MODIFICATION",
           "RULE_6_LOW_CONFIDENCE"
         ],
         "total_tests": 1000,
-        "tests_selected": 839,
-        "tests_skipped": 161,
+        "tests_selected": 909,
+        "tests_skipped": 91,
         "verdict": "PASS"
       },
       {
@@ -449,45 +452,16 @@
     "strategy_after_rollback": "LEGACY_FULL_SUITE",
     "restore_action_status": 200,
     "strategy_after_restore": "SMART_SELECTOR",
-    "history_records_count": 2
+    "history_records_count": 309
   },
-  "api_routes_count": 38,
+  "api_routes_count": 9,
   "api_routes_list": [
     "/",
-    "/api/audit/feedback",
-    "/api/audit/feedback/stats",
-    "/api/audit/logs",
-    "/api/auth/login",
-    "/api/auth/logout",
-    "/api/auth/me",
-    "/api/change/analyze",
-    "/api/change/history",
-    "/api/change/register",
-    "/api/data/demo",
-    "/api/data/status",
-    "/api/data/template/{dataset_type}",
-    "/api/data/upload/full",
-    "/api/data/upload/{dataset_type}",
-    "/api/data/{dataset_type}",
-    "/api/data/{dataset_type}/download",
-    "/api/data/{dataset_type}/preview",
-    "/api/experiment/run",
-    "/api/experiment/run-scenarios",
-    "/api/experiment/scenarios",
-    "/api/health",
-    "/api/strategy",
-    "/api/strategy/history",
-    "/api/strategy/rollback",
-    "/api/tests",
-    "/api/tests/coverage",
-    "/api/tests/failures",
-    "/api/tests/run-baseline",
-    "/api/tests/run-smart",
-    "/api/tests/selection",
-    "/api/tests/{test_id}",
-    "/api/what-if",
+    "/audit-log",
+    "/data-health",
     "/docs",
     "/docs/oauth2-redirect",
+    "/health",
     "/openapi.json",
     "/pages/{page_name}",
     "/redoc"
