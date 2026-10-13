@@ -54,10 +54,10 @@ A test may be skipped **only** when measurable, explainable evidence supports th
   - Analytics & diagnostic telemetry: false-negative/false-positive root-cause diagnostics.
 - **Phases 3–10 (100% Implementation & Acceptance)**:
   - Comprehensive safety override unit test matrix (RULE_1 to RULE_6 + RULE_7 contract).
-  - Complete API endpoint verification (49 verified contract endpoints across 9 routers).
+  - Complete API endpoint verification (49 verified contract endpoints across 9 routers; 55 total registered HTTP operations across 53 unique OpenAPI paths).
   - Clean-state restart and reproducibility verification (SHA256 checksum byte-identity).
   - Full frontend integration & static serving (11 pages + 4 CSS + 2 JS modules verified via HTTP 200).
-  - 211/211 automated test suite passing.
+  - 211/211 automated test suite passing (100% pass rate across 23 test modules).
 
 ---
 
@@ -116,12 +116,12 @@ Audit / Analytics / Rollback / Experiment Management
 | Core Engine | `Engine/` |
 | Backend Engine | `backend/engine/` |
 | API Routes | `backend/api/` |
-| Application Entry | `API/main.py` (served on port 8001) |
+| Application Entry | `backend/main.py` (primary, port 8001; alternate `API/main.py`) |
 | Security | `Security/` |
 | Simulation | `Simulation/` |
 | Rollback | `Rollback/` |
 | Frontend | `frontend/` (11 HTML pages) |
-| Tests | `Tests/` (22 modules, 132 tests) |
+| Tests | `Tests/` (23 test modules, 211 tests, 100% pass rate) |
 | Dataset | `Dataset/synthetic_canonical/` (6 CSV files, SHA256 verified) |
 
 ---
@@ -610,6 +610,8 @@ py -c "from Data_Generation.generate_dataset import generate_and_load; generate_
 ## 9. API Reference
 
 All REST endpoints are registered under `http://127.0.0.1:8001`. Interactive OpenAPI/Swagger documentation is available at `http://127.0.0.1:8001/docs`.
+
+The production FastAPI application (`backend.main:app`) registers **55 HTTP method/path operations across 53 unique OpenAPI paths** (including 50 operations across 48 unique paths under the `/api` prefix across 9 routers, plus 5 root operational paths). All 49 core automated contract integration endpoints are validated with zero failures via `verify_all_api_endpoints.py`.
 
 ### Authentication Matrix & Role Hierarchy
 
@@ -1474,7 +1476,12 @@ All results are **empirical**, measured on the canonical synthetic 5,000-decisio
 | Precision | 14.28% |
 | F1 Score | 0.2499 |
 | Simulated Runtime Reduction | 9.68% |
-| Tests Passed | 132 |
+| Automated Tests Passing | **211** (100% pass rate across 23 test modules) |
+
+> **Historical Benchmark & Test Suite Reconciliation**:
+> - **Phase 1 Baseline (pre-hardening)**: 129 passing tests; canonical benchmark produced TP=621, TN=469, FP=3,909, FN=1, Recall=99.84% (single missed test T0779 on `notification/push.py` due to lack of direct file coverage rule).
+> - **Phase 2 Hardening (commit `8f84e36`)**: 132 passing tests; introduced `RULE_4_DIRECT_FILE_MODIFICATION`, converting T0779 into a verified True Positive and eliminating the false negative: TP=622, TN=644, FP=3,734, FN=0, Recall=100.00%.
+> - **Review 2 / Current State (commit `cc2ab6c` / HEAD)**: 211 passing tests (+79 granular unit and API error boundary tests in `test_safety_overrides_unit.py` and `test_api_error_boundaries.py`), 0 collection errors, 0 failures, retaining 100.00% empirical recall and zero false negatives.
 
 > The high false-positive rate (FP = 3,734, Precision = 14.28%) is an intentional safety-first design tradeoff. The system prefers running more tests than risking a missed regression.
 
